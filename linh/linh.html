@@ -1,25 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Linh's Page</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <nav>
-    <a href="index.html">Home</a> |
-    <a href="linh.html">Linh</a> |
-    <a href="jacopo.html">Jacopo</a>
-  </nav>
-	<p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა<p>
-  <h1>This is Linh’s page 👩‍💻</h1>
-  <p>Hi, I'm Linh! I love food, travel, and exploring new cultures.</p>
-</body>
-</html>
-
-//* HEART GAME *//
-
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -31,6 +10,22 @@
       background-color: #222;
       overflow: hidden;
       font-family: 'Comic Sans MS', cursive;
+      color: #fff;
+    }
+    nav {
+      text-align: center;
+      margin-top: 10px;
+    }
+    nav a {
+      color: #ff99cc;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+    .intro {
+      text-align: center;
+      margin-top: 10px;
+      line-height: 1.4;
     }
     canvas {
       display: block;
@@ -62,6 +57,17 @@
   </style>
 </head>
 <body>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="linh.html">Linh</a> |
+    <a href="jacopo.html">Jacopo</a>
+  </nav>
+  <div class="intro">
+    <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
+    <h1>This is Linh’s page 👩‍💻</h1>
+    <p>Hi, I'm Linh! I love food, travel, and exploring new cultures.</p>
+  </div>
+
   <canvas id="gameCanvas" width="600" height="400"></canvas>
   <div id="message"></div>
   <div id="giftBox">
@@ -73,15 +79,15 @@
       const canvas = document.getElementById('gameCanvas');
       const ctx = canvas.getContext('2d');
 
-      // 🌲 Forest background image
+      // 🌲 Forest background image from local 'linh' folder
       const bgImg = new Image();
-      bgImg.src = 'linh/Forest.png';
+      bgImg.src = 'linh/forest.png';
 
-      // 🧍 Italian boy character image
+      // 🧍 Italian boy character image from local 'linh' folder
       const playerImg = new Image();
-      playerImg.src = 'linh/Jacopo.png';
+      playerImg.src = 'linh/jacopo.png';
 
-      // 🏰 Castle image
+      // 🏰 Castle image from local 'linh' folder
       const castleImg = new Image();
       castleImg.src = 'linh/castle.png';
 
@@ -178,7 +184,7 @@
       }
 
       // 🎁 Gift button alert
-      function openGift() {
+      window.openGift = function() {
         alert("🎁 Here's your surprise! I love you! 💌");
       }
 
@@ -198,4 +204,3 @@
   </script>
 </body>
 </html>
-
