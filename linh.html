@@ -50,100 +50,105 @@
   </div>
 
   <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
+    window.onload = function() {
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
 
-    const playerImg = new Image();
-    playerImg.src = 'https://i.imgur.com/G2YiMvh.png'; // Italian boy character (placeholder pixel art)
+      const playerImg = new Image();
+      playerImg.src = 'https://i.imgur.com/G2YiMvh.png'; // Italian boy character (placeholder pixel art)
 
-    const castleImg = new Image();
-    castleImg.src = 'https://i.imgur.com/fAFoUlY.png'; // Castle destination
+      const castleImg = new Image();
+      castleImg.src = 'https://i.imgur.com/fAFoUlY.png'; // Castle destination
 
-    const player = { x: 50, y: 180, width: 32, height: 32, speed: 3 };
-    const castle = { x: 520, y: 160, width: 64, height: 64 };
+      const player = { x: 50, y: 180, width: 32, height: 32, speed: 3 };
+      const castle = { x: 520, y: 160, width: 64, height: 64 };
 
-    const hearts = [];
-    let collected = 0;
-    const totalHearts = 5;
+      const hearts = [];
+      let collected = 0;
+      const totalHearts = 5;
 
-    for (let i = 0; i < totalHearts; i++) {
-      hearts.push({
-        x: Math.random() * 550,
-        y: Math.random() * 370,
-        size: 20,
-        collected: false
-      });
-    }
-
-    const keys = {};
-    document.addEventListener('keydown', e => keys[e.key] = true);
-    document.addEventListener('keyup', e => keys[e.key] = false);
-
-    function drawPlayer() {
-      ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
-    }
-
-    function drawCastle() {
-      ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
-    }
-
-    function drawHearts() {
-      hearts.forEach(h => {
-        if (!h.collected) {
-          ctx.fillStyle = '#ff4da6';
-          ctx.beginPath();
-          ctx.moveTo(h.x, h.y);
-          ctx.arc(h.x - 5, h.y - 5, 7, 0, Math.PI * 2);
-          ctx.arc(h.x + 5, h.y - 5, 7, 0, Math.PI * 2);
-          ctx.lineTo(h.x, h.y + 10);
-          ctx.fill();
-        }
-      });
-    }
-
-    function update() {
-      if (keys['ArrowUp']) player.y -= player.speed;
-      if (keys['ArrowDown']) player.y += player.speed;
-      if (keys['ArrowLeft']) player.x -= player.speed;
-      if (keys['ArrowRight']) player.x += player.speed;
-
-      hearts.forEach(h => {
-        if (!h.collected &&
-          player.x < h.x + h.size &&
-          player.x + player.width > h.x &&
-          player.y < h.y + h.size &&
-          player.y + player.height > h.y
-        ) {
-          h.collected = true;
-          collected++;
-        }
-      });
-
-      if (collected === totalHearts &&
-        player.x + player.width > castle.x &&
-        player.x < castle.x + castle.width &&
-        player.y + player.height > castle.y &&
-        player.y < castle.y + castle.height
-      ) {
-        document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
-        document.getElementById('giftBox').style.display = 'block';
+      for (let i = 0; i < totalHearts; i++) {
+        hearts.push({
+          x: Math.random() * 550,
+          y: Math.random() * 370,
+          size: 20,
+          collected: false
+        });
       }
-    }
 
-    function gameLoop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawCastle();
-      drawHearts();
-      drawPlayer();
-      update();
-      requestAnimationFrame(gameLoop);
-    }
+      const keys = {};
+      document.addEventListener('keydown', e => keys[e.key] = true);
+      document.addEventListener('keyup', e => keys[e.key] = false);
 
-    function openGift() {
-      alert("🎁 Here's your surprise! I love you! 💌");
-    }
+      function drawPlayer() {
+        ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+      }
 
-    gameLoop();
+      function drawCastle() {
+        ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+      }
+
+      function drawHearts() {
+        hearts.forEach(h => {
+          if (!h.collected) {
+            ctx.fillStyle = '#ff4da6';
+            ctx.beginPath();
+            ctx.moveTo(h.x, h.y);
+            ctx.arc(h.x - 5, h.y - 5, 7, 0, Math.PI * 2);
+            ctx.arc(h.x + 5, h.y - 5, 7, 0, Math.PI * 2);
+            ctx.lineTo(h.x, h.y + 10);
+            ctx.fill();
+          }
+        });
+      }
+
+      function update() {
+        if (keys['ArrowUp']) player.y -= player.speed;
+        if (keys['ArrowDown']) player.y += player.speed;
+        if (keys['ArrowLeft']) player.x -= player.speed;
+        if (keys['ArrowRight']) player.x += player.speed;
+
+        hearts.forEach(h => {
+          if (!h.collected &&
+              player.x < h.x + h.size &&
+              player.x + player.width > h.x &&
+              player.y < h.y + h.size &&
+              player.y + player.height > h.y) {
+            h.collected = true;
+            collected++;
+          }
+        });
+
+        if (collected === totalHearts &&
+            player.x + player.width > castle.x &&
+            player.x < castle.x + castle.width &&
+            player.y + player.height > castle.y &&
+            player.y < castle.y + castle.height) {
+          document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
+          document.getElementById('giftBox').style.display = 'block';
+        }
+      }
+
+      function gameLoop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawCastle();
+        drawHearts();
+        drawPlayer();
+        update();
+        requestAnimationFrame(gameLoop);
+      }
+
+      function openGift() {
+        alert("🎁 Here's your surprise! I love you! 💌");
+      }
+
+      // Start game only after images are loaded
+      playerImg.onload = () => {
+        castleImg.onload = () => {
+          gameLoop();
+        };
+      };
+    }
   </script>
 </body>
 </html>
