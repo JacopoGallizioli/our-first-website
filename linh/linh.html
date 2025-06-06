@@ -8,9 +8,9 @@
     body {
       margin: 0;
       background-color: #222;
-      overflow: hidden;
       font-family: 'Comic Sans MS', cursive;
       color: #fff;
+      overflow-x: hidden;
     }
     nav {
       text-align: center;
@@ -29,11 +29,10 @@
     }
     canvas {
       display: block;
-      margin: 0 auto;
+      margin: 20px auto;
       border: 5px solid #ff99cc;
       border-radius: 20px;
-      margin-top: 20px;
-      background-color: #228B22;
+      background-color: transparent;
     }
     #message {
       text-align: center;
@@ -58,6 +57,7 @@
   </style>
 </head>
 <body>
+  <!-- 🌐 Top Navigation and Intro Text -->
   <nav>
     <a href="index.html">Home</a> |
     <a href="linh.html">Linh</a> |
@@ -66,8 +66,10 @@
   <div class="intro">
     <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
     <h1>This is Linh’s page 👩‍💻</h1>
+    <p>Hi, I'm Linh! I love food, travel, and exploring new cultures.</p>
   </div>
 
+  <!-- 🎮 Canvas Game -->
   <canvas id="gameCanvas" width="600" height="400"></canvas>
   <div id="message"></div>
   <div id="giftBox">
@@ -79,17 +81,27 @@
       const canvas = document.getElementById('gameCanvas');
       const ctx = canvas.getContext('2d');
 
+      // 🖼️ Load images
+      const bgImg = new Image();
+      const playerImg = new Image();
+      const castleImg = new Image();
+
+      bgImg.src = '/linh/Forest.png';
+      playerImg.src = '/linh/Jacopo.png';
+      castleImg.src = '/linh/castle.png';
+
+      // 🎮 Game elements
       const player = { x: 50, y: 180, width: 32, height: 32, speed: 3 };
       const castle = { x: 520, y: 160, width: 64, height: 64 };
+
       const hearts = [];
-      const totalHearts = 5;
       let collected = 0;
-      let gameCompleted = false;
+      const totalHearts = 5;
 
       for (let i = 0; i < totalHearts; i++) {
         hearts.push({
-          x: Math.random() * (canvas.width - 20),
-          y: Math.random() * (canvas.height - 20),
+          x: Math.random() * 550,
+          y: Math.random() * 370,
           size: 20,
           collected: false
         });
@@ -99,14 +111,25 @@
       document.addEventListener('keydown', e => keys[e.key] = true);
       document.addEventListener('keyup', e => keys[e.key] = false);
 
+      // 🌲 Draw green background (TEMPORARY fallback)
+      function drawBackground() {
+        ctx.fillStyle = '#228B22'; // forest green
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (bgImg.complete) {
+          ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+        }
+      }
+
       function drawPlayer() {
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(player.x, player.y, player.width, player.height);
+        if (playerImg.complete) {
+          ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+        }
       }
 
       function drawCastle() {
-        ctx.fillStyle = '#ffaa00';
-        ctx.fillRect(castle.x, castle.y, castle.width, castle.height);
+        if (castleImg.complete) {
+          ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+        }
       }
 
       function drawHearts() {
@@ -124,36 +147,35 @@
       }
 
       function update() {
-        if (keys['ArrowUp'] && player.y > 0) player.y -= player.speed;
-        if (keys['ArrowDown'] && player.y + player.height < canvas.height) player.y += player.speed;
-        if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
-        if (keys['ArrowRight'] && player.x + player.width < canvas.width) player.x += player.speed;
+        if (keys['ArrowUp']) player.y -= player.speed;
+        if (keys['ArrowDown']) player.y += player.speed;
+        if (keys['ArrowLeft']) player.x -= player.speed;
+        if (keys['ArrowRight']) player.x += player.speed;
 
         hearts.forEach(h => {
           if (!h.collected &&
-            player.x < h.x + h.size &&
-            player.x + player.width > h.x &&
-            player.y < h.y + h.size &&
-            player.y + player.height > h.y) {
+              player.x < h.x + h.size &&
+              player.x + player.width > h.x &&
+              player.y < h.y + h.size &&
+              player.y + player.height > h.y) {
             h.collected = true;
             collected++;
           }
         });
 
-        if (!gameCompleted &&
-          collected === totalHearts &&
-          player.x + player.width > castle.x &&
-          player.x < castle.x + castle.width &&
-          player.y + player.height > castle.y &&
-          player.y < castle.y + castle.height) {
+        if (collected === totalHearts &&
+            player.x + player.width > castle.x &&
+            player.x < castle.x + castle.width &&
+            player.y + player.height > castle.y &&
+            player.y < castle.y + castle.height) {
           document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
           document.getElementById('giftBox').style.display = 'block';
-          gameCompleted = true;
         }
       }
 
       function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBackground();
         drawCastle();
         drawHearts();
         drawPlayer();
@@ -163,10 +185,24 @@
 
       window.openGift = function () {
         alert("🎁 Here's your surprise! I love you! 💌");
+      };
+
+      // Wait for images to load before starting the game
+      let loaded = 0;
+      const totalImages = 3;
+      function checkAllLoaded() {
+        loaded++;
+        if (loaded === totalImages) gameLoop();
       }
 
-      // Start game immediately
-      gameLoop();
+      bgImg.onload = checkAllLoaded;
+      playerImg.onload = checkAllLoaded;
+      castleImg.onload = checkAllLoaded;
+
+      // Optional debug errors
+      bgImg.onerror = () => console.error('Failed to load forest.png');
+      playerImg.onerror = () => console.error('Failed to load Jacopo.png');
+      castleImg.onerror = () => console.error('Failed to load castle.png');
     });
   </script>
 </body>
