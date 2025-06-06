@@ -33,7 +33,7 @@
       border: 5px solid #ff99cc;
       border-radius: 20px;
       margin-top: 20px;
-      background-color: transparent;
+      background-color: #228B22;
     }
     #message {
       text-align: center;
@@ -66,7 +66,6 @@
   <div class="intro">
     <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
     <h1>This is Linh’s page 👩‍💻</h1>
-    <p>Hi, I'm Linh! I love food, travel, and exploring new cultures.</p>
   </div>
 
   <canvas id="gameCanvas" width="600" height="400"></canvas>
@@ -76,24 +75,15 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const canvas = document.getElementById('gameCanvas');
       const ctx = canvas.getContext('2d');
 
-      const bgImg = new Image();
-      const playerImg = new Image();
-      const castleImg = new Image();
-
-      bgImg.src = 'https://cdn.gamedevmarket.net/cover-images/r9tFFoLHyvgFqyIiB3B7bEnDpsgMrgiF5MfZvz7M.png';
-      playerImg.src = 'linh/Jacopo.png';
-      castleImg.src = 'linh/castle.png';
-
       const player = { x: 50, y: 180, width: 32, height: 32, speed: 3 };
       const castle = { x: 520, y: 160, width: 64, height: 64 };
-
       const hearts = [];
-      let collected = 0;
       const totalHearts = 5;
+      let collected = 0;
       let gameCompleted = false;
 
       for (let i = 0; i < totalHearts; i++) {
@@ -109,21 +99,14 @@
       document.addEventListener('keydown', e => keys[e.key] = true);
       document.addEventListener('keyup', e => keys[e.key] = false);
 
-      function drawBackground() {
-        if (bgImg.complete && bgImg.naturalWidth !== 0) {
-          ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-        } else {
-          ctx.fillStyle = '#228B22';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-      }
-
       function drawPlayer() {
-        ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(player.x, player.y, player.width, player.height);
       }
 
       function drawCastle() {
-        ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+        ctx.fillStyle = '#ffaa00';
+        ctx.fillRect(castle.x, castle.y, castle.width, castle.height);
       }
 
       function drawHearts() {
@@ -141,7 +124,6 @@
       }
 
       function update() {
-        // Movement with boundary check
         if (keys['ArrowUp'] && player.y > 0) player.y -= player.speed;
         if (keys['ArrowDown'] && player.y + player.height < canvas.height) player.y += player.speed;
         if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
@@ -149,21 +131,21 @@
 
         hearts.forEach(h => {
           if (!h.collected &&
-              player.x < h.x + h.size &&
-              player.x + player.width > h.x &&
-              player.y < h.y + h.size &&
-              player.y + player.height > h.y) {
+            player.x < h.x + h.size &&
+            player.x + player.width > h.x &&
+            player.y < h.y + h.size &&
+            player.y + player.height > h.y) {
             h.collected = true;
             collected++;
           }
         });
 
         if (!gameCompleted &&
-            collected === totalHearts &&
-            player.x + player.width > castle.x &&
-            player.x < castle.x + castle.width &&
-            player.y + player.height > castle.y &&
-            player.y < castle.y + castle.height) {
+          collected === totalHearts &&
+          player.x + player.width > castle.x &&
+          player.x < castle.x + castle.width &&
+          player.y + player.height > castle.y &&
+          player.y < castle.y + castle.height) {
           document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
           document.getElementById('giftBox').style.display = 'block';
           gameCompleted = true;
@@ -172,7 +154,6 @@
 
       function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawBackground();
         drawCastle();
         drawHearts();
         drawPlayer();
@@ -180,25 +161,12 @@
         requestAnimationFrame(gameLoop);
       }
 
-      window.openGift = function() {
+      window.openGift = function () {
         alert("🎁 Here's your surprise! I love you! 💌");
       }
 
-      let loaded = 0;
-      const totalImages = 3;
-
-      function checkAllLoaded() {
-        loaded++;
-        if (loaded === totalImages) gameLoop();
-      }
-
-      bgImg.onload = checkAllLoaded;
-      playerImg.onload = checkAllLoaded;
-      castleImg.onload = checkAllLoaded;
-
-      bgImg.onerror = () => console.error('❌ Failed to load linh/forest.png');
-      playerImg.onerror = () => console.error('❌ Failed to load linh/Jacopo.png');
-      castleImg.onerror = () => console.error('❌ Failed to load linh/castle.png');
+      // Start game immediately
+      gameLoop();
     });
   </script>
 </body>
