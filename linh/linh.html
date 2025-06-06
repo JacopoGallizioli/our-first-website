@@ -84,7 +84,7 @@
       const playerImg = new Image();
       const castleImg = new Image();
 
-      bgImg.src = 'https://cdn.gamedevmarket.net/cover-images/r9tFFoLHyvgFqyIiB3B7bEnDpsgMrgiF5MfZvz7M.png';
+      bgImg.src = 'linh/forest.png';
       playerImg.src = 'linh/Jacopo.png';
       castleImg.src = 'linh/castle.png';
 
@@ -94,11 +94,12 @@
       const hearts = [];
       let collected = 0;
       const totalHearts = 5;
+      let gameCompleted = false;
 
       for (let i = 0; i < totalHearts; i++) {
         hearts.push({
-          x: Math.random() * 550,
-          y: Math.random() * 370,
+          x: Math.random() * (canvas.width - 20),
+          y: Math.random() * (canvas.height - 20),
           size: 20,
           collected: false
         });
@@ -140,10 +141,11 @@
       }
 
       function update() {
-        if (keys['ArrowUp']) player.y -= player.speed;
-        if (keys['ArrowDown']) player.y += player.speed;
-        if (keys['ArrowLeft']) player.x -= player.speed;
-        if (keys['ArrowRight']) player.x += player.speed;
+        // Movement with boundary check
+        if (keys['ArrowUp'] && player.y > 0) player.y -= player.speed;
+        if (keys['ArrowDown'] && player.y + player.height < canvas.height) player.y += player.speed;
+        if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
+        if (keys['ArrowRight'] && player.x + player.width < canvas.width) player.x += player.speed;
 
         hearts.forEach(h => {
           if (!h.collected &&
@@ -156,13 +158,15 @@
           }
         });
 
-        if (collected === totalHearts &&
+        if (!gameCompleted &&
+            collected === totalHearts &&
             player.x + player.width > castle.x &&
             player.x < castle.x + castle.width &&
             player.y + player.height > castle.y &&
             player.y < castle.y + castle.height) {
           document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
           document.getElementById('giftBox').style.display = 'block';
+          gameCompleted = true;
         }
       }
 
