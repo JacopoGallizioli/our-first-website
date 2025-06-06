@@ -33,6 +33,7 @@
       border: 5px solid #ff99cc;
       border-radius: 20px;
       margin-top: 20px;
+      background-color: #000; /* fallback to see if canvas is rendering */
     }
     #message {
       text-align: center;
@@ -83,7 +84,7 @@
       const playerImg = new Image();
       const castleImg = new Image();
 
-      bgImg.src = 'linh/Forest.png';
+      bgImg.src = 'https://raw.githubusercontent.com/sweetcoder/heart-collector/main/linh/forest.png'; // make sure the filename matches exactly
       playerImg.src = 'linh/Jacopo.png';
       castleImg.src = 'linh/castle.png';
 
@@ -108,6 +109,8 @@
       document.addEventListener('keyup', e => keys[e.key] = false);
 
       function drawBackground() {
+        ctx.fillStyle = '#228B22'; // fallback color if image fails
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
       }
 
