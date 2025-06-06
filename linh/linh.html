@@ -35,8 +35,6 @@
     canvas {
       display: block;
       margin: 0 auto;
-      background-image: url('https://cdn.gamedevmarket.net/cover-images/r9tFFoLHyvgFqyIiB3B7bEnDpsgMrgiF5MfZvz7M.png'); /* Forest background */
-      background-size: cover;
       border: 5px solid #ff99cc;
       border-radius: 20px;
       margin-top: 20px;
@@ -75,11 +73,17 @@
       const canvas = document.getElementById('gameCanvas');
       const ctx = canvas.getContext('2d');
 
-      const playerImg = new Image();
-      playerImg.src = 'https://i.imgur.com/G2YiMvh.png'; // Italian boy character (placeholder pixel art)
+      // 🌲 Forest background image
+      const bgImg = new Image();
+      bgImg.src = 'https://cdn.gamedevmarket.net/cover-images/r9tFFoLHyvgFqyIiB3B7bEnDpsgMrgiF5MfZvz7M.png';
 
+      // 🧍 Italian boy character image
+      const playerImg = new Image();
+      playerImg.src = 'https://i.imgur.com/G2YiMvh.png';
+
+      // 🏰 Castle image
       const castleImg = new Image();
-      castleImg.src = 'https://i.imgur.com/fAFoUlY.png'; // Castle destination
+      castleImg.src = 'https://i.imgur.com/fAFoUlY.png';
 
       const player = { x: 50, y: 180, width: 32, height: 32, speed: 3 };
       const castle = { x: 520, y: 160, width: 64, height: 64 };
@@ -88,6 +92,7 @@
       let collected = 0;
       const totalHearts = 5;
 
+      // ❤️ Generate heart objects randomly
       for (let i = 0; i < totalHearts; i++) {
         hearts.push({
           x: Math.random() * 550,
@@ -97,18 +102,27 @@
         });
       }
 
+      // 🎮 Keyboard input
       const keys = {};
       document.addEventListener('keydown', e => keys[e.key] = true);
       document.addEventListener('keyup', e => keys[e.key] = false);
 
+      // 🌲 Draw forest background
+      function drawBackground() {
+        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+      }
+
+      // 🧍 Draw player image
       function drawPlayer() {
         ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
       }
 
+      // 🏰 Draw castle image
       function drawCastle() {
         ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
       }
 
+      // ❤️ Draw hearts if not collected
       function drawHearts() {
         hearts.forEach(h => {
           if (!h.collected) {
@@ -123,6 +137,7 @@
         });
       }
 
+      // 🔄 Update game state and handle collisions
       function update() {
         if (keys['ArrowUp']) player.y -= player.speed;
         if (keys['ArrowDown']) player.y += player.speed;
@@ -140,6 +155,7 @@
           }
         });
 
+        // 🎉 If all hearts are collected and player reaches castle
         if (collected === totalHearts &&
             player.x + player.width > castle.x &&
             player.x < castle.x + castle.width &&
@@ -150,8 +166,10 @@
         }
       }
 
+      // 🎮 Game loop to render everything
       function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBackground();
         drawCastle();
         drawHearts();
         drawPlayer();
@@ -159,16 +177,23 @@
         requestAnimationFrame(gameLoop);
       }
 
+      // 🎁 Gift button alert
       function openGift() {
         alert("🎁 Here's your surprise! I love you! 💌");
       }
 
-      // Start game only after images are loaded
-      playerImg.onload = () => {
-        castleImg.onload = () => {
-          gameLoop();
-        };
-      };
+      // 🖼️ Wait for all images to load before starting
+      let loaded = 0;
+      const totalImages = 3;
+
+      function checkAllLoaded() {
+        loaded++;
+        if (loaded === totalImages) gameLoop();
+      }
+
+      bgImg.onload = checkAllLoaded;
+      playerImg.onload = checkAllLoaded;
+      castleImg.onload = checkAllLoaded;
     }
   </script>
 </body>
