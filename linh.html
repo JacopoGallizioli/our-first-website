@@ -1,18 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Linh's Page</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heart Collector Game</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #ffe6f0;
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background-color: #fff0f5;
+      border: 5px solid #ff99cc;
+      border-radius: 20px;
+      margin-top: 20px;
+    }
+    #message {
+      text-align: center;
+      font-size: 24px;
+      color: #d63384;
+      margin-top: 20px;
+    }
+    #giftBox {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+    }
+    #giftBox button {
+      background-color: #ff66a3;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a> |
-    <a href="linh.html">Linh</a> |
-    <a href="jacopo.html">Jacopo</a>
-  </nav>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <div id="message"></div>
+  <div id="giftBox">
+    <button onclick="openGift()">Open Your Gift 🎁</button>
+  </div>
 
-  <h1>This is Linh’s page 👩‍💻</h1>
-  <p>Hi, I'm Linh! I love food, travel, and exploring new cultures.</p>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const player = { x: 280, y: 180, size: 20, color: '#ff3366' };
+    const hearts = [];
+    let collected = 0;
+    const totalHearts = 5;
+
+    for (let i = 0; i < totalHearts; i++) {
+      hearts.push({
+        x: Math.random() * 580,
+        y: Math.random() * 380,
+        size: 15,
+        collected: false,
+      });
+    }
+
+    const keys = {};
+    document.addEventListener('keydown', e => keys[e.key] = true);
+    document.addEventListener('keyup', e => keys[e.key] = false);
+
+    function drawPlayer() {
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x, player.y, player.size, player.size);
+    }
+
+    function drawHearts() {
+      ctx.fillStyle = '#ff4da6';
+      hearts.forEach(h => {
+        if (!h.collected) ctx.fillRect(h.x, h.y, h.size, h.size);
+      });
+    }
+
+    function update() {
+      if (keys['ArrowUp']) player.y -= 3;
+      if (keys['ArrowDown']) player.y += 3;
+      if (keys['ArrowLeft']) player.x -= 3;
+      if (keys['ArrowRight']) player.x += 3;
+
+      hearts.forEach(h => {
+        if (!h.collected &&
+          player.x < h.x + h.size &&
+          player.x + player.size > h.x &&
+          player.y < h.y + h.size &&
+          player.y + player.size > h.y
+        ) {
+          h.collected = true;
+          collected++;
+        }
+      });
+
+      if (collected === totalHearts) {
+        document.getElementById('message').innerText = 'You did it! 💖';
+        document.getElementById('giftBox').style.display = 'block';
+      }
+    }
+
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+      drawHearts();
+      update();
+      requestAnimationFrame(gameLoop);
+    }
+
+    function openGift() {
+      alert("🎁 Here's your surprise! I love you! 💌");
+    }
+
+    gameLoop();
+  </script>
 </body>
 </html>
