@@ -33,7 +33,7 @@
       border: 5px solid #ff99cc;
       border-radius: 20px;
       margin-top: 20px;
-      background-color: #000; /* fallback to see if canvas is rendering */
+      background-color: transparent; /* changed from black */
     }
     #message {
       text-align: center;
@@ -84,7 +84,7 @@
       const playerImg = new Image();
       const castleImg = new Image();
 
-      bgImg.src = 'https://raw.githubusercontent.com/sweetcoder/heart-collector/main/linh/forest.png'; // make sure the filename matches exactly
+      bgImg.src = 'linh/Forest.png';
       playerImg.src = 'linh/Jacopo.png';
       castleImg.src = 'linh/castle.png';
 
@@ -109,7 +109,7 @@
       document.addEventListener('keyup', e => keys[e.key] = false);
 
       function drawBackground() {
-        ctx.fillStyle = '#228B22'; // fallback color if image fails
+        ctx.fillStyle = '#228B22';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
       }
@@ -188,6 +188,10 @@
       bgImg.onload = checkAllLoaded;
       playerImg.onload = checkAllLoaded;
       castleImg.onload = checkAllLoaded;
+
+      bgImg.onerror = () => console.error('Failed to load forest.png');
+      playerImg.onerror = () => console.error('Failed to load Jacopo.png');
+      castleImg.onerror = () => console.error('Failed to load castle.png');
     });
   </script>
 </body>
