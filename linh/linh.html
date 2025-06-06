@@ -8,9 +8,9 @@
     body {
       margin: 0;
       background-color: #222;
+      overflow-x: hidden;
       font-family: 'Comic Sans MS', cursive;
       color: #fff;
-      overflow-x: hidden;
     }
     nav {
       text-align: center;
@@ -34,7 +34,7 @@
       border-radius: 20px;
       background-color: transparent;
     }
-    #message {
+    #message, #memoryBox {
       text-align: center;
       font-size: 24px;
       color: #ffccdd;
@@ -54,90 +54,64 @@
       border-radius: 10px;
       cursor: pointer;
     }
+    #memoryImage {
+      max-width: 300px;
+      max-height: 200px;
+      display: none;
+      margin: 10px auto;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
-  <!-- 🌐 Top Navigation and Intro Text -->
   <nav>
-  <a href="../index.html">Home</a> |
-    <a href="../linh.html">Linh</a> |
+    <a href="index.html">Home</a> |
+    <a href="linh.html">Linh</a> |
     <a href="jacopo.html">Jacopo</a>
   </nav>
   <div class="intro">
     <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
-    <h1>Grarbing all the hearts and you will see the magic</h1>
+    <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
+    <p>Collect every heart to unlock a special surprise at the castle!</p>
   </div>
 
-  <!-- 🎮 Canvas Game -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Heart Collector Game</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #222;
-      overflow: hidden;
-      font-family: 'Comic Sans MS', cursive;
-    }
-    canvas {
-      display: block;
-      margin: 0 auto;
-      background-image: url('https://cdn.gamedevmarket.net/cover-images/r9tFFoLHyvgFqyIiB3B7bEnDpsgMrgiF5MfZvz7M.png'); /* Forest background */
-      background-size: cover;
-      border: 5px solid #ff99cc;
-      border-radius: 20px;
-      margin-top: 20px;
-    }
-    #message {
-      text-align: center;
-      font-size: 24px;
-      color: #ffccdd;
-      margin-top: 20px;
-    }
-    #giftBox {
-      display: none;
-      text-align: center;
-      margin-top: 30px;
-    }
-    #giftBox button {
-      background-color: #ff66a3;
-      border: none;
-      padding: 10px 20px;
-      font-size: 18px;
-      color: white;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
   <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <div id="memoryBox">
+    <div id="memoryText"></div>
+    <img id="memoryImage" src="" alt="Memory Image" />
+  </div>
   <div id="message"></div>
   <div id="giftBox">
     <button onclick="openGift()">Open Your Gift 🎁</button>
   </div>
 
   <script>
-    window.onload = function() {
+    document.addEventListener('DOMContentLoaded', function() {
       const canvas = document.getElementById('gameCanvas');
       const ctx = canvas.getContext('2d');
 
+      const bgImg = new Image();
       const playerImg = new Image();
-      playerImg.src = '/linh/Jacopo.png'; // Italian boy character (placeholder pixel art)
-
       const castleImg = new Image();
-      castleImg.src = '/linh/castle.png'; // Castle destination
+
+      bgImg.src = 'linh/forest.png';
+      playerImg.src = 'linh/Jacopo.png';
+      castleImg.src = 'linh/castle.png';
 
       const player = { x: 50, y: 180, width: 32, height: 32, speed: 3 };
       const castle = { x: 520, y: 160, width: 64, height: 64 };
 
       const hearts = [];
+      const memories = [
+        { text: "Our first walk together 🌸", image: "linh/memory1.png" },
+        { text: "When we made pasta at midnight 🍝", image: "linh/memory2.png" },
+        { text: "That time we watched the stars 🌌", image: "linh/memory3.png" },
+        { text: "The silly selfies we took 📸", image: "linh/memory4.png" },
+        { text: "When you made me laugh until I cried 😂", image: "linh/memory5.png" }
+      ];
+
       let collected = 0;
-      const totalHearts = 5;
+      const totalHearts = memories.length;
 
       for (let i = 0; i < totalHearts; i++) {
         hearts.push({
@@ -151,6 +125,12 @@
       const keys = {};
       document.addEventListener('keydown', e => keys[e.key] = true);
       document.addEventListener('keyup', e => keys[e.key] = false);
+
+      function drawBackground() {
+        ctx.fillStyle = '#228B22';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+      }
 
       function drawPlayer() {
         ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
@@ -174,19 +154,36 @@
         });
       }
 
+      function showMemory(index) {
+        const memoryBox = document.getElementById('memoryBox');
+        const memoryText = document.getElementById('memoryText');
+        const memoryImage = document.getElementById('memoryImage');
+
+        memoryText.innerText = memories[index].text;
+        memoryImage.src = memories[index].image;
+        memoryImage.style.display = 'block';
+        memoryBox.style.display = 'block';
+
+        setTimeout(() => {
+          memoryBox.style.display = 'none';
+          memoryImage.style.display = 'none';
+        }, 4000);
+      }
+
       function update() {
         if (keys['ArrowUp']) player.y -= player.speed;
         if (keys['ArrowDown']) player.y += player.speed;
         if (keys['ArrowLeft']) player.x -= player.speed;
         if (keys['ArrowRight']) player.x += player.speed;
 
-        hearts.forEach(h => {
+        hearts.forEach((h, i) => {
           if (!h.collected &&
               player.x < h.x + h.size &&
               player.x + player.width > h.x &&
               player.y < h.y + h.size &&
               player.y + player.height > h.y) {
             h.collected = true;
+            showMemory(i);
             collected++;
           }
         });
@@ -203,6 +200,7 @@
 
       function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBackground();
         drawCastle();
         drawHearts();
         drawPlayer();
@@ -210,17 +208,21 @@
         requestAnimationFrame(gameLoop);
       }
 
-      function openGift() {
+      window.openGift = function() {
         alert("🎁 Here's your surprise! I love you! 💌");
       }
 
-      // Start game only after images are loaded
-      playerImg.onload = () => {
-        castleImg.onload = () => {
-          gameLoop();
-        };
-      };
-    }
+      let loaded = 0;
+      const totalImages = 3;
+      function checkAllLoaded() {
+        loaded++;
+        if (loaded === totalImages) gameLoop();
+      }
+
+      bgImg.onload = checkAllLoaded;
+      playerImg.onload = checkAllLoaded;
+      castleImg.onload = checkAllLoaded;
+    });
   </script>
 </body>
 </html>
