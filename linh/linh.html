@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Linh's Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="linh.html">Linh</a> |
+    <a href="jacopo.html">Jacopo</a>
+  </nav>
+
+  <h1>This is Linh’s page 👩‍💻</h1>
+  <p>Hi, I'm Linh! I love food, travel, and exploring new cultures.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heart Collector Game</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fcraftpix.net%2Ffreebies%2Ffree-top-down-trees-pixel-art%2F&psig=AOvVaw2hOE3rLKLoNGsh6o8doOll&ust=1749331874400000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCKiKrJrf3Y0DFQAAAAAdAAAAABAE'); /* Forest background */
+      background-size: cover;
+      border: 5px solid #ff99cc;
+      border-radius: 20px;
+      margin-top: 20px;
+    }
+    #message {
+      text-align: center;
+      font-size: 24px;
+      color: #ffccdd;
+      margin-top: 20px;
+    }
+    #giftBox {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+    }
+    #giftBox button {
+      background-color: #ff66a3;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <div id="message"></div>
+  <div id="giftBox">
+    <button onclick="openGift()">Open Your Gift 🎁</button>
+  </div>
+
+  <script>
+    window.onload = function() {
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const playerImg = new Image();
+      playerImg.src = 'https://i.imgur.com/G2YiMvh.png'; // Italian boy character (placeholder pixel art)
+
+      const castleImg = new Image();
+      castleImg.src = 'https://i.imgur.com/fAFoUlY.png'; // Castle destination
+
+      const player = { x: 50, y: 180, width: 32, height: 32, speed: 3 };
+      const castle = { x: 520, y: 160, width: 64, height: 64 };
+
+      const hearts = [];
+      let collected = 0;
+      const totalHearts = 5;
+
+      for (let i = 0; i < totalHearts; i++) {
+        hearts.push({
+          x: Math.random() * 550,
+          y: Math.random() * 370,
+          size: 20,
+          collected: false
+        });
+      }
+
+      const keys = {};
+      document.addEventListener('keydown', e => keys[e.key] = true);
+      document.addEventListener('keyup', e => keys[e.key] = false);
+
+      function drawPlayer() {
+        ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+      }
+
+      function drawCastle() {
+        ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+      }
+
+      function drawHearts() {
+        hearts.forEach(h => {
+          if (!h.collected) {
+            ctx.fillStyle = '#ff4da6';
+            ctx.beginPath();
+            ctx.moveTo(h.x, h.y);
+            ctx.arc(h.x - 5, h.y - 5, 7, 0, Math.PI * 2);
+            ctx.arc(h.x + 5, h.y - 5, 7, 0, Math.PI * 2);
+            ctx.lineTo(h.x, h.y + 10);
+            ctx.fill();
+          }
+        });
+      }
+
+      function update() {
+        if (keys['ArrowUp']) player.y -= player.speed;
+        if (keys['ArrowDown']) player.y += player.speed;
+        if (keys['ArrowLeft']) player.x -= player.speed;
+        if (keys['ArrowRight']) player.x += player.speed;
+
+        hearts.forEach(h => {
+          if (!h.collected &&
+              player.x < h.x + h.size &&
+              player.x + player.width > h.x &&
+              player.y < h.y + h.size &&
+              player.y + player.height > h.y) {
+            h.collected = true;
+            collected++;
+          }
+        });
+
+        if (collected === totalHearts &&
+            player.x + player.width > castle.x &&
+            player.x < castle.x + castle.width &&
+            player.y + player.height > castle.y &&
+            player.y < castle.y + castle.height) {
+          document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
+          document.getElementById('giftBox').style.display = 'block';
+        }
+      }
+
+      function gameLoop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawCastle();
+        drawHearts();
+        drawPlayer();
+        update();
+        requestAnimationFrame(gameLoop);
+      }
+
+      function openGift() {
+        alert("🎁 Here's your surprise! I love you! 💌");
+      }
+
+      // Start game only after images are loaded
+      playerImg.onload = () => {
+        castleImg.onload = () => {
+          gameLoop();
+        };
+      };
+    }
+  </script>
+</body>
+</html>
 
