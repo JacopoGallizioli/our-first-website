@@ -95,7 +95,7 @@
       const playerImg = new Image();
       const castleImg = new Image();
 
-      bgImg.src = 'Forest.png';
+       bgImg.src = 'Forest.png';
       playerImg.src = 'Jacopo.png';
       castleImg.src = 'castle.png';
 
@@ -105,12 +105,12 @@
       document.addEventListener('keydown', e => keys[e.key] = true);
       document.addEventListener('keyup', e => keys[e.key] = false);
 
-  const memories = [
+      const memories = [
         { text: "Our first year together 🌸", image: "1styear.JPG" },
         { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
         { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
-        { text: "We moved to Germany in 3rd year together 📸", image: "Augsburg.HEIC" },
-        { text: "We are staying in Munich", image: "Munich.HEIC" }
+        { text: "We moved to Germany in 3rd year together 📸", image: "Augsburg.PNG" },
+        { text: "We are staying in Munich", image: "Munich.PNG" }
       ];
 
       const totalHearts = memories.length;
@@ -180,17 +180,16 @@
         if (keys['ArrowLeft']) player.x -= player.speed;
         if (keys['ArrowRight']) player.x += player.speed;
 
-        hearts.forEach((h, i) => {
-          if (!h.collected &&
-              player.x < h.x + h.size &&
-              player.x + player.width > h.x &&
-              player.y < h.y + h.size &&
-              player.y + player.height > h.y) {
-            h.collected = true;
-            showMemory(i);
-            collected++;
-          }
-        });
+        const nextHeart = hearts[collected];
+        if (nextHeart && !nextHeart.collected &&
+            player.x < nextHeart.x + nextHeart.size &&
+            player.x + player.width > nextHeart.x &&
+            player.y < nextHeart.y + nextHeart.size &&
+            player.y + player.height > nextHeart.y) {
+          nextHeart.collected = true;
+          showMemory(collected);
+          collected++;
+        }
 
         if (collected === totalHearts &&
             player.x + player.width > castle.x &&
