@@ -109,23 +109,23 @@
         { text: "Our first year together 🌸", image: "1styear.JPG" },
         { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
         { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
-        { text: "We moved to Germany in the 3rd year together 📸", image: "Augsburg.HEIC" },
-        { text: "We are staying in Munich and who knows where we will be next year", image: "Munich.HEIC" }
+        { text: "We moved to Germany in 3rd year together 📸", image: "Augsburg.HEIC" },
+        { text: "We are staying in Munich", image: "Munich.HEIC" }
       ];
 
       const totalHearts = memories.length;
 
       function initializeGame() {
-        player = { x: 25, y: 90, width: 128 * 0.5, height: 128 * 0.5, speed: 3 };
-        castle = { x: 260, y: 80, width: 256 * 0.5, height: 256 * 0.5 };
+        player = { x: 50, y: 180, width: 128 * 0.7, height: 128 * 0.7, speed: 3 };
+        castle = { x: 520, y: 160, width: 256 * 0.7, height: 256 * 0.7 };
         hearts = [];
         collected = 0;
 
         for (let i = 0; i < totalHearts; i++) {
           hearts.push({
-            x: Math.random() * (canvas.width - 80),
-            y: Math.random() * (canvas.height - 80),
-            size: 80,
+            x: Math.random() * (canvas.width - 40),
+            y: Math.random() * (canvas.height - 40),
+            size: 40,
             collected: false
           });
         }
@@ -155,9 +155,9 @@
             ctx.fillStyle = '#ff4da6';
             ctx.beginPath();
             ctx.moveTo(h.x, h.y);
-            ctx.arc(h.x - 20, h.y - 20, 28, 0, Math.PI * 2);
-            ctx.arc(h.x + 20, h.y - 20, 28, 0, Math.PI * 2);
-            ctx.lineTo(h.x, h.y + 40);
+            ctx.arc(h.x - 10, h.y - 10, 14, 0, Math.PI * 2);
+            ctx.arc(h.x + 10, h.y - 10, 14, 0, Math.PI * 2);
+            ctx.lineTo(h.x, h.y + 20);
             ctx.fill();
           }
         });
