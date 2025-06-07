@@ -12,38 +12,45 @@
       font-family: 'Comic Sans MS', cursive;
       color: #fff;
     }
+
     nav {
       text-align: center;
       margin-top: 10px;
     }
+
     nav a {
       color: #ff99cc;
       text-decoration: none;
       margin: 0 10px;
       font-weight: bold;
     }
+
     .intro {
       text-align: center;
       margin-top: 10px;
       line-height: 1.4;
     }
+
     canvas {
       display: block;
       margin: 20px auto;
       border: 5px solid #ff99cc;
       border-radius: 20px;
       background-color: transparent;
+      transition: filter 0.3s ease;
     }
+
     #message {
       text-align: center;
       font-size: 24px;
       color: #ffccdd;
       margin-top: 20px;
     }
+
     #giftBox {
       display: none;
       text-align: center;
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -52,6 +59,7 @@
       border-radius: 15px;
       z-index: 10;
     }
+
     #giftBox button, #restartButton {
       background-color: #ff66a3;
       border: none;
@@ -62,21 +70,27 @@
       cursor: pointer;
       margin: 5px;
     }
+
     #memoryBox {
-      display: flex;
+      display: none;
       justify-content: center;
       align-items: center;
       gap: 20px;
-      margin-top: 20px;
-      flex-direction: row;
+      margin: 30px auto;
+      max-width: 800px;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
     }
+
     #memoryImage {
       max-width: 300px;
       max-height: 200px;
       border-radius: 10px;
     }
+
     #memoryText {
-      max-width: 300px;
+      max-width: 400px;
       text-align: left;
     }
   </style>
@@ -87,6 +101,7 @@
     <a href="linh.html">Linh</a> |
     <a href="jacopo.html">Jacopo</a>
   </nav>
+
   <div class="intro">
     <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
     <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
@@ -95,11 +110,13 @@
 
   <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-  <div id="memoryBox" style="display: none;">
+  <div id="memoryBox">
     <img id="memoryImage" src="" alt="Memory Image" />
     <div id="memoryText"></div>
   </div>
+
   <div id="message"></div>
+
   <div id="giftBox">
     <button onclick="openGift()">Open Your Gift 🎁</button>
     <button id="restartButton">Restart Game 🔄</button>
@@ -155,9 +172,12 @@
       document.getElementById('message').innerText = '';
       document.getElementById('giftBox').style.display = 'none';
       document.getElementById('memoryBox').style.display = 'none';
+      canvas.style.filter = 'none';
     }
 
     function drawBackground() {
+      ctx.fillStyle = '#228B22';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
     }
 
@@ -191,6 +211,9 @@
       memoryText.innerText = memories[index].text;
       memoryImage.src = memories[index].image;
       memoryBox.style.display = 'flex';
+
+      // Scroll into view
+      memoryBox.scrollIntoView({ behavior: 'smooth' });
     }
 
     function update() {
@@ -222,6 +245,7 @@
           player.y + player.height > castle.y &&
           player.y < castle.y + castle.height) {
         document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
+        canvas.style.filter = 'blur(3px)';
         document.getElementById('giftBox').style.display = 'block';
       }
     }
