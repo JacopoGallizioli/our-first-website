@@ -208,14 +208,23 @@
           }
         });
 
-        if (collected === totalHearts &&
-            player.x + player.width > castle.x &&
-            player.x < castle.x + castle.width &&
-            player.y + player.height > castle.y &&
-            player.y < castle.y + castle.height) {
-          document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
-          document.getElementById('giftBox').style.display = 'block';
-          canvas.style.filter = 'blur(4px)';
+        if (
+          player.x + player.width > castle.x &&
+          player.x < castle.x + castle.width &&
+          player.y + player.height > castle.y &&
+          player.y < castle.y + castle.height
+        ) {
+          if (collected === totalHearts) {
+            document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
+            document.getElementById('giftBox').style.display = 'block';
+            canvas.style.filter = 'blur(4px)';
+          } else {
+            document.getElementById('message').innerText = 'You need to collect all the hearts first! 💔';
+          }
+        } else {
+          if (document.getElementById('message').innerText === 'You need to collect all the hearts first! 💔') {
+            document.getElementById('message').innerText = '';
+          }
         }
       }
 
