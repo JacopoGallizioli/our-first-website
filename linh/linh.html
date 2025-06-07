@@ -105,7 +105,7 @@
       document.addEventListener('keydown', e => keys[e.key] = true);
       document.addEventListener('keyup', e => keys[e.key] = false);
 
-      const memories = [
+  const memories = [
         { text: "Our first year together 🌸", image: "1styear.JPG" },
         { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
         { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
@@ -117,15 +117,15 @@
 
       function initializeGame() {
         player = { x: 50, y: 180, width: 128 * 0.7, height: 128 * 0.7, speed: 3 };
-        castle = { x: 520, y: 160, width: 256 * 0.7, height: 256 * 0.7 };
+        castle = { x: canvas.width - (256 * 0.7), y: (canvas.height - (256 * 0.7)) / 2, width: 256 * 0.7, height: 256 * 0.7 };
         hearts = [];
         collected = 0;
 
         for (let i = 0; i < totalHearts; i++) {
           hearts.push({
-            x: Math.random() * (canvas.width - 40),
-            y: Math.random() * (canvas.height - 40),
-            size: 40,
+            x: Math.random() * (canvas.width - 20),
+            y: Math.random() * (canvas.height - 20),
+            size: 20,
             collected: false
           });
         }
@@ -155,9 +155,9 @@
             ctx.fillStyle = '#ff4da6';
             ctx.beginPath();
             ctx.moveTo(h.x, h.y);
-            ctx.arc(h.x - 10, h.y - 10, 14, 0, Math.PI * 2);
-            ctx.arc(h.x + 10, h.y - 10, 14, 0, Math.PI * 2);
-            ctx.lineTo(h.x, h.y + 20);
+            ctx.arc(h.x - 5, h.y - 5, 7, 0, Math.PI * 2);
+            ctx.arc(h.x + 5, h.y - 5, 7, 0, Math.PI * 2);
+            ctx.lineTo(h.x, h.y + 10);
             ctx.fill();
           }
         });
