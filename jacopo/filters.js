@@ -35,6 +35,11 @@ document.addEventListener('DOMContentLoaded', function () {
     e.stopPropagation();
   });
 
+  // Prevent clicks inside the filter box from closing the dropdown
+  filterBox.addEventListener("click", function(e) {
+    e.stopPropagation();
+  });
+
   // Hide the dropdown if clicking outside
   document.addEventListener("click", function () {
     filterBox.style.display = "none";
@@ -42,7 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Step 4: Filter rows
   function filterRows() {
+    console.log("Filtering rows...");
     const checked = Array.from(filterBox.querySelectorAll("input:checked")).map(cb => cb.value);
+    console.log("Checked:", checked);
 
     rows.forEach(row => {
       const people = row.children[3].textContent.split(",").map(p => p.trim());
@@ -50,4 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
       row.style.display = match ? "" : "none";
     });
   }
+
+  // Initial filter
+  filterRows();
 });
