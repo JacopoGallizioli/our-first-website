@@ -33,6 +33,7 @@
       border: 5px solid #ff99cc;
       border-radius: 20px;
       background-color: transparent;
+      transition: filter 0.3s ease;
     }
     #message, #memoryBox {
       text-align: center;
@@ -44,6 +45,14 @@
       display: none;
       text-align: center;
       margin-top: 30px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 15px;
+      z-index: 10;
     }
     #giftBox button, #restartButton {
       background-color: #ff66a3;
@@ -86,6 +95,8 @@
     <button id="restartButton">Restart Game 🔄</button>
   </div>
 
+  <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const canvas = document.getElementById('gameCanvas');
@@ -94,12 +105,13 @@
       const bgImg = new Image();
       const playerImg = new Image();
       const castleImg = new Image();
+      const collectSound = document.getElementById('collectSound');
 
-       bgImg.src = 'Forest.png';
+      bgImg.src = 'Forest.png';
       playerImg.src = 'Jacopo.png';
       castleImg.src = 'castle.png';
 
-      let player, castle, hearts, collected;
+      let player, castle, hearts, collected, collectedOrder;
 
       const keys = {};
       document.addEventListener('keydown', e => keys[e.key] = true);
@@ -120,12 +132,13 @@
         castle = { x: canvas.width - (256 * 0.7), y: (canvas.height - (256 * 0.7)) / 2, width: 256 * 0.7, height: 256 * 0.7 };
         hearts = [];
         collected = 0;
+        collectedOrder = [];
 
         for (let i = 0; i < totalHearts; i++) {
           hearts.push({
-            x: Math.random() * (canvas.width - 20),
-            y: Math.random() * (canvas.height - 20),
-            size: 20,
+            x: Math.random() * (canvas.width - 40) + 10,
+            y: Math.random() * (canvas.height - 40) + 10,
+            size: 10,
             collected: false
           });
         }
@@ -133,6 +146,7 @@
         document.getElementById('message').innerText = '';
         document.getElementById('giftBox').style.display = 'none';
         document.getElementById('memoryBox').style.display = 'none';
+        canvas.style.filter = 'none';
       }
 
       function drawBackground() {
@@ -155,9 +169,9 @@
             ctx.fillStyle = '#ff4da6';
             ctx.beginPath();
             ctx.moveTo(h.x, h.y);
-            ctx.arc(h.x - 5, h.y - 5, 7, 0, Math.PI * 2);
-            ctx.arc(h.x + 5, h.y - 5, 7, 0, Math.PI * 2);
-            ctx.lineTo(h.x, h.y + 10);
+            ctx.arc(h.x - 5, h.y - 5, 5, 0, Math.PI * 2);
+            ctx.arc(h.x + 5, h.y - 5, 5, 0, Math.PI * 2);
+            ctx.lineTo(h.x, h.y + 8);
             ctx.fill();
           }
         });
@@ -180,16 +194,19 @@
         if (keys['ArrowLeft']) player.x -= player.speed;
         if (keys['ArrowRight']) player.x += player.speed;
 
-        const nextHeart = hearts[collected];
-        if (nextHeart && !nextHeart.collected &&
-            player.x < nextHeart.x + nextHeart.size &&
-            player.x + player.width > nextHeart.x &&
-            player.y < nextHeart.y + nextHeart.size &&
-            player.y + player.height > nextHeart.y) {
-          nextHeart.collected = true;
-          showMemory(collected);
-          collected++;
-        }
+        hearts.forEach((h, i) => {
+          if (!h.collected &&
+              player.x < h.x + h.size &&
+              player.x + player.width > h.x &&
+              player.y < h.y + h.size &&
+              player.y + player.height > h.y) {
+            h.collected = true;
+            collectedOrder.push(i);
+            showMemory(collected);
+            collectSound.play();
+            collected++;
+          }
+        });
 
         if (collected === totalHearts &&
             player.x + player.width > castle.x &&
@@ -198,6 +215,7 @@
             player.y < castle.y + castle.height) {
           document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
           document.getElementById('giftBox').style.display = 'block';
+          canvas.style.filter = 'blur(4px)';
         }
       }
 
