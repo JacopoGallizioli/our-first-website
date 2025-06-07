@@ -57,7 +57,6 @@
     #memoryImage {
       max-width: 300px;
       max-height: 200px;
-      display: none;
       margin: 10px auto;
       border-radius: 10px;
     }
@@ -94,20 +93,20 @@
       const playerImg = new Image();
       const castleImg = new Image();
 
-      bgImg.src = 'linh/forest.png';
-      playerImg.src = 'linh/Jacopo.png';
-      castleImg.src = 'linh/castle.png';
+      bgImg.src = 'Forest.png';
+      playerImg.src = 'Jacopo.png';
+      castleImg.src = 'castle.png';
 
-      const player = { x: 50, y: 180, width: 128, height: 128, speed: 3 }; // 4x size
-      const castle = { x: 520, y: 160, width: 256, height: 256 }; // 4x size
+      const player = { x: 50, y: 180, width: 128, height: 128, speed: 3 };
+      const castle = { x: 520, y: 160, width: 256, height: 256 };
 
       const hearts = [];
       const memories = [
-        { text: "Our first walk together 🌸", image: "linh/memory1.png" },
-        { text: "When we made pasta at midnight 🍝", image: "linh/memory2.png" },
-        { text: "That time we watched the stars 🌌", image: "linh/memory3.png" },
-        { text: "The silly selfies we took 📸", image: "linh/memory4.png" },
-        { text: "When you made me laugh until I cried 😂", image: "linh/memory5.png" }
+        { text: "Our first year together 🌸", image: "1styear.JPG" },
+        { text: "When I made you a surprise", image: "Vietnam1st" },
+        { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
+        { text: "We moved to Germany in the 4th year together 📸", image: "Augsburg.HEIC" },
+        { text: "We are staying in Munich and who knows where we will be next year", image: "Munich.HEIC" }
       ];
 
       let collected = 0;
@@ -117,7 +116,7 @@
         hearts.push({
           x: Math.random() * 550,
           y: Math.random() * 370,
-          size: 80, // 4x size
+          size: 80,
           collected: false
         });
       }
@@ -146,8 +145,8 @@
             ctx.fillStyle = '#ff4da6';
             ctx.beginPath();
             ctx.moveTo(h.x, h.y);
-            ctx.arc(h.x - 20, h.y - 20, 28, 0, Math.PI * 2); // Scaled
-            ctx.arc(h.x + 20, h.y - 20, 28, 0, Math.PI * 2); // Scaled
+            ctx.arc(h.x - 20, h.y - 20, 28, 0, Math.PI * 2);
+            ctx.arc(h.x + 20, h.y - 20, 28, 0, Math.PI * 2);
             ctx.lineTo(h.x, h.y + 40);
             ctx.fill();
           }
@@ -161,13 +160,8 @@
 
         memoryText.innerText = memories[index].text;
         memoryImage.src = memories[index].image;
-        memoryImage.style.display = 'block';
         memoryBox.style.display = 'block';
-
-        setTimeout(() => {
-          memoryBox.style.display = 'none';
-          memoryImage.style.display = 'none';
-        }, 4000);
+        memoryImage.style.display = 'block';
       }
 
       function update() {
