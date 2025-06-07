@@ -11,6 +11,7 @@
       overflow-x: hidden;
       font-family: 'Comic Sans MS', cursive;
       color: #fff;
+      position: relative;
     }
     nav {
       text-align: center;
@@ -35,21 +36,36 @@
       background-color: transparent;
       transition: filter 0.3s ease;
     }
-    #message, #memoryBox {
+    #message {
       text-align: center;
       font-size: 24px;
       color: #ffccdd;
       margin-top: 20px;
     }
+    #memoryBox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    #memoryText {
+      max-width: 300px;
+      font-size: 18px;
+    }
+    #memoryImage {
+      max-width: 300px;
+      max-height: 200px;
+      border-radius: 10px;
+    }
     #giftBox {
       display: none;
       text-align: center;
-      margin-top: 30px;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.85);
       padding: 20px;
       border-radius: 15px;
       z-index: 10;
@@ -64,22 +80,8 @@
       cursor: pointer;
       margin: 5px;
     }
-    #memoryBox {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: nowrap;
-      flex-direction: row;
-    }
-    #memoryText {
-      max-width: 300px;
-      text-align: left;
-    }
-    #memoryImage {
-      max-width: 300px;
-      max-height: 200px;
-      border-radius: 10px;
+    .blurred {
+      filter: blur(5px);
     }
   </style>
 </head>
@@ -109,7 +111,159 @@
   <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
 
   <script>
-    // JavaScript remains unchanged
+    document.addEventListener('DOMContentLoaded', function () {
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      const bgImg = new Image();
+      const playerImg = new Image();
+      const castleImg = new Image();
+      const collectSound = document.getElementById('collectSound');
+
+      bgImg.src = 'Forest.png';
+      playerImg.src = 'Jacopo.png';
+      castleImg.src = 'castle.png';
+
+      let player, castle, hearts, collected;
+      const keys = {};
+      const collectedOrder = [];
+
+      const memories = [
+        { text: "Our first year together 🌸", image: "1styear.JPG" },
+        { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
+        { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
+        { text: "We moved to Germany in 3rd year together 📸", image: "augsburg.jpeg" },
+        { text: "We are staying in Munich", image: "Munich.jpeg" }
+      ];
+
+      const totalHearts = memories.length;
+
+      document.addEventListener('keydown', e => keys[e.key] = true);
+      document.addEventListener('keyup', e => keys[e.key] = false);
+
+      function initializeGame() {
+        player = { x: 25, y: 90, width: 64, height: 64, speed: 3 };
+        castle = { x: canvas.width - 128, y: 130, width: 128, height: 128 };
+        hearts = [];
+        collected = 0;
+        collectedOrder.length = 0;
+
+        for (let i = 0; i < totalHearts; i++) {
+          hearts.push({
+            x: Math.random() * (canvas.width - 40),
+            y: Math.random() * (canvas.height - 40),
+            size: 40,
+            collected: false
+          });
+        }
+
+        document.getElementById('message').innerText = '';
+        document.getElementById('giftBox').style.display = 'none';
+        document.getElementById('memoryBox').style.display = 'none';
+        canvas.classList.remove('blurred');
+      }
+
+      function drawBackground() {
+        ctx.fillStyle = '#228B22';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+      }
+
+      function drawPlayer() {
+        ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+      }
+
+      function drawCastle() {
+        ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+      }
+
+      function drawHearts() {
+        hearts.forEach(h => {
+          if (!h.collected) {
+            ctx.fillStyle = '#ff4da6';
+            ctx.beginPath();
+            ctx.moveTo(h.x, h.y);
+            ctx.arc(h.x - 10, h.y - 10, 14, 0, Math.PI * 2);
+            ctx.arc(h.x + 10, h.y - 10, 14, 0, Math.PI * 2);
+            ctx.lineTo(h.x, h.y + 20);
+            ctx.fill();
+          }
+        });
+      }
+
+      function showMemory(index) {
+        const memoryText = document.getElementById('memoryText');
+        const memoryImage = document.getElementById('memoryImage');
+        const memoryBox = document.getElementById('memoryBox');
+        memoryText.innerText = memories[index].text;
+        memoryImage.src = memories[index].image;
+        memoryBox.style.display = 'flex';
+      }
+
+      function update() {
+        if (keys['ArrowUp']) player.y -= player.speed;
+        if (keys['ArrowDown']) player.y += player.speed;
+        if (keys['ArrowLeft']) player.x -= player.speed;
+        if (keys['ArrowRight']) player.x += player.speed;
+
+        hearts.forEach((h, i) => {
+          if (!h.collected &&
+            player.x < h.x + h.size &&
+            player.x + player.width > h.x &&
+            player.y < h.y + h.size &&
+            player.y + player.height > h.y) {
+            h.collected = true;
+            collected++;
+            collectSound.play();
+            if (!collectedOrder.includes(i)) {
+              collectedOrder.push(i);
+              showMemory(collectedOrder.length - 1);
+            }
+          }
+        });
+
+        if (collected === totalHearts &&
+          player.x + player.width > castle.x &&
+          player.x < castle.x + castle.width &&
+          player.y + player.height > castle.y &&
+          player.y < castle.y + castle.height) {
+          document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
+          document.getElementById('giftBox').style.display = 'block';
+          canvas.classList.add('blurred');
+        }
+      }
+
+      function gameLoop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBackground();
+        drawCastle();
+        drawHearts();
+        drawPlayer();
+        update();
+        requestAnimationFrame(gameLoop);
+      }
+
+      window.openGift = function () {
+        alert("🎁 Here's your surprise! I love you! 💌");
+      }
+
+      document.getElementById('restartButton').addEventListener('click', () => {
+        initializeGame();
+      });
+
+      let loaded = 0;
+      const totalImages = 3;
+      function checkAllLoaded() {
+        loaded++;
+        if (loaded === totalImages) {
+          initializeGame();
+          gameLoop();
+        }
+      }
+
+      bgImg.onload = checkAllLoaded;
+      playerImg.onload = checkAllLoaded;
+      castleImg.onload = checkAllLoaded;
+    });
   </script>
 </body>
 </html>
