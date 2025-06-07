@@ -28,6 +28,38 @@
     }
   </style>
 </head>
+
+  <script>
+  const rows = document.querySelectorAll("tbody tr");
+  const peopleSet = new Set();
+
+  // Collect unique names
+  rows.forEach(row => {
+    const names = row.children[3].innerText.split(",").map(n => n.trim());
+    names.forEach(name => peopleSet.add(name));
+  });
+
+  // Create checkboxes
+  const filterDiv = document.getElementById("people-filters");
+  peopleSet.forEach(name => {
+    const label = document.createElement("label");
+    label.innerHTML = `<input type="checkbox" value="${name}" checked> ${name} `;
+    filterDiv.appendChild(label);
+  });
+
+  // Filter function
+  filterDiv.addEventListener("change", () => {
+    const selected = new Set([...filterDiv.querySelectorAll("input:checked")].map(cb => cb.value));
+
+    rows.forEach(row => {
+      const names = row.children[3].innerText.split(",").map(n => n.trim());
+      const match = names.some(name => selected.has(name));
+      row.style.display = match ? "" : "none";
+    });
+  });
+</script>
+
+  
 <body>
 
   <nav>
@@ -35,7 +67,10 @@
     <a href="../linh.html">Linh</a> |
     <a href="jacopo.html">Jacopo</a>
   </nav>
-
+  
+  <h2>Filter by People</h2>
+  <div id="people-filters"></div>
+  
   <h1>🧲 Magnet Collection 🧲</h1>
   <p>Here are all the magnets we collected in the adventure that is life:</p>
 
