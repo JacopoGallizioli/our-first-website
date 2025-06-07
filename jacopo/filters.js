@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   allCheckbox.type = "checkbox";
   allCheckbox.checked = true;
   allCheckbox.id = "checkbox-all";
+  allCheckbox.addEventListener("click", (e) => e.stopPropagation()); // Prevent closing
+
   const allLabel = document.createElement("label");
   allLabel.textContent = "All";
   allLabel.htmlFor = "checkbox-all";
@@ -33,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     checkbox.type = "checkbox";
     checkbox.checked = true;
     checkbox.id = `checkbox-${person}`;
+    checkbox.addEventListener("click", (e) => e.stopPropagation()); // Prevent closing
+    checkbox.addEventListener("change", updateVisibility);
     checkboxes[person] = checkbox;
 
     const label = document.createElement("label");
@@ -43,8 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.appendChild(checkbox);
     wrapper.appendChild(label);
     filterBox.appendChild(wrapper);
-
-    checkbox.addEventListener("change", updateVisibility);
   });
 
   allCheckbox.addEventListener("change", () => {
@@ -58,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .filter(([_, checkbox]) => checkbox.checked)
       .map(([name]) => name);
 
-    // Update "All" checkbox if needed
+    // Update "All" checkbox state
     const allChecked = Object.values(checkboxes).every(cb => cb.checked);
     allCheckbox.checked = allChecked;
 
@@ -69,15 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Toggle dropdown visibility
   document.addEventListener("click", (event) => {
     const isHeaderClick = header.contains(event.target);
     const isFilterClick = filterBox.contains(event.target);
-  
+
     if (isHeaderClick) {
-      // Toggle filter on header click
       filterBox.style.display = filterBox.style.display === "none" ? "block" : "none";
     } else if (!isFilterClick) {
-      // Click outside = close
       filterBox.style.display = "none";
     }
   });
