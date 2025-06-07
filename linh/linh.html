@@ -45,7 +45,7 @@
       text-align: center;
       margin-top: 30px;
     }
-    #giftBox button {
+    #giftBox button, #restartButton {
       background-color: #ff66a3;
       border: none;
       padding: 10px 20px;
@@ -53,6 +53,7 @@
       color: white;
       border-radius: 10px;
       cursor: pointer;
+      margin: 5px;
     }
     #memoryImage {
       max-width: 300px;
@@ -71,7 +72,7 @@
   <div class="intro">
     <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
     <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
-    <p>There's a special surprise waiting for you there!</p>
+    <p>Collect every heart to unlock a special surprise at the castle!</p>
   </div>
 
   <canvas id="gameCanvas" width="600" height="400"></canvas>
@@ -82,6 +83,7 @@
   <div id="message"></div>
   <div id="giftBox">
     <button onclick="openGift()">Open Your Gift 🎁</button>
+    <button id="restartButton">Restart Game 🔄</button>
   </div>
 
   <script>
@@ -97,33 +99,41 @@
       playerImg.src = 'Jacopo.png';
       castleImg.src = 'castle.png';
 
-      const player = { x: 50, y: 180, width: 128, height: 128, speed: 3 };
-      const castle = { x: 520, y: 160, width: 256, height: 256 };
-
-      const hearts = [];
-      const memories = [
-        { text: "Our first year together 🌸", image: "1styear.JPG" },
-        { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
-        { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
-        { text: "We moved to Germany in the 4th year together 📸", image: "Augsburg.HEIC" },
-        { text: "We are staying in Munich and who knows where we will be next year", image: "Munich.HEIC" }
-      ];
-
-      let collected = 0;
-      const totalHearts = memories.length;
-
-      for (let i = 0; i < totalHearts; i++) {
-        hearts.push({
-          x: Math.random() * 550,
-          y: Math.random() * 370,
-          size: 80,
-          collected: false
-        });
-      }
+      let player, castle, hearts, collected;
 
       const keys = {};
       document.addEventListener('keydown', e => keys[e.key] = true);
       document.addEventListener('keyup', e => keys[e.key] = false);
+
+      const memories = [
+        { text: "Our first year together 🌸", image: "1styear.JPG" },
+        { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
+        { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
+        { text: "We moved to Germany in the 3rd year together 📸", image: "Augsburg.HEIC" },
+        { text: "We are staying in Munich and who knows where we will be next year", image: "Munich.HEIC" }
+      ];
+
+      const totalHearts = memories.length;
+
+      function initializeGame() {
+        player = { x: 50, y: 180, width: 128 * 0.7, height: 128 * 0.7, speed: 3 };
+        castle = { x: 520, y: 160, width: 256 * 0.7, height: 256 * 0.7 };
+        hearts = [];
+        collected = 0;
+
+        for (let i = 0; i < totalHearts; i++) {
+          hearts.push({
+            x: Math.random() * (canvas.width - 80),
+            y: Math.random() * (canvas.height - 80),
+            size: 80,
+            collected: false
+          });
+        }
+
+        document.getElementById('message').innerText = '';
+        document.getElementById('giftBox').style.display = 'none';
+        document.getElementById('memoryBox').style.display = 'none';
+      }
 
       function drawBackground() {
         ctx.fillStyle = '#228B22';
@@ -206,11 +216,18 @@
         alert("🎁 Here's your surprise! I love you! 💌");
       }
 
+      document.getElementById('restartButton').addEventListener('click', () => {
+        initializeGame();
+      });
+
       let loaded = 0;
       const totalImages = 3;
       function checkAllLoaded() {
         loaded++;
-        if (loaded === totalImages) gameLoop();
+        if (loaded === totalImages) {
+          initializeGame();
+          gameLoop();
+        }
       }
 
       bgImg.onload = checkAllLoaded;
