@@ -113,6 +113,29 @@
 
   <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
 
+  <script>
+    const bgImg = new Image();
+    const playerImg = new Image();
+    const castleImg = new Image();
+
+    bgImg.src = 'Forest.png';
+    playerImg.src = 'Jacopo.png';
+    castleImg.src = 'castle.png';
+
+    let player, castle, hearts, collected;
+
+    const keys = {};
+    document.addEventListener('keydown', e => keys[e.key] = true);
+    document.addEventListener('keyup', e => keys[e.key] = false);
+
+    const memories = [
+      { text: "Our first year together 🌸", image: "1styear.JPG" },
+      { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
+      { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
+      { text: "We moved to Germany in 3rd year together 📸", image: "augsburg.jpeg" },
+      { text: "We are staying in Munich", image: "Munich.jpeg" }
+    ];
+  </script>
   <script src="game.js"></script>
 </body>
 </html>
