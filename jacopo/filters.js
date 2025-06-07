@@ -1,46 +1,53 @@
-<script>
-  const peopleHeader = document.getElementById("people-header");
-  const dropdown = document.getElementById("people-dropdown");
-  const tableRect = peopleHeader.getBoundingClientRect();
-
-  // Move the dropdown below the header
-  peopleHeader.addEventListener("click", () => {
-    dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
-    const rect = peopleHeader.getBoundingClientRect();
-    dropdown.style.top = rect.bottom + window.scrollY + "px";
-    dropdown.style.left = rect.left + "px";
-  });
-
-  // Collect unique names
+document.addEventListener('DOMContentLoaded', function () {
+  const header = document.getElementById("people-header");
+  const filterBox = document.getElementById("people-filter");
   const rows = document.querySelectorAll("tbody tr");
+
+  // Step 1: Get all unique people
   const peopleSet = new Set();
   rows.forEach(row => {
-    row.dataset.people = row.children[3].innerText;
-    row.children[3].innerText.split(",").map(n => n.trim()).forEach(name => peopleSet.add(name));
-  });
-
-  // Create checkboxes
-  peopleSet.forEach(name => {
-    const label = document.createElement("label");
-    label.style.display = "block";
-    label.innerHTML = `<input type="checkbox" value="${name}" checked> ${name}`;
-    dropdown.appendChild(label);
-  });
-
-  // Filter function
-  dropdown.addEventListener("change", () => {
-    const selected = new Set([...dropdown.querySelectorAll("input:checked")].map(cb => cb.value));
-    rows.forEach(row => {
-      const names = row.dataset.people.split(",").map(n => n.trim());
-      const match = names.some(name => selected.has(name));
-      row.style.display = match ? "" : "none";
-    });
-  });
-
-  // Optional: close dropdown if clicked outside
-  document.addEventListener("click", (e) => {
-    if (!peopleHeader.contains(e.target) && !dropdown.contains(e.target)) {
-      dropdown.style.display = "none";
+    const cell = row.children[3];
+    if (cell) {
+      const people = cell.textContent.split(",").map(p => p.trim());
+      people.forEach(person => peopleSet.add(person));
     }
   });
-</script>
+
+  // Step 2: Create checkboxes
+  peopleSet.forEach(person => {
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = person;
+    checkbox.checked = true;
+
+    checkbox.addEventListener("change", filterRows);
+
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(" " + person));
+    filterBox.appendChild(label);
+    filterBox.appendChild(document.createElement("br"));
+  });
+
+  // Step 3: Toggle dropdown
+  header.addEventListener("click", function (e) {
+    filterBox.style.display = filterBox.style.display === "none" ? "block" : "none";
+    e.stopPropagation();
+  });
+
+  // Hide the dropdown if clicking outside
+  document.addEventListener("click", function () {
+    filterBox.style.display = "none";
+  });
+
+  // Step 4: Filter rows
+  function filterRows() {
+    const checked = Array.from(filterBox.querySelectorAll("input:checked")).map(cb => cb.value);
+
+    rows.forEach(row => {
+      const people = row.children[3].textContent.split(",").map(p => p.trim());
+      const match = people.some(p => checked.includes(p));
+      row.style.display = match ? "" : "none";
+    });
+  }
+});
