@@ -72,7 +72,7 @@
   <div class="intro">
     <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
     <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
-    <p>A special surprise at the castle is waiting for you!</p>
+    <p>Collect every heart to unlock a special surprise at the castle!</p>
   </div>
 
   <canvas id="gameCanvas" width="600" height="400"></canvas>
@@ -94,20 +94,20 @@
       const playerImg = new Image();
       const castleImg = new Image();
 
-      bgImg.src = 'Forest.png';
-      playerImg.src = 'Jacopo.png';
-      castleImg.src = 'castle.png';
+      bgImg.src = 'linh/forest.png';
+      playerImg.src = 'linh/Jacopo.png';
+      castleImg.src = 'linh/castle.png';
 
-      const player = { x: 50, y: 180, width: 32, height: 32, speed: 3 };
-      const castle = { x: 520, y: 160, width: 64, height: 64 };
+      const player = { x: 50, y: 180, width: 128, height: 128, speed: 3 }; // 4x size
+      const castle = { x: 520, y: 160, width: 256, height: 256 }; // 4x size
 
       const hearts = [];
       const memories = [
-        { text: "Our first walk together 🌸", image: "https://i.pinimg.com/474x/be/6d/ec/be6decdb9ecf2099bef03528df508a70.jpg" },
-        { text: "When we made pasta at midnight 🍝", image: "https://i.pinimg.com/474x/be/6d/ec/be6decdb9ecf2099bef03528df508a70.jpg" },
-        { text: "That time we watched the stars 🌌", image: "https://i.pinimg.com/474x/be/6d/ec/be6decdb9ecf2099bef03528df508a70.jpg" },
-        { text: "The silly selfies we took 📸", image: "https://i.pinimg.com/474x/be/6d/ec/be6decdb9ecf2099bef03528df508a70.jpg" },
-        { text: "When you made me laugh until I cried 😂", image: "https://i.pinimg.com/474x/be/6d/ec/be6decdb9ecf2099bef03528df508a70.jpg" }
+        { text: "Our first walk together 🌸", image: "linh/memory1.png" },
+        { text: "When we made pasta at midnight 🍝", image: "linh/memory2.png" },
+        { text: "That time we watched the stars 🌌", image: "linh/memory3.png" },
+        { text: "The silly selfies we took 📸", image: "linh/memory4.png" },
+        { text: "When you made me laugh until I cried 😂", image: "linh/memory5.png" }
       ];
 
       let collected = 0;
@@ -117,7 +117,7 @@
         hearts.push({
           x: Math.random() * 550,
           y: Math.random() * 370,
-          size: 20,
+          size: 80, // 4x size
           collected: false
         });
       }
@@ -146,9 +146,9 @@
             ctx.fillStyle = '#ff4da6';
             ctx.beginPath();
             ctx.moveTo(h.x, h.y);
-            ctx.arc(h.x - 5, h.y - 5, 7, 0, Math.PI * 2);
-            ctx.arc(h.x + 5, h.y - 5, 7, 0, Math.PI * 2);
-            ctx.lineTo(h.x, h.y + 10);
+            ctx.arc(h.x - 20, h.y - 20, 28, 0, Math.PI * 2); // Scaled
+            ctx.arc(h.x + 20, h.y - 20, 28, 0, Math.PI * 2); // Scaled
+            ctx.lineTo(h.x, h.y + 40);
             ctx.fill();
           }
         });
