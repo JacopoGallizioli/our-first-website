@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Heart Collector Game</title>
   <style>
     html, body {
@@ -35,7 +35,6 @@
       border: 5px solid #ff99cc;
       border-radius: 20px;
       background-color: transparent;
-      transition: filter 0.3s ease;
     }
     #message {
       text-align: center;
@@ -126,8 +125,6 @@
 
     let player, castle, hearts, collected, memoryIndex;
     const keys = {};
-    const memoryQueue = [];
-
     const memories = [
       { text: "Our first year together 🌸", image: "1styear.JPG" },
       { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
@@ -147,7 +144,6 @@
       hearts = [];
       collected = 0;
       memoryIndex = 0;
-      memoryQueue.length = 0;
 
       for (let i = 0; i < totalHearts; i++) {
         hearts.push({
@@ -161,12 +157,9 @@
       document.getElementById('message').innerText = '';
       document.getElementById('giftBox').style.display = 'none';
       document.getElementById('memoryBox').style.display = 'none';
-      canvas.style.filter = 'none';
     }
 
     function drawBackground() {
-      ctx.fillStyle = '#228B22';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
     }
 
@@ -208,7 +201,6 @@
       if (keys['ArrowLeft']) player.x -= player.speed;
       if (keys['ArrowRight']) player.x += player.speed;
 
-      // Clamp player within canvas
       player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
       player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
 
@@ -232,7 +224,6 @@
           player.y + player.height > castle.y &&
           player.y < castle.y + castle.height) {
         document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
-        canvas.style.filter = 'blur(3px)';
         document.getElementById('giftBox').style.display = 'block';
       }
     }
