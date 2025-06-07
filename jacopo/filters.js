@@ -69,7 +69,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  header.addEventListener("click", () => {
-    filterBox.style.display = filterBox.style.display === "none" ? "block" : "none";
+  document.addEventListener("click", (event) => {
+    const isHeaderClick = header.contains(event.target);
+    const isFilterClick = filterBox.contains(event.target);
+  
+    if (isHeaderClick) {
+      // Toggle filter on header click
+      filterBox.style.display = filterBox.style.display === "none" ? "block" : "none";
+    } else if (!isFilterClick) {
+      // Click outside = close
+      filterBox.style.display = "none";
+    }
   });
 });
