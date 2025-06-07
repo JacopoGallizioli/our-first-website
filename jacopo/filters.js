@@ -1,63 +1,75 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", () => {
   const header = document.getElementById("people-header");
   const filterBox = document.getElementById("people-filter");
   const rows = document.querySelectorAll("tbody tr");
 
-  // Step 1: Get all unique people
   const peopleSet = new Set();
+
   rows.forEach(row => {
-    const cell = row.children[3];
-    if (cell) {
-      const people = cell.textContent.split(",").map(p => p.trim());
-      people.forEach(person => peopleSet.add(person));
-    }
+    const people = row.cells[3].textContent.split(",").map(p => p.trim());
+    people.forEach(p => peopleSet.add(p));
   });
 
-  // Step 2: Create checkboxes
-  peopleSet.forEach(person => {
-    const label = document.createElement("label");
+  const people = Array.from(peopleSet).sort();
+  const checkboxes = {};
+
+  // Create "All" checkbox
+  const allCheckbox = document.createElement("input");
+  allCheckbox.type = "checkbox";
+  allCheckbox.checked = true;
+  allCheckbox.id = "checkbox-all";
+  const allLabel = document.createElement("label");
+  allLabel.textContent = "All";
+  allLabel.htmlFor = "checkbox-all";
+
+  const wrapperAll = document.createElement("div");
+  wrapperAll.appendChild(allCheckbox);
+  wrapperAll.appendChild(allLabel);
+  filterBox.appendChild(wrapperAll);
+
+  // Create individual checkboxes
+  people.forEach(person => {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.value = person;
     checkbox.checked = true;
+    checkbox.id = `checkbox-${person}`;
+    checkboxes[person] = checkbox;
 
-    checkbox.addEventListener("change", filterRows);
+    const label = document.createElement("label");
+    label.textContent = person;
+    label.htmlFor = `checkbox-${person}`;
 
-    label.appendChild(checkbox);
-    label.appendChild(document.createTextNode(" " + person));
-    filterBox.appendChild(label);
-    filterBox.appendChild(document.createElement("br"));
+    const wrapper = document.createElement("div");
+    wrapper.appendChild(checkbox);
+    wrapper.appendChild(label);
+    filterBox.appendChild(wrapper);
+
+    checkbox.addEventListener("change", updateVisibility);
   });
 
-  // Step 3: Toggle dropdown
-  header.addEventListener("click", function (e) {
-    filterBox.style.display = filterBox.style.display === "none" ? "block" : "none";
-    e.stopPropagation();
+  allCheckbox.addEventListener("change", () => {
+    const checked = allCheckbox.checked;
+    Object.values(checkboxes).forEach(cb => cb.checked = checked);
+    updateVisibility();
   });
 
-  // Prevent clicks inside the filter box from closing the dropdown
-  filterBox.addEventListener("click", function(e) {
-    e.stopPropagation();
-  });
+  function updateVisibility() {
+    const activePeople = Object.entries(checkboxes)
+      .filter(([_, checkbox]) => checkbox.checked)
+      .map(([name]) => name);
 
-  // Hide the dropdown if clicking outside
-  document.addEventListener("click", function () {
-    filterBox.style.display = "none";
-  });
-
-  // Step 4: Filter rows
-  function filterRows() {
-    console.log("Filtering rows...");
-    const checked = Array.from(filterBox.querySelectorAll("input:checked")).map(cb => cb.value);
-    console.log("Checked:", checked);
+    // Update "All" checkbox if needed
+    const allChecked = Object.values(checkboxes).every(cb => cb.checked);
+    allCheckbox.checked = allChecked;
 
     rows.forEach(row => {
-      const people = row.children[3].textContent.split(",").map(p => p.trim());
-      const match = people.some(p => checked.includes(p));
-      row.style.display = match ? "" : "none";
+      const rowPeople = row.cells[3].textContent.split(",").map(p => p.trim());
+      const visible = rowPeople.some(person => activePeople.includes(person));
+      row.style.display = visible ? "" : "none";
     });
   }
 
-  // Initial filter
-  filterRows();
+  header.addEventListener("click", () => {
+    filterBox.style.display = filterBox.style.display === "none" ? "block" : "none";
+  });
 });
