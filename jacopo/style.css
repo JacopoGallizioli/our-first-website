@@ -13,7 +13,8 @@ table {
   margin-top: 20px;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: left;
@@ -41,13 +42,15 @@ img {
   display: inline-block;
 }
 
-
+/* --- Modal Image Styling --- */
 .image-modal {
   display: none;
   position: fixed;
   z-index: 1000;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   align-items: center;
   justify-content: center;
@@ -56,7 +59,7 @@ img {
 .image-modal-content {
   position: relative;
   max-width: 40%;
-  max-height: 40%vh;
+  max-height: 40vh;
 }
 
 .image-modal img {
@@ -85,39 +88,40 @@ img {
   background: #f0f0f0;
 }
 
+/* --- Sticky Table Header with Filters --- */
 thead th {
   position: sticky;
   top: 0;
-  background: white; /* or your table header bg color */
-  z-index: 10; /* make sure header is above body rows */
-  border-bottom: 2px solid #ddd; /* optional styling */
+  background: white;
+  z-index: 10;
+  border-bottom: 2px solid #ddd;
+  padding: 8px;
 }
 
+/* Ensure all headers behave the same way */
 thead tr th {
   position: sticky;
   top: 0;
   background: white;
-  z-index: 3;
+  z-index: 10;
 }
 
-/* For headers with filters, raise stacking order */
-.sticky-filter {
-  position: sticky;
-  top: 0;
-  z-index: 5;
+/* Filter containers inside headers */
+#date-header,
+#people-header {
+  position: relative;
+  z-index: 11;
 }
 
-.filter-box {
+/* Filter dropdowns */
+#date-filter,
+#people-filter {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
-  display: none;
   background: white;
   border: 1px solid #ccc;
-  z-index: 6;
-}
-
-/* Optional: give some padding */
-thead th {
-  padding: 8px;
+  z-index: 100;
+  padding: 5px;
 }
