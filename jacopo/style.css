@@ -94,34 +94,19 @@ thead th {
   top: 0;
   background: white;
   z-index: 10;
-  border-bottom: 2px solid #ddd;
-  padding: 8px;
+  border-bottom: 2px solid #333;
+  cursor: pointer;
+  user-select: none;
 }
 
-/* Ensure all headers behave the same way */
-thead tr th {
-  position: sticky;
-  top: 0;
-  background: white;
-  z-index: 10;
-}
-
-/* Filter containers inside headers */
-#date-header,
-#people-header {
-  position: relative;
-  z-index: 11;
-}
-
-/* Filter dropdowns */
-#date-filter,
-#people-filter {
-  display: none;
+#date-filter, #people-filter {
   position: absolute;
   top: 100%;
   left: 0;
   background: white;
   border: 1px solid #ccc;
-  z-index: 100;
-  padding: 5px;
+  z-index: 1000;
+  padding: 10px;
+  display: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
