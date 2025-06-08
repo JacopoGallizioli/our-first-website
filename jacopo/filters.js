@@ -1,10 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const header = document.getElementById("people-header");
-  const filterBox = document.getElementById("people-filter");
-  const rows = document.querySelectorAll("tbody tr");
+  const peopleHeader = document.getElementById("people-header");
+  const peopleFilterBox = document.getElementById("people-filter");
+  const dateHeader = document.getElementById("date-header");
+  const dateFilterBox = document.getElementById("date-filter");
+  const tbody = document.querySelector("tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
 
+  // --- PEOPLE FILTER ---
   const peopleSet = new Set();
-
   rows.forEach(row => {
     const people = row.cells[3].textContent.split(",").map(p => p.trim());
     people.forEach(p => peopleSet.add(p));
@@ -13,12 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const people = Array.from(peopleSet).sort();
   const checkboxes = {};
 
-  // Create "All" checkbox
   const allCheckbox = document.createElement("input");
   allCheckbox.type = "checkbox";
   allCheckbox.checked = true;
   allCheckbox.id = "checkbox-all";
-  allCheckbox.addEventListener("click", (e) => e.stopPropagation()); // Prevent closing
+  allCheckbox.addEventListener("click", (e) => e.stopPropagation());
 
   const allLabel = document.createElement("label");
   allLabel.textContent = "All";
@@ -27,15 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const wrapperAll = document.createElement("div");
   wrapperAll.appendChild(allCheckbox);
   wrapperAll.appendChild(allLabel);
-  filterBox.appendChild(wrapperAll);
+  peopleFilterBox.appendChild(wrapperAll);
 
-  // Create individual checkboxes
   people.forEach(person => {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = true;
     checkbox.id = `checkbox-${person}`;
-    checkbox.addEventListener("click", (e) => e.stopPropagation()); // Prevent closing
+    checkbox.addEventListener("click", (e) => e.stopPropagation());
     checkbox.addEventListener("change", updateVisibility);
     checkboxes[person] = checkbox;
 
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const wrapper = document.createElement("div");
     wrapper.appendChild(checkbox);
     wrapper.appendChild(label);
-    filterBox.appendChild(wrapper);
+    peopleFilterBox.appendChild(wrapper);
   });
 
   allCheckbox.addEventListener("change", () => {
@@ -60,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .filter(([_, checkbox]) => checkbox.checked)
       .map(([name]) => name);
 
-    // Update "All" checkbox state
     const allChecked = Object.values(checkboxes).every(cb => cb.checked);
     allCheckbox.checked = allChecked;
 
@@ -71,20 +71,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Toggle dropdown visibility
-  document.addEventListener("click", (event) => {
-    const isHeaderClick = header.contains(event.target);
-    const isFilterClick = filterBox.contains(event.target);
+  // --- DATE SORTING ---
+  const options = [
+    { label: "Oldest to Newest", value: "asc" },
+    { label: "Newest to Oldest", value: "desc" }
+  ];
 
-    if (isHeaderClick) {
-      filterBox.style.display = filterBox.style.display === "none" ? "block" : "none";
-    } else if (!isFilterClick) {
-      filterBox.style.display = "none";
-    }
-  });
-});
-
-  // Create dropdown radio buttons
   options.forEach(opt => {
     const radio = document.createElement("input");
     radio.type = "radio";
@@ -101,16 +93,11 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.appendChild(label);
     dateFilterBox.appendChild(wrapper);
 
-    radio.addEventListener("click", (e) => {
-      e.stopPropagation(); // Keep menu open
-    });
+    radio.addEventListener("click", (e) => e.stopPropagation());
+    label.addEventListener("click", (e) => e.stopPropagation());
 
     radio.addEventListener("change", () => {
       sortByDate(opt.value === "asc");
-    });
-
-    label.addEventListener("click", (e) => {
-      e.stopPropagation(); // Prevent dropdown from closing
     });
   });
 
@@ -126,30 +113,36 @@ document.addEventListener("DOMContentLoaded", () => {
       return new Date(year, month, 1);
     } else if (parts.length === 1) {
       const year = parseInt(parts[0], 10);
-      return new Date(year, 0, 1);
+      return new Date(year, 0, 1); // January fallback
     } else {
-      return new Date(0);
+      return new Date(0); // Invalid
     }
   }
 
   function sortByDate(ascending) {
     const sortedRows = [...rows].sort((a, b) => {
-      const aDate = parseDate(a.cells[1].textContent);
-      const bDate = parseDate(b.cells[1].textContent);
+      const aDate = parseDate(a.cells[2].textContent);
+      const bDate = parseDate(b.cells[2].textContent);
       return ascending ? aDate - bDate : bDate - aDate;
     });
 
-    sortedRows.forEach(row => tbody.appendChild(row)); // Reorder in DOM
+    sortedRows.forEach(row => tbody.appendChild(row)); // Reorder
   }
 
-  // Show/hide date filter
+  // --- SINGLE CLICK LISTENER FOR DROPDOWNS ---
   document.addEventListener("click", (event) => {
-    const isHeaderClick = dateHeader.contains(event.target);
-    const isFilterClick = dateFilterBox.contains(event.target);
+    const clickInsidePeople = peopleHeader.contains(event.target) || peopleFilterBox.contains(event.target);
+    const clickInsideDate = dateHeader.contains(event.target) || dateFilterBox.contains(event.target);
 
-    if (isHeaderClick) {
-      dateFilterBox.style.display = dateFilterBox.style.display === "none" ? "block" : "none";
-    } else if (!isFilterClick) {
+    if (peopleHeader.contains(event.target)) {
+      peopleFilterBox.style.display = peopleFilterBox.style.display === "block" ? "none" : "block";
+    } else if (!clickInsidePeople) {
+      peopleFilterBox.style.display = "none";
+    }
+
+    if (dateHeader.contains(event.target)) {
+      dateFilterBox.style.display = dateFilterBox.style.display === "block" ? "none" : "block";
+    } else if (!clickInsideDate) {
       dateFilterBox.style.display = "none";
     }
   });
