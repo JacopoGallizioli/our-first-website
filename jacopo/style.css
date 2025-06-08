@@ -19,27 +19,6 @@ th, td {
   text-align: left;
 }
 
-/* Ensure filter headers are relatively positioned */
-#date-header,
-#people-header {
-  position: sticky;
-  top: 0;
-  background: white;
-  z-index: 5;
-}
-
-/* Ensure filters appear in correct place */
-.filter-box {
-  position: absolute;
-  top: 100%;  /* place just below the header */
-  left: 0;
-  z-index: 10;
-  background: white;
-  border: 1px solid #ccc;
-  display: none;
-  padding: 5px;
-}
-
 img {
   width: 100px;
   height: auto;
@@ -112,4 +91,33 @@ thead th {
   background: white; /* or your table header bg color */
   z-index: 10; /* make sure header is above body rows */
   border-bottom: 2px solid #ddd; /* optional styling */
+}
+
+thead tr th {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 3;
+}
+
+/* For headers with filters, raise stacking order */
+.sticky-filter {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.filter-box {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  background: white;
+  border: 1px solid #ccc;
+  z-index: 6;
+}
+
+/* Optional: give some padding */
+thead th {
+  padding: 8px;
 }
