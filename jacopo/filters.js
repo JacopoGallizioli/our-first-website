@@ -87,14 +87,16 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const dateHeader = document.getElementById("date-header");
   const dateFilterBox = document.getElementById("date-filter");
-  const rows = Array.from(document.querySelectorAll("tbody tr"));
+  const tbody = document.querySelector("tbody");
 
-  // Create dropdown options
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+
   const options = [
     { label: "Oldest to Newest", value: "asc" },
     { label: "Newest to Oldest", value: "desc" }
   ];
 
+  // Create dropdown radio buttons
   options.forEach(opt => {
     const radio = document.createElement("input");
     radio.type = "radio";
@@ -116,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Date parsing function
   function parseDate(text) {
     const months = {
       january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
@@ -128,31 +131,31 @@ document.addEventListener("DOMContentLoaded", () => {
       return new Date(year, month, 1);
     } else if (parts.length === 1) {
       const year = parseInt(parts[0], 10);
-      return new Date(year, 0, 1); // Default to January
+      return new Date(year, 0, 1); // Assume January
     } else {
-      return new Date(0); // invalid format fallback
+      return new Date(0); // Fallback for invalid format
     }
   }
 
+  // Sorting logic
   function sortByDate(ascending) {
-    const sorted = [...rows].sort((a, b) => {
+    const sortedRows = [...rows].sort((a, b) => {
       const aDate = parseDate(a.cells[1].textContent);
       const bDate = parseDate(b.cells[1].textContent);
       return ascending ? aDate - bDate : bDate - aDate;
     });
 
-    const tbody = document.querySelector("tbody");
-    sorted.forEach(row => tbody.appendChild(row));
+    sortedRows.forEach(row => tbody.appendChild(row)); // Reorder rows in DOM
   }
 
-  // Dropdown toggle
+  // Keep dropdown open on click, close only if clicking outside
   document.addEventListener("click", (event) => {
     const isHeaderClick = dateHeader.contains(event.target);
     const isFilterClick = dateFilterBox.contains(event.target);
 
     if (isHeaderClick) {
-      const isVisible = dateFilterBox.style.display === "block";
-      dateFilterBox.style.display = isVisible ? "none" : "block";
+      // Toggle visibility
+      dateFilterBox.style.display = dateFilterBox.style.display === "block" ? "none" : "block";
     } else if (!isFilterClick) {
       dateFilterBox.style.display = "none";
     }
