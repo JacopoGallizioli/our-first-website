@@ -13,20 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
     mapBtn.addEventListener("click", () => {
       tableSection.style.display = "none";
       mapSection.style.display = "block";
+
+      // Important: let main.js initialize the map only once
+      const event = new Event("initialize-map");
+      window.dispatchEvent(event);
     });
   }
-});
-
-tableBtn.addEventListener("click", () => {
-  tableSection.style.display = "block";
-  mapSection.style.display = "none";
-  tableBtn.classList.add("active");
-  mapBtn.classList.remove("active");
-});
-
-mapBtn.addEventListener("click", () => {
-  tableSection.style.display = "none";
-  mapSection.style.display = "block";
-  mapBtn.classList.add("active");
-  tableBtn.classList.remove("active");
 });
