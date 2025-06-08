@@ -55,8 +55,8 @@ img {
 
 .image-modal-content {
   position: relative;
-  max-width: 90vW;
-  max-height: 90vh;
+  max-width: 40%;
+  max-height: 40%vh;
 }
 
 .image-modal img {
