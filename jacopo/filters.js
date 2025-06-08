@@ -86,16 +86,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   const dateHeader = document.getElementById("date-header");
+  const dateFilterBox = document.getElementById("date-filter");
   const rows = Array.from(document.querySelectorAll("tbody tr"));
 
-  let ascending = true;
+  // Create dropdown options
+  const options = [
+    { label: "Oldest to Newest", value: "asc" },
+    { label: "Newest to Oldest", value: "desc" }
+  ];
+
+  options.forEach(opt => {
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "date-sort";
+    radio.value = opt.value;
+    radio.id = `date-${opt.value}`;
+
+    const label = document.createElement("label");
+    label.textContent = opt.label;
+    label.htmlFor = radio.id;
+
+    const wrapper = document.createElement("div");
+    wrapper.appendChild(radio);
+    wrapper.appendChild(label);
+    dateFilterBox.appendChild(wrapper);
+
+    radio.addEventListener("change", () => {
+      sortByDate(opt.value === "asc");
+    });
+  });
 
   function parseDate(text) {
     const months = {
       january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
       july: 6, august: 7, september: 8, october: 9, november: 10, december: 11
     };
-
     const parts = text.trim().split(" ");
     if (parts.length === 2) {
       const month = months[parts[0].toLowerCase()];
@@ -103,27 +128,33 @@ document.addEventListener("DOMContentLoaded", () => {
       return new Date(year, month, 1);
     } else if (parts.length === 1) {
       const year = parseInt(parts[0], 10);
-      return new Date(year, 0, 1);  // Treat year-only dates as January
+      return new Date(year, 0, 1); // Default to January
     } else {
-      return new Date(0); // fallback for invalid format
+      return new Date(0); // invalid format fallback
     }
   }
 
-  function sortByDate() {
-    rows.sort((a, b) => {
-      const dateA = parseDate(a.cells[1].textContent);
-      const dateB = parseDate(b.cells[1].textContent);
-      return ascending ? dateA - dateB : dateB - dateA;
+  function sortByDate(ascending) {
+    const sorted = [...rows].sort((a, b) => {
+      const aDate = parseDate(a.cells[1].textContent);
+      const bDate = parseDate(b.cells[1].textContent);
+      return ascending ? aDate - bDate : bDate - aDate;
     });
 
     const tbody = document.querySelector("tbody");
-    rows.forEach(row => tbody.appendChild(row));
+    sorted.forEach(row => tbody.appendChild(row));
   }
 
-  dateHeader.addEventListener("click", () => {
-    ascending = !ascending;
-    sortByDate();
-    dateHeader.textContent = ascending ? "Date ↑" : "Date ↓";
+  // Dropdown toggle
+  document.addEventListener("click", (event) => {
+    const isHeaderClick = dateHeader.contains(event.target);
+    const isFilterClick = dateFilterBox.contains(event.target);
+
+    if (isHeaderClick) {
+      const isVisible = dateFilterBox.style.display === "block";
+      dateFilterBox.style.display = isVisible ? "none" : "block";
+    } else if (!isFilterClick) {
+      dateFilterBox.style.display = "none";
+    }
   });
 });
-
