@@ -90,23 +90,10 @@ img {
 
 /* --- Sticky Table Header with Filters --- */
 thead th {
-  position: sticky;
   top: 0;
   background: white;
   z-index: 10;
   border-bottom: 2px solid #333;
   cursor: pointer;
   user-select: none;
-}
-
-#date-filter, #people-filter {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  border: 1px solid #ccc;
-  z-index: 1000;
-  padding: 10px;
-  display: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
