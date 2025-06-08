@@ -19,6 +19,31 @@ th, td {
   text-align: left;
 }
 
+#people-header,
+#date-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 5;
+}
+
+#people-header,
+#date-header {
+  position: relative;
+}
+
+#people-filter,
+#date-filter {
+  position: absolute;
+  top: 100%; /* below the header */
+  left: 0;
+  z-index: 10;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  display: none;
+}
+
 img {
   width: 100px;
   height: auto;
