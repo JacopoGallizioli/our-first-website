@@ -83,3 +83,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dateHeader = document.getElementById("date-header");
+  const rows = Array.from(document.querySelectorAll("tbody tr"));
+
+  let ascending = true;
+
+  function parseDate(text) {
+    const months = {
+      january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+      july: 6, august: 7, september: 8, october: 9, november: 10, december: 11
+    };
+
+    const parts = text.trim().split(" ");
+    if (parts.length === 2) {
+      const month = months[parts[0].toLowerCase()];
+      const year = parseInt(parts[1], 10);
+      return new Date(year, month, 1);
+    } else if (parts.length === 1) {
+      const year = parseInt(parts[0], 10);
+      return new Date(year, 0, 1);  // Treat year-only dates as January
+    } else {
+      return new Date(0); // fallback for invalid format
+    }
+  }
+
+  function sortByDate() {
+    rows.sort((a, b) => {
+      const dateA = parseDate(a.cells[1].textContent);
+      const dateB = parseDate(b.cells[1].textContent);
+      return ascending ? dateA - dateB : dateB - dateA;
+    });
+
+    const tbody = document.querySelector("tbody");
+    rows.forEach(row => tbody.appendChild(row));
+  }
+
+  dateHeader.addEventListener("click", () => {
+    ascending = !ascending;
+    sortByDate();
+    dateHeader.textContent = ascending ? "Date ↑" : "Date ↓";
+  });
+});
+
