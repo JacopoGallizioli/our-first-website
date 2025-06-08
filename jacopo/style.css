@@ -84,3 +84,11 @@ img {
 .image-modal-close:hover {
   background: #f0f0f0;
 }
+
+thead th {
+  position: sticky;
+  top: 0;
+  background: white; /* or your table header bg color */
+  z-index: 10; /* make sure header is above body rows */
+  border-bottom: 2px solid #ddd; /* optional styling */
+}
