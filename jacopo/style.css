@@ -19,29 +19,25 @@ th, td {
   text-align: left;
 }
 
-#people-header,
-#date-header {
+/* Ensure filter headers are relatively positioned */
+#date-header,
+#people-header {
   position: sticky;
   top: 0;
   background: white;
   z-index: 5;
 }
 
-#people-header,
-#date-header {
-  position: relative;
-}
-
-#people-filter,
-#date-filter {
+/* Ensure filters appear in correct place */
+.filter-box {
   position: absolute;
-  top: 100%; /* below the header */
+  top: 100%;  /* place just below the header */
   left: 0;
   z-index: 10;
   background: white;
   border: 1px solid #ccc;
-  padding: 5px;
   display: none;
+  padding: 5px;
 }
 
 img {
