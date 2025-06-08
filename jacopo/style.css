@@ -84,3 +84,9 @@ img {
 .image-modal-close:hover {
   background: #f0f0f0;
 }
+
+button.active {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
