@@ -84,18 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const dateHeader = document.getElementById("date-header");
-  const dateFilterBox = document.getElementById("date-filter");
-  const tbody = document.querySelector("tbody");
-
-  const rows = Array.from(tbody.querySelectorAll("tr"));
-
-  const options = [
-    { label: "Oldest to Newest", value: "asc" },
-    { label: "Newest to Oldest", value: "desc" }
-  ];
-
   // Create dropdown radio buttons
   options.forEach(opt => {
     const radio = document.createElement("input");
@@ -113,12 +101,19 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.appendChild(label);
     dateFilterBox.appendChild(wrapper);
 
+    radio.addEventListener("click", (e) => {
+      e.stopPropagation(); // Keep menu open
+    });
+
     radio.addEventListener("change", () => {
       sortByDate(opt.value === "asc");
     });
+
+    label.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent dropdown from closing
+    });
   });
 
-  // Date parsing function
   function parseDate(text) {
     const months = {
       january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
@@ -131,13 +126,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return new Date(year, month, 1);
     } else if (parts.length === 1) {
       const year = parseInt(parts[0], 10);
-      return new Date(year, 0, 1); // Assume January
+      return new Date(year, 0, 1);
     } else {
-      return new Date(0); // Fallback for invalid format
+      return new Date(0);
     }
   }
 
-  // Sorting logic
   function sortByDate(ascending) {
     const sortedRows = [...rows].sort((a, b) => {
       const aDate = parseDate(a.cells[1].textContent);
@@ -145,17 +139,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return ascending ? aDate - bDate : bDate - aDate;
     });
 
-    sortedRows.forEach(row => tbody.appendChild(row)); // Reorder rows in DOM
+    sortedRows.forEach(row => tbody.appendChild(row)); // Reorder in DOM
   }
 
-  // Keep dropdown open on click, close only if clicking outside
+  // Show/hide date filter
   document.addEventListener("click", (event) => {
     const isHeaderClick = dateHeader.contains(event.target);
     const isFilterClick = dateFilterBox.contains(event.target);
 
     if (isHeaderClick) {
-      // Toggle visibility
-      dateFilterBox.style.display = dateFilterBox.style.display === "block" ? "none" : "block";
+      dateFilterBox.style.display = dateFilterBox.style.display === "none" ? "block" : "none";
     } else if (!isFilterClick) {
       dateFilterBox.style.display = "none";
     }
