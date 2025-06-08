@@ -179,6 +179,27 @@
     <button id="restartButton">Restart Game 🔄</button>
   </div>
 
+<style>
+  /* Add these inside your <style> tag */
+  .stars {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .star {
+    font-size: 32px;
+    color: #ffd700;
+    opacity: 0.2;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease;
+  }
+
+  .star.active {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+</style>
+
+
   <h2 class="section-title">💘 Our Love Story Achievements</h2>
   <div class="achievements">
     <div class="achievement">
@@ -210,6 +231,83 @@
 
   <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
 
+<script>
+  // Track the start time
+  let startTime = Date.now();
+
+  function update() {
+    // Movement logic
+    if (keys['ArrowUp']) player.y -= player.speed;
+    if (keys['ArrowDown']) player.y += player.speed;
+    if (keys['ArrowLeft']) player.x -= player.speed;
+    if (keys['ArrowRight']) player.x += player.speed;
+
+    // Boundaries
+    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+    player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
+
+    // Heart collection
+    hearts.forEach((h, i) => {
+      if (!h.collected &&
+          player.x < h.x + h.size &&
+          player.x + player.width > h.x &&
+          player.y < h.y + h.size &&
+          player.y + player.height > h.y) {
+        h.collected = true;
+        collectSound.play();
+        showMemory(memoryIndex);
+        memoryIndex++;
+        collected++;
+      }
+    });
+
+    // Game win condition
+    if (collected === totalHearts &&
+        player.x + player.width > castle.x &&
+        player.x < castle.x + castle.width &&
+        player.y + player.height > castle.y &&
+        player.y < castle.y + castle.height) {
+      const endTime = Date.now();
+      const timeTaken = (endTime - startTime) / 1000;
+
+      showStarRating(timeTaken); // 🟡 Add this
+
+      document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
+      canvas.style.filter = 'blur(3px)';
+      document.getElementById('giftBox').style.display = 'block';
+    }
+  }
+
+  // 🟡 Add this function
+  function showStarRating(time) {
+    const stars = [
+      document.getElementById('star1'),
+      document.getElementById('star2'),
+      document.getElementById('star3')
+    ];
+
+    stars.forEach(star => star.classList.remove('active'));
+
+    if (time <= 20) {
+      stars.forEach(star => star.classList.add('active'));
+    } else if (time <= 40) {
+      stars[0].classList.add('active');
+      stars[1].classList.add('active');
+    } else {
+      stars[0].classList.add('active');
+    }
+  }
+
+  function openGift() {
+    alert("🎁 Here's your surprise! I love you! 💌");
+  }
+
+  document.getElementById('restartButton').addEventListener('click', () => {
+    startTime = Date.now(); // Reset start time
+    initializeGame();
+  });
+
+  
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
