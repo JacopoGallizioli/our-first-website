@@ -11,6 +11,7 @@
       background-color: #222;
       font-family: 'Comic Sans MS', cursive;
       color: #fff;
+      scroll-behavior: smooth;
     }
 
     nav {
@@ -93,6 +94,62 @@
       max-width: 400px;
       text-align: left;
     }
+
+    /* Achievements section */
+    .section-title {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 32px;
+      color: #ff99cc;
+    }
+
+    .achievements {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .achievement {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 2px solid #ff99cc;
+      border-radius: 15px;
+      padding: 20px;
+      width: 250px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .achievement.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .achievement .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .achievement h3 {
+      color: #ffccdd;
+      margin: 10px 0 5px;
+    }
+
+    .achievement p {
+      font-size: 14px;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
@@ -120,6 +177,35 @@
   <div id="giftBox">
     <button onclick="openGift()">Open Your Gift 🎁</button>
     <button id="restartButton">Restart Game 🔄</button>
+  </div>
+
+  <h2 class="section-title">💘 Our Love Story Achievements</h2>
+  <div class="achievements">
+    <div class="achievement">
+      <div class="icon">🌸</div>
+      <h3>1st Year Together</h3>
+      <p>We built the foundation of our love, full of adventures and late-night talks.</p>
+    </div>
+    <div class="achievement">
+      <div class="icon">🎁</div>
+      <h3>Vietnam Surprise</h3>
+      <p>I surprised you with a trip and smiles that still shine in my heart.</p>
+    </div>
+    <div class="achievement">
+      <div class="icon">💡</div>
+      <h3>Moved In</h3>
+      <p>Even in a blackout, our love lit up the house. We moved in and made it a home.</p>
+    </div>
+    <div class="achievement">
+      <div class="icon">🇩🇪</div>
+      <h3>New Life in Germany</h3>
+      <p>We took a leap of faith and built a life together in Augsburg and then Munich.</p>
+    </div>
+    <div class="achievement">
+      <div class="icon">🏰</div>
+      <h3>Still Going Strong</h3>
+      <p>Years later, our journey continues—stronger, deeper, and more magical.</p>
+    </div>
   </div>
 
   <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
@@ -212,7 +298,6 @@
       memoryImage.src = memories[index].image;
       memoryBox.style.display = 'flex';
 
-      // Scroll into view
       memoryBox.scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -281,6 +366,22 @@
     bgImg.onload = checkAllLoaded;
     playerImg.onload = checkAllLoaded;
     castleImg.onload = checkAllLoaded;
+
+    // Animate achievements on scroll
+    function animateAchievements() {
+      const items = document.querySelectorAll('.achievement');
+      const triggerBottom = window.innerHeight * 0.9;
+
+      items.forEach(item => {
+        const boxTop = item.getBoundingClientRect().top;
+        if (boxTop < triggerBottom) {
+          item.classList.add('visible');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', animateAchievements);
+    window.addEventListener('load', animateAchievements);
   </script>
 </body>
 </html>
