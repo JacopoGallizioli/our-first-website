@@ -186,23 +186,6 @@ td img {
   cursor: pointer;
 }
 
-/* Magnet tags */
-.magnet-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.magnet-pill {
-  background-color: #b3d9b3;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.9em;
-  display: inline-block;
-  color: #1a351a;
-}
-
 /* Image Modal */
 
 .image-modal {
@@ -269,4 +252,37 @@ button.active {
   background-color: #4a7a4a;
   color: white;
   font-weight: bold;
+}
+
+/* Magnet tags */
+
+.magnet-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;   /* ✅ center the pills horizontally */
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.magnet-pill {
+  background-color: #b3d9b3;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  display: inline-block;
+  color: #1a351a;
+}
+.missing-magnets-section {
+  text-align: center;
+  margin-top: 2em;
+}
+
+.missing-magnets-section h2 {
+  margin-bottom: 0.5em;
+}
+
+.missing-magnets-section p {
+  margin-bottom: 1em;
+  font-size: 1.05em;
+  color: #2f4f2f;
 }
