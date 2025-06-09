@@ -169,6 +169,7 @@ td img {
 }
 
 /* Image Modal */
+
 .image-modal {
   display: none;
   position: fixed;
@@ -200,7 +201,7 @@ td img {
 }
 
 .image-modal img {
-  width: 100%;
+  width: 40px;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 0 20px #2f4f2f;
