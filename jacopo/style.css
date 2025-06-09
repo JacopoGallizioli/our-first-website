@@ -1,30 +1,120 @@
 body {
   font-family: sans-serif;
-  margin: 20px;
+  margin: 0;
   background-color: #f3faf0;  /* very light green */
   color: #2f4f2f;             /* dark moss green for text */
 }
 
+/* Page Header Bar */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #355e35;  /* dark green */
+  padding: 0.5em 1em;
+  height: 3.5em;
+  color: #d0e6d0;
+}
+
+/* Fully Centered h1 */
+.page-header h1 {
+  margin: 0;
+  color: #d0e6d0;
+  font-size: 1.5em;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* Navigation placed on the left */
+nav {
+  display: flex;
+  gap: 0.5em;
+  position: absolute;
+  left: 1em;
+}
+
+/* Nav links & dropdown button */
+nav a,
+.dropdown-btn {
+  background-color: #4a7a4a; /* distinguishable green for buttons */
+  color: #e8f4e8;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+nav a:hover,
+.dropdown:hover .dropdown-btn {
+  background-color: #5a8b5a;
+  color: white;
+}
+
+/* Add ▼ arrow to Pages */
+.dropdown-btn::after {
+  content: " ▼";
+  font-size: 0.8em;
+}
+
+/* Dropdown menu */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #2e4b2e; /* darker green */
+  min-width: 160px;
+  z-index: 1;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(20, 40, 20, 0.6);
+  top: 100%;
+  left: 0;
+}
+
+.dropdown-content a {
+  color: #d0e6d0;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  background-color: #2e4b2e;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+  background-color: #5a8b5a;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Table styling */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  background-color: #e6f0e6;  /* pale green background */
+  background-color: #e6f0e6;
 }
 
 th, td {
-  border: 1px solid #a2c4a2; /* muted green border */
+  border: 1px solid #a2c4a2;
   padding: 10px;
   text-align: left;
   color: #2f4f2f;
 }
 
-img {
-  width: 100px;
-  height: auto;
-}
-
-/* --- Magnet tags --- */
+/* Magnet tags */
 .magnet-container {
   display: flex;
   flex-wrap: wrap;
@@ -33,22 +123,22 @@ img {
 }
 
 .magnet-pill {
-  background-color: #b3d9b3; /* soft green */
+  background-color: #b3d9b3;
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 0.9em;
   display: inline-block;
-  color: #1a351a;            /* darker green text */
+  color: #1a351a;
 }
 
-/* --- Modal image popup --- */
+/* Image Modal */
 .image-modal {
   display: none;
   position: fixed;
   z-index: 1000;
   left: 0; top: 0;
   width: 100%; height: 100%;
-  background-color: rgba(20, 50, 20, 0.85); /* dark translucent green */
+  background-color: rgba(20, 50, 20, 0.85);
   align-items: center;
   justify-content: center;
 }
@@ -63,14 +153,14 @@ img {
   width: 100%;
   height: auto;
   border-radius: 10px;
-  box-shadow: 0 0 20px #2f4f2f; /* dark green shadow */
+  box-shadow: 0 0 20px #2f4f2f;
 }
 
 .image-modal-close {
   position: absolute;
   top: -10px;
   right: -10px;
-  background: #d0e6d0;  /* very pale green */
+  background: #d0e6d0;
   border-radius: 50%;
   font-size: 20px;
   width: 30px;
@@ -88,89 +178,9 @@ img {
   color: white;
 }
 
-/* --- Active Button --- */
+/* Active filter button */
 button.active {
-  background-color: #4a7a4a; /* calm green */
-  color: white;
-  font-weight: bold;
-}
-
-/* --- Page Header with nav and h1 --- */
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #355e35;  /* dark green */
-  padding: 0.5em 1em;
-  height: 3.5em;
-  color: #d0e6d0;
-}
-
-/* --- Header Title --- */
-.page-header h1 {
-  margin: 0 auto;
-  color: #d0e6d0;
-  font-size: 1.5em;
-  font-weight: bold;
-  text-align: center;
-  flex-grow: 1;
-}
-
-/* --- Navigation Styles --- */
-nav {
-  display: flex;
-  gap: 0.5em;
-}
-
-/* Nav Links and Dropdown Button */
-nav a,
-.dropdown-btn {
-  background-color: #355e35; /* match bar */
-  color: #d0e6d0;
-  padding: 0.5em 1em;
-  text-decoration: none;
-  font-size: 1em;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Hover state */
-nav a:hover,
-.dropdown:hover .dropdown-btn {
   background-color: #4a7a4a;
   color: white;
-}
-
-/* --- Dropdown Structure --- */
-.dropdown {
-  position: relative;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #2e4b2e; /* darker green */
-  min-width: 160px;
-  z-index: 1;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(20, 40, 20, 0.6);
-}
-
-.dropdown-content a {
-  color: #d0e6d0;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-  transition: background-color 0.3s ease;
-}
-
-.dropdown-content a:hover {
-  background-color: #5a8b5a; /* lighter green hover */
-  color: white;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
+  font-weight: bold;
 }
