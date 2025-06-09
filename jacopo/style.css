@@ -19,7 +19,6 @@ body {
   margin-bottom: 0;
 }
 
-/* Fully Centered h1 */
 .page-header h1 {
   margin: 0;
   color: #d0e6d0;
@@ -35,46 +34,46 @@ body {
   margin-top: 0.2em;
 }
 
-/* Centered description text below header if needed */
+/* Centered description text below header */
 .centered-description {
   text-align: center;
   font-size: 1.1em;
-  margin: 2em 0 1em; /* ⬅️ top space from header, less bottom space */
+  margin: 2em 0 1em;
 }
 
 /* Centered action buttons */
 .centered-buttons {
   display: flex;
   justify-content: center;
-  gap: 0; /* no gap so buttons touch */
-  margin-bottom: 1.5em;
+  margin: 1em 0 2em; /* ⬅️ add top spacing */
 }
 
 .centered-buttons button {
   background-color: #4a7a4a;
   color: #e8f4e8;
-  padding: 0.5em 3em;      /* ⬅️ Less vertical padding, longer width */
   border: none;
-  border-radius: 25px 0 0 25px; /* pill-like: left side round */
   font-size: 1em;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  height: 2.2em;            /* ⬅️ Fix height */
-  line-height: 2.2em;       /* Vertically center text */
+  height: 2.4em;            /* fixed height */
+  line-height: 2.4em;       /* vertical centering */
+  padding: 0 2.5em;         /* wide but not tall */
 }
 
-/* Left button: rounded left corners only */
 .centered-buttons button:first-child {
   border-top-left-radius: 9999px;
   border-bottom-left-radius: 9999px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  margin-right: 0; /* no gap */
+  margin-right: 0;
 }
 
-/* Right button: rounded right corners only */
 .centered-buttons button:last-child {
-  border-radius: 0 25px 25px 0; /* right side round for second button */
+  border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: 0;
 }
 
 .centered-buttons button:hover {
@@ -82,18 +81,7 @@ body {
   color: white;
 }
 
-.centered-buttons button {
-  background-color: #4a7a4a;
-  color: #e8f4e8;
-  padding: 0.75em 2.5em; /* longer horizontally */
-  border: none;
-  border-radius: 6px;
-  font-size: 1.1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Navigation placed on the left */
+/* Navigation */
 nav {
   display: flex;
   gap: 0.5em;
@@ -101,10 +89,9 @@ nav {
   left: 1em;
 }
 
-/* Nav links & dropdown button */
 nav a,
 .dropdown-btn {
-  background-color: #4a7a4a; /* distinguishable green for buttons */
+  background-color: #4a7a4a;
   color: #e8f4e8;
   padding: 0.5em 1em;
   text-decoration: none;
@@ -121,13 +108,11 @@ nav a:hover,
   color: white;
 }
 
-/* Add ▼ arrow to Pages */
 .dropdown-btn::after {
   content: " ▼";
   font-size: 0.8em;
 }
 
-/* Dropdown menu */
 .dropdown {
   position: relative;
 }
@@ -135,7 +120,7 @@ nav a:hover,
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #2e4b2e; /* darker green */
+  background-color: #2e4b2e;
   min-width: 160px;
   z-index: 1;
   border-radius: 4px;
@@ -185,7 +170,6 @@ td img {
 }
 
 /* Image Modal */
-
 .image-modal {
   display: none;
   position: fixed;
@@ -253,11 +237,10 @@ button.active {
 }
 
 /* Magnet tags */
-
 .magnet-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;   /* ✅ center the pills horizontally */
+  justify-content: center;
   gap: 8px;
   margin-top: 4px;
 }
@@ -270,6 +253,7 @@ button.active {
   display: inline-block;
   color: #1a351a;
 }
+
 .missing-magnets-section {
   text-align: center;
   margin-top: 2em;
