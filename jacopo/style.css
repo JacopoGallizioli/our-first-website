@@ -17,26 +17,43 @@ body {
   color: #d0e6d0;
 }
 
+/* Page Header Bar */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #355e35;  /* dark green */
+  padding: 0.5em 1em;
+  height: 4.5em; /* Increased height for subtitle */
+  color: #d0e6d0;
+}
+
 /* Fully Centered h1 */
 .page-header h1 {
   margin: 0;
   color: #d0e6d0;
   font-size: 1.5em;
   font-weight: bold;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   white-space: nowrap;
 }
 
-/* Centered description text */
+/* Subtitle under h1 */
+.page-header .subtitle {
+  font-size: 0.9em;
+  color: #b3d9b3; /* lighter green */
+  margin-top: 0.2em;
+}
+
+/* Centered description text below header if needed */
 .centered-description {
   text-align: center;
   font-size: 1.1em;
-  margin: 1.5em 0;
+  margin: 1.5em 0 1em 0;
 }
 
-/* Centered action buttons below the text */
+/* Centered action buttons */
 .centered-buttons {
   display: flex;
   justify-content: center;
@@ -47,10 +64,10 @@ body {
 .centered-buttons button {
   background-color: #4a7a4a;
   color: #e8f4e8;
-  padding: 0.5em 1em;
+  padding: 0.75em 2.5em; /* longer horizontally */
   border: none;
   border-radius: 6px;
-  font-size: 1em;
+  font-size: 1.1em;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -178,33 +195,33 @@ td img {
   top: 0;
   width: 100%;
   height: 100%;
-
-  /* Center modal content */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(20, 50, 20, 0.85);
 }
 
 .image-modal.show {
   display: flex;
 }
 
-.image-modal-content {
-  position: relative; /* for close button positioning */
-  width: 40%;         /* fixed width */
-  max-height: 80vh;   /* prevent vertical overflow */
+.image-modal-overlay {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  background-color: rgba(20, 50, 20, 0.85);
+  width: 100%;
+  height: 100%;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 40%;
+  max-height: 80%;
+  background: transparent;
 }
 
 .image-modal img {
-  width: 100%;        /* fill container */
+  width: 100%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 0 20px #2f4f2f;
-  display: block;
 }
 
 .image-modal-close {
@@ -222,7 +239,6 @@ td img {
   font-weight: bold;
   color: #2f4f2f;
   border: 1px solid #a2c4a2;
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
 
 .image-modal-close:hover {
