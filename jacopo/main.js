@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const magnets = [
       { coords: [22.3569, 103.9023], img: "Sapa.jpg", name: "Sapa", country: "Vietnam" },
-      { coords: [47.5576, 10.7498.], img: "Neuschwanstein.jpg", name: "Füssen", country: "Germany" },
+      { coords: [47.5576, 10.7498], img: "Neuschwanstein.jpg", name: "Füssen", country: "Germany" },
       { coords: [21.0285, 105.8542], img: "HCM.jpg", name: "Hanoi", country: "Vietnam" },
       { coords: [29.563, 106.5516], img: "Chongqing.jpg", name: "Chongqing", country: "China" },
       { coords: [44.4949, 11.3426], img: "Bologna.jpg", name: "Bologna", country: "Italy" },
