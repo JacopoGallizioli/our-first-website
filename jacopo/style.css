@@ -16,6 +16,7 @@ body {
   padding: 0.5em 1em;
   height: 4.5em; /* enough for subtitle */
   color: #d0e6d0;
+  margin-bottom: 0;
 }
 
 /* Fully Centered h1 */
@@ -38,7 +39,7 @@ body {
 .centered-description {
   text-align: center;
   font-size: 1.1em;
-  margin: 1.5em 0 1em 0;
+  margin: 2em 0 1em; /* ⬅️ top space from header, less bottom space */
 }
 
 /* Centered action buttons */
@@ -52,13 +53,14 @@ body {
 .centered-buttons button {
   background-color: #4a7a4a;
   color: #e8f4e8;
-  padding: 0.5em 3em;  /* same vertical padding, more horizontal */
+  padding: 0.5em 3em;      /* ⬅️ Less vertical padding, longer width */
   border: none;
-  font-size: 1.1em;
+  border-radius: 25px 0 0 25px; /* pill-like: left side round */
+  font-size: 1em;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  /* Height stays consistent */
-  height: 2.8em;
+  height: 2.2em;            /* ⬅️ Fix height */
+  line-height: 2.2em;       /* Vertically center text */
 }
 
 /* Left button: rounded left corners only */
@@ -72,11 +74,7 @@ body {
 
 /* Right button: rounded right corners only */
 .centered-buttons button:last-child {
-  border-top-right-radius: 9999px;
-  border-bottom-right-radius: 9999px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  margin-left: 0; /* no gap */
+  border-radius: 0 25px 25px 0; /* right side round for second button */
 }
 
 .centered-buttons button:hover {
