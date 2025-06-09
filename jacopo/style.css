@@ -218,7 +218,7 @@ td img {
 }
 
 .image-modal img {
-  width: 40%;
+  width: 100%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 0 20px #2f4f2f;
