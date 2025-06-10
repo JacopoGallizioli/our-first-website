@@ -322,14 +322,14 @@ button.active {
 /* Style for the filter dropdown containers */
 #people-filter, #date-filter {
   position: absolute; /* so they float near their headers */
-  background-color: #2e4b2e;  /* dark green background */
+  background-color: #1b2a1b;  /* darker green background */
   border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(30, 70, 30, 0.8);
+  box-shadow: 0 4px 12px rgba(15, 40, 15, 0.85); /* darker shadow */
   padding: 12px 16px;
   min-width: 180px;
   z-index: 100; /* above other content */
   display: none; /* hidden by default, JS toggles */
-  color: #d0e6d0; /* light green text */
+  color: #a8c9a8; /* slightly dimmer light green text */
   font-size: 0.95em;
 }
 
@@ -341,6 +341,14 @@ button.active {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 4px 8px; /* add some padding for better hover area */
+  border-radius: 4px; /* subtle rounding */
+}
+
+/* Hover effect on checkbox wrapper */
+#people-filter > div:hover, 
+#date-filter > div:hover {
+  background-color: #2f4b2f; /* slightly lighter green on hover */
 }
 
 /* Checkboxes */
@@ -357,16 +365,6 @@ button.active {
 #date-filter label {
   user-select: none; /* prevent text selection on click */
   color: #b3d9b3;    /* softer light green */
+  margin: 0; /* reset any default margin */
 }
 
-/* Hover effect on label wrapper */
-#people-filter > div:hover label, 
-#date-filter > div:hover label {
-  color: #e8f4e8; /* brighter text on hover */
-}
-
-/* Scroll if too tall */
-#people-filter, #date-filter {
-  max-height: 250px;
-  overflow-y: auto;
-}
