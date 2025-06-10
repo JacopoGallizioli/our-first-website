@@ -28,6 +28,26 @@ document.querySelectorAll(".house-img").forEach((img) => {
   });
 });
 
+// Added for sticking roadmap
+const roadmap = document.querySelector('.roadmap');
+const headerSpacer = document.getElementById('header-spacer');
+
+const observer = new IntersectionObserver(
+  ([entry]) => {
+    if (!entry.isIntersecting) {
+      roadmap.classList.add('fixed');
+    } else {
+      roadmap.classList.remove('fixed');
+    }
+  },
+  {
+    root: null,
+    threshold: 0
+  }
+);
+
+observer.observe(headerSpacer);
+
 function activatePin(index) {
   document.querySelectorAll(".pin").forEach(pin => {
     pin.classList.remove("active");
