@@ -20,13 +20,24 @@ document.querySelectorAll(".house-img").forEach((img) => {
 });
 
 // Fix the roadmap after the header scrolls out of view
+const roadmap = document.querySelector(".roadmap");
+
+// Measure roadmap's top offset relative to the page
+const roadmapOriginalTop = roadmap.getBoundingClientRect().top + window.scrollY;
+
 ScrollTrigger.create({
   trigger: "header",
   start: "bottom top", // when header leaves view
   endTrigger: ".story",
   end: "bottom bottom",
-  onEnter: () => document.querySelector(".roadmap").classList.add("fixed"),
-  onLeaveBack: () => document.querySelector(".roadmap").classList.remove("fixed"),
+  onEnter: () => {
+    roadmap.classList.add("fixed");
+    roadmap.style.top = `${roadmapOriginalTop}px`; // maintain original alignment
+  },
+  onLeaveBack: () => {
+    roadmap.classList.remove("fixed");
+    roadmap.style.top = ""; // reset to original style
+  },
 });
 
 // Function to activate pin and adjust line fill height
@@ -65,3 +76,4 @@ document.querySelectorAll(".house").forEach((section, index, sections) => {
     onEnterBack: () => activatePin(index),
   });
 });
+
