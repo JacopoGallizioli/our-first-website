@@ -9,8 +9,7 @@ header {
   background: #222;
   color: white;
   text-align: center;
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 10;
 }
 
@@ -19,23 +18,31 @@ header {
   position: relative;
 }
 
-.roadmap {
-  position: sticky;
-  top: 100px;
+.roadmap-wrapper {
   width: 60px;
   margin-left: 20px;
+}
+
+.roadmap {
+  position: relative; /* initially scrolls with page */
+  top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.roadmap.fixed {
+  position: fixed;
+  top: 20px;
+}
+
 .line {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 28px;
   width: 4px;
   background: #ccc;
+  height: 100vh;
   z-index: 0;
 }
 
@@ -44,9 +51,9 @@ header {
   top: 0;
   left: 28px;
   width: 4px;
-  height: 0;
   background: #4caf50;
   z-index: 1;
+  height: 0;
   transition: height 0.3s ease;
 }
 
