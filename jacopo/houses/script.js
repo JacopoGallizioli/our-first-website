@@ -18,6 +18,15 @@ document.querySelectorAll(".house").forEach((section, index) => {
   });
 });
 
+// Animate images on scroll
+document.querySelectorAll(".house-img").forEach((img) => {
+  ScrollTrigger.create({
+    trigger: img,
+    start: "top 85%",
+    onEnter: () => img.classList.add("visible")
+  });
+});
+
 function activatePin(index) {
   document.querySelectorAll(".pin").forEach(pin => {
     pin.classList.remove("active");
@@ -25,4 +34,3 @@ function activatePin(index) {
   const pin = document.querySelector(`.pin[data-index="${index}"]`);
   if (pin) pin.classList.add("active");
 }
-
