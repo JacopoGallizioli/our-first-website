@@ -148,25 +148,72 @@ nav a:hover,
   display: block;
 }
 
-/* Table styling */
+/* Table Container */
+#table-section {
+  padding: 20px;
+  overflow-x: auto;
+}
+
+/* Base Table Style */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  background-color: #e6f0e6;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
-th, td {
-  border: 1px solid #a2c4a2;
-  padding: 10px;
+/* Table Headers */
+thead th {
+  background-color: #4A4A8A;
+  color: white;
+  padding: 12px 10px;
   text-align: left;
-  color: #2f4f2f;
+  position: relative;
 }
 
+/* Table Rows */
+tbody tr {
+  transition: background-color 0.3s;
+}
+
+tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* Table Cells */
+td, th {
+  padding: 12px 10px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+/* Images in table */
 td img {
-  width: 100px;
-  height: auto;
-  cursor: pointer;
+  max-height: 80px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+
+td img:hover {
+  transform: scale(1.05);
+}
+
+/* Date and People Filter Boxes */
+#date-filter,
+#people-filter {
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+/* Dropdown arrows */
+#date-header::after,
+#people-header::after {
+  content: '▼';
+  font-size: 10px;
+  margin-left: 5px;
+  vertical-align: middle;
 }
 
 /* Image Modal */
