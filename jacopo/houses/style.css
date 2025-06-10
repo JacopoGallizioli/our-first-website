@@ -98,3 +98,8 @@ header {
   margin: 10px 0;
   border-radius: 8px;
 }
+
+#header-spacer {
+  height: 1px;
+  margin-top: -1px;
+}
