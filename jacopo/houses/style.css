@@ -103,3 +103,10 @@ header {
   height: 1px;
   margin-top: -1px;
 }
+
+.roadmap.fixed {
+  position: fixed;
+  top: 20px;  /* leave some space below the top of viewport */
+  left: 20px; /* keep it aligned left */
+  z-index: 1000;
+}
