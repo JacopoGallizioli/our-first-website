@@ -36,7 +36,7 @@ header {
 
 .roadmap.fixed {
   position: fixed;
-  top: 20px;       
+  top: 0px;       
   left: 20px;      
   width: 60px;
   z-index: 1000;
