@@ -35,14 +35,11 @@ header {
 }
 
 .roadmap.fixed {
-  position: fixed;
-  top: 0;                 
+  position: fixed;            
   left: 20px;            
   width: 60px;           
   z-index: 1000;
   transition: none;      
-  margin-top: 0 !important;
-  padding-top: 0 !important;
 }
 
 .line {
