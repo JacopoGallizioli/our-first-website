@@ -318,3 +318,55 @@ button.active {
   margin: 2em auto;
   max-width: fit-content;
 }
+
+/* Style for the filter dropdown containers */
+#people-filter, #date-filter {
+  position: absolute; /* so they float near their headers */
+  background-color: #2e4b2e;  /* dark green background */
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(30, 70, 30, 0.8);
+  padding: 12px 16px;
+  min-width: 180px;
+  z-index: 100; /* above other content */
+  display: none; /* hidden by default, JS toggles */
+  color: #d0e6d0; /* light green text */
+  font-size: 0.95em;
+}
+
+/* Each checkbox wrapper */
+#people-filter > div, 
+#date-filter > div {
+  margin-bottom: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Checkboxes */
+#people-filter input[type="checkbox"], 
+#date-filter input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #4a7a4a; /* modern way to style checkbox color */
+}
+
+/* Labels */
+#people-filter label, 
+#date-filter label {
+  user-select: none; /* prevent text selection on click */
+  color: #b3d9b3;    /* softer light green */
+}
+
+/* Hover effect on label wrapper */
+#people-filter > div:hover label, 
+#date-filter > div:hover label {
+  color: #e8f4e8; /* brighter text on hover */
+}
+
+/* Scroll if too tall */
+#people-filter, #date-filter {
+  max-height: 250px;
+  overflow-y: auto;
+}
