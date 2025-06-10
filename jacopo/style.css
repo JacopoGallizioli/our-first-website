@@ -165,11 +165,16 @@ table {
 
 /* Table Headers */
 thead th {
-  background-color: #4A4A8A;
-  color: white;
+  background-color: #355e35; /* your dark green from header */
+  color: #d0e6d0;            /* light green text */
   padding: 12px 10px;
   text-align: left;
   position: relative;
+}
+
+/* Table Rows Hover: Light green */
+tbody tr:hover {
+  background-color: #e6f2e6; /* very light green highlight */
 }
 
 /* Table Rows */
@@ -198,22 +203,6 @@ td img {
 
 td img:hover {
   transform: scale(1.05);
-}
-
-/* Date and People Filter Boxes */
-#date-filter,
-#people-filter {
-  border-radius: 5px;
-  font-size: 13px;
-}
-
-/* Dropdown arrows */
-#date-header::after,
-#people-header::after {
-  content: '▼';
-  font-size: 10px;
-  margin-left: 5px;
-  vertical-align: middle;
 }
 
 /* Image Modal */
