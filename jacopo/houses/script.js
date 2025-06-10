@@ -49,22 +49,42 @@ const observer = new IntersectionObserver(
 observer.observe(headerSpacer);
 
 function activatePin(index) {
-  document.querySelectorAll(".pin").forEach(pin => {
-    pin.classList.remove("active");
+  const pins = document.querySelectorAll(".pin");
+  pins.forEach((pin, i) => {
+    if (i <= index) {
+      pin.classList.add("active");
+    } else {
+      pin.classList.remove("active");
+    }
   });
-  const pin = document.querySelector(`.pin[data-index="${index}"]`);
-  if (pin) pin.classList.add("active");
+  
+  // Set the fill line height to the active pin's vertical position
+  const lineFill = document.getElementById("lineFill");
+  if (!lineFill) return;
+
+  // Get position of the pin relative to the roadmap container
+  const roadmap = document.querySelector(".roadmap");
+  const activePin = document.querySelector(`.pin[data-index="${index}"]`);
+  if (!activePin || !roadmap) return;
+
+  // Calculate vertical offset of pin center within roadmap
+  const roadmapRect = roadmap.getBoundingClientRect();
+  const pinRect = activePin.getBoundingClientRect();
+
+  // Distance from top of roadmap to center of active pin
+  const offset = pinRect.top - roadmapRect.top + pinRect.height / 2;
+
+  // Set lineFill height to offset (in px)
+  lineFill.style.height = `${offset}px`;
 }
 
-const lineFill = document.getElementById("lineFill");
-
-ScrollTrigger.create({
-  trigger: ".story",
-  start: "top top",
-  end: "bottom bottom",
-  scrub: true,
-  onUpdate: self => {
-    const progress = self.progress; // from 0 to 1
-    lineFill.style.height = `${progress * 100}%`;
-  }
+// Create ScrollTriggers for each section to activate pins and line fill
+document.querySelectorAll(".house").forEach((section, index, sections) => {
+  ScrollTrigger.create({
+    trigger: section,
+    start: index === sections.length - 1 ? "top 20%" : "top center", // last pin triggers earlier for 4/5 screen height
+    end: index === sections.length - 1 ? "bottom bottom" : "bottom center",
+    onEnter: () => activatePin(index),
+    onEnterBack: () => activatePin(index),
+  });
 });
