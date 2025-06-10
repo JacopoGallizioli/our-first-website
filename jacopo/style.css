@@ -268,3 +268,40 @@ button.active {
   font-size: 1.05em;
   color: #2f4f2f;
 }
+
+.map-frame {
+  border: 20px solid #355e35; /* dark green base */
+  border-radius: 20px;
+  padding: 10px;
+  background: linear-gradient(145deg, #2e4b2e, #3f6b3f);
+  box-shadow:
+    0 0 0 10px #4a7a4a,
+    0 0 30px rgba(20, 40, 20, 0.6),
+    inset 0 0 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin: 2em auto;
+  max-width: fit-content;
+}
+
+/* Optional ornate corners (can be done via images or pseudo-elements) */
+.map-frame::before,
+.map-frame::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: url('baroque-corner.svg') no-repeat center center;
+  background-size: contain;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.map-frame::before {
+  top: -20px;
+  left: -20px;
+}
+
+.map-frame::after {
+  bottom: -20px;
+  right: -20px;
+}
