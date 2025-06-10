@@ -18,12 +18,13 @@ document.querySelectorAll(".house").forEach((section, index) => {
   });
 });
 
-// Animate images on scroll
+// Animate images on scroll (both directions)
 document.querySelectorAll(".house-img").forEach((img) => {
   ScrollTrigger.create({
     trigger: img,
     start: "top 85%",
-    onEnter: () => img.classList.add("visible")
+    onEnter: () => img.classList.add("visible"),
+    onEnterBack: () => img.classList.add("visible"), // <--- add this
   });
 });
 
