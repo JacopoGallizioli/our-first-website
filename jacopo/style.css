@@ -45,7 +45,7 @@ body {
 .centered-buttons {
   display: flex;
   justify-content: center;
-  margin: 1em 0 2em; /* ⬅️ add top spacing */
+  margin: 1em 0 0em; /* ⬅️ add top spacing */
 }
 
 .centered-buttons button {
