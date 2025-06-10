@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const tableBtn = document.getElementById("show-table");
   const mapBtn = document.getElementById("show-map");
   const tableSection = document.getElementById("table-section");
+  const mapWrapper = document.getElementById("map-wrapper"); // updated
   const mapSection = document.getElementById("map-section");
 
   let mapInitialized = false;
@@ -55,20 +56,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Show table by default
   tableSection.style.display = "block";
-  mapSection.style.display = "none";
+  mapWrapper.style.display = "none"; // updated
   tableBtn.classList.add("active");
   mapBtn.classList.remove("active");
 
   tableBtn.addEventListener("click", () => {
     tableSection.style.display = "block";
-    mapSection.style.display = "none";
+    mapWrapper.style.display = "none"; // updated
     tableBtn.classList.add("active");
     mapBtn.classList.remove("active");
   });
 
   mapBtn.addEventListener("click", () => {
     tableSection.style.display = "none";
-    mapSection.style.display = "block";
+    mapWrapper.style.display = "block"; // updated
     mapBtn.classList.add("active");
     tableBtn.classList.remove("active");
 
