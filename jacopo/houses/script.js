@@ -21,9 +21,7 @@ document.querySelectorAll(".house-img").forEach((img) => {
 
 // Fix the roadmap after the header scrolls out of view
 const roadmap = document.querySelector(".roadmap");
-
-// Measure roadmap's top offset relative to the page
-const roadmapOriginalTop = roadmap.getBoundingClientRect().top + window.scrollY;
+const container = document.querySelector("main.container");
 
 ScrollTrigger.create({
   trigger: "header",
@@ -31,13 +29,14 @@ ScrollTrigger.create({
   endTrigger: ".story",
   end: "bottom bottom",
   onEnter: () => {
+    const containerTop = container.getBoundingClientRect().top + window.scrollY;
     roadmap.classList.add("fixed");
-    roadmap.style.top = `${roadmapOriginalTop}px`; // maintain original alignment
+    roadmap.style.top = `${containerTop}px`; // Align with top of container
   },
   onLeaveBack: () => {
     roadmap.classList.remove("fixed");
-    roadmap.style.top = ""; // reset to original style
-  },
+    roadmap.style.top = ""; // Reset
+  }
 });
 
 // Function to activate pin and adjust line fill height
@@ -54,9 +53,8 @@ function activatePin(index) {
   const lineFill = document.getElementById("lineFill");
   if (!lineFill) return;
 
-  const roadmap = document.querySelector(".roadmap");
   const activePin = document.querySelector(`.pin[data-index="${index}"]`);
-  if (!activePin || !roadmap) return;
+  if (!activePin) return;
 
   const roadmapRect = roadmap.getBoundingClientRect();
   const pinRect = activePin.getBoundingClientRect();
@@ -70,10 +68,9 @@ document.querySelectorAll(".house").forEach((section, index, sections) => {
   const isLast = index === sections.length - 1;
   ScrollTrigger.create({
     trigger: section,
-    start: isLast ? "top 80%" : "top center", // for last pin, trigger slightly earlier
+    start: isLast ? "top 80%" : "top center",
     end: isLast ? "bottom bottom" : "bottom center",
     onEnter: () => activatePin(index),
     onEnterBack: () => activatePin(index),
   });
 });
-
