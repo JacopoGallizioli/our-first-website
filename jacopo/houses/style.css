@@ -110,3 +110,14 @@ header {
   left: 20px; /* keep it aligned left */
   z-index: 1000;
 }
+
+.roadmap-placeholder {
+  display: none; /* hidden by default */
+  width: 60px;   /* same as .roadmap width */
+  height: 100vh; /* full viewport height, adjust if needed */
+  flex-shrink: 0;
+}
+
+.roadmap.fixed + .roadmap-placeholder {
+  display: block;
+}
