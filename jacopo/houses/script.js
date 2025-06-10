@@ -35,3 +35,16 @@ function activatePin(index) {
   const pin = document.querySelector(`.pin[data-index="${index}"]`);
   if (pin) pin.classList.add("active");
 }
+
+const lineFill = document.getElementById("lineFill");
+
+ScrollTrigger.create({
+  trigger: ".story",
+  start: "top top",
+  end: "bottom bottom",
+  scrub: true,
+  onUpdate: self => {
+    const progress = self.progress; // from 0 to 1
+    lineFill.style.height = `${progress * 100}%`;
+  }
+});
