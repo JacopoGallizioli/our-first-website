@@ -62,7 +62,7 @@ header {
   width: 4px;
   background: #4caf50;
   z-index: 1;
-  height: 0 !important;
+  height: 0;
   transition: height 0.3s ease;
 }
 
