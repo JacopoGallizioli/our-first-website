@@ -44,26 +44,38 @@
     <div class="roadmap">
       <svg class="roadmap-svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
         <!-- Base segments -->
-        <path d="M100,0 L150,100"
-              stroke="#ccc"
-              stroke-width="4"
-              stroke-dasharray="33.5 78.3" />
+        <!-- 1) First 30% dashed -->
+        <path
+          d="M100,0 L115,30"
+          stroke="#ccc" stroke-width="4"
+          stroke-dasharray="5 5" />
         
-        <!-- 2) Middle segments (fully solid) -->
-        <path d="M150,100 L50,200"
-              stroke="#ccc"
-              stroke-width="4" />
+        <!-- 2) Remaining 70% solid (up to Pin 0) -->
+        <path
+          d="M115,30 L150,100"
+          stroke="#ccc" stroke-width="4" />
         
-        <path d="M50,200 L150,300"
-              stroke="#ccc"
-              stroke-width="4" />
+        <!-- 3) Full solid between Pin 0 → Pin 1 -->
+        <path
+          d="M150,100 L50,200"
+          stroke="#ccc" stroke-width="4" />
         
-        <!-- 3) Last segment (70% solid, 30% dashed) -->
-        <path d="M150,300 L50,400"
-              stroke="#ccc"
-              stroke-width="4"
-              stroke-dasharray="78.3 33.5" />
-
+        <!-- 4) Full solid between Pin 1 → Pin 2 -->
+        <path
+          d="M50,200 L150,300"
+          stroke="#ccc" stroke-width="4" />
+        
+        <!-- 5) First 70% of last segment (solid) -->
+        <path
+          d="M150,300 L80,370"
+          stroke="#ccc" stroke-width="4" />
+        
+        <!-- 6) Final 30% dashed -->
+        <path
+          d="M80,370 L50,400"
+          stroke="#ccc" stroke-width="4"
+          stroke-dasharray="5 5" />
+        
         <!-- Fill path (single continuous) -->
         <path id="fillPath"
               d="M100,0 L150,100 L50,200 L150,300 L50,400"
