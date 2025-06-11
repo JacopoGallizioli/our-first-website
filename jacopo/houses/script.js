@@ -1,7 +1,7 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // Reveal house sections
-const sections = document.querySelectorAll(".house");
+const sections = document.querySelectorAll(".house-spacer, .house");
 const pins = document.querySelectorAll(".pin");
 const lineFill = document.getElementById("lineFill");
 const roadmap = document.querySelector(".roadmap");
