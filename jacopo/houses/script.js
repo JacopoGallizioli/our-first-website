@@ -81,11 +81,12 @@ const createLineFillTriggers = () => {
       onLeave: () => {
         lineFill.style.height = `${targetOffset}px`;
       },
-      onEnter: () => activatePin(index),
-      onEnterBack: () => activatePin(index),
+      onEnter: () => {
+        if (index > 0) activatePin(index - 1);
+      },
       onEnterBack: () => {
         lineFill.style.height = `${previousOffset}px`;
-        activatePin(index);
+        if (index > 0) activatePin(index - 1);
       }
     });
 
