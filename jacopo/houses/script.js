@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const dashLen = 5, gapLen = 5;
         const unit   = dashLen + gapLen;
         const totalUnits = Math.floor(lenPostDash / unit);
-        const unitsToShow = Math.round(totalUnits * localP);
+        const unitsToShow = Math.floor(totalUnits * localP);
 
         // build dashArray: e.g. "5 5 5 5 ... remainder"
         const shownLength = unitsToShow * unit;
