@@ -37,27 +37,28 @@ observer.observe(headerSpacer);
 // Activate pins cumulatively
 function activatePin(index) {
   pins.forEach((pin, i) => {
-    pin.classList.toggle("active", i <= index);
+    if (i <= index) {
+      pin.classList.add("active");
+    } else {
+      pin.classList.remove("active");
+    }
   });
 }
 
-// Create ScrollTriggers for pin activation and line fill
-const pinOffsets = [];
-const updateOffsets = () => {
+// Scroll-linked progressive line fill synced with pin activation
+window.addEventListener("load", () => {
   const roadmapRect = roadmap.getBoundingClientRect();
-  pinOffsets.length = 0;
-  pins.forEach(pin => {
+  const pinOffsets = Array.from(pins).map(pin => {
     const rect = pin.getBoundingClientRect();
-    pinOffsets.push(rect.top - roadmapRect.top + rect.height / 2);
+    return rect.top - roadmapRect.top + rect.height / 2;
   });
-};
 
-const createLineFillTriggers = () => {
-  let previousOffset = 0;
   lineFill.style.height = "0px";
 
+  let previousOffset = 0;
+
   sections.forEach((section, index) => {
-    const targetOffset = pinOffsets[index];
+    const currentOffset = pinOffsets[index];
 
     ScrollTrigger.create({
       trigger: section,
@@ -66,32 +67,25 @@ const createLineFillTriggers = () => {
       scrub: true,
       onUpdate: self => {
         const progress = self.progress;
-        const height = previousOffset + (targetOffset - previousOffset) * progress;
+        const height = previousOffset + (currentOffset - previousOffset) * progress;
         lineFill.style.height = `${height}px`;
       },
       onLeave: () => {
-        lineFill.style.height = `${targetOffset}px`;
+        lineFill.style.height = `${currentOffset}px`;
       },
       onEnter: () => activatePin(index),
       onEnterBack: () => activatePin(index),
-      onEnterBack: () => {
+      onLeaveBack: () => {
         lineFill.style.height = `${previousOffset}px`;
-        activatePin(index);
       }
     });
 
-    previousOffset = targetOffset;
+    previousOffset = currentOffset;
   });
-};
-
-window.addEventListener("load", () => {
-  updateOffsets();
-  createLineFillTriggers();
 });
 
 window.addEventListener("resize", () => {
-  ScrollTrigger.getAll().forEach(t => t.kill());
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
   ScrollTrigger.refresh();
-  updateOffsets();
-  createLineFillTriggers();
+  location.reload();
 });
