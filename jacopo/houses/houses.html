@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Housing Story</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -10,45 +10,49 @@
   <header>
     <h1>My Housing Journey</h1>
   </header>
-
+  <!-- Spacer for sticky trigger -->
   <div id="header-spacer"></div>
-  
-  <main class="container">
 
+  <main class="container">
+    <!-- Left: your house story sections -->
     <div class="story">
       <section class="house" data-index="0">
         <h2>Moved in: January 2015</h2>
-        <p>Moved into our first apartment in Saronno.</p>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 photo 1">
-        <p>We were strong but our house was broken.</p>
-        <img src="pictures/SaronnoBroken1.jpg" class="house-img" alt="House 1 photo 2">
-        <img src="pictures/SaronnoBroken2.jpg" class="house-img" alt="House 1 photo 3">
+        <p>First apartment in Saronno.</p>
+        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
       </section>
-
       <section class="house" data-index="1">
         <h2>Moved in: March 2018</h2>
-        <p>Moved to Berlin for a new job. First time living alone in a studio apartment in Kreuzberg.</p>
-        <img src="images/house2a.jpg" alt="House 2 photo">
+        <p>Studio in Kreuzberg, Berlin.</p>
+        <img src="images/house2a.jpg" alt="Berlin studio" class="house-img"/>
       </section>
-
       <section class="house" data-index="2">
         <h2>Moved in: August 2022</h2>
-        <p>Started a new chapter in Munich with Linh. Small, bright apartment near the Isar river.</p>
-        <img src="images/house3a.jpg" alt="House 3 photo">
+        <p>Apartment by the Isar in Munich.</p>
+        <img src="images/house3a.jpg" alt="Munich apt" class="house-img"/>
       </section>
     </div>
 
+    <!-- Right: zigzag roadmap -->
     <div class="roadmap">
-      <svg class="zigzag-svg" width="60" height="300" viewBox="0 0 60 300" xmlns="http://www.w3.org/2000/svg">
-        <path d="M30 0 L0 30 L60 60 L0 90 L60 120 L0 150 L60 180 L0 210 L60 240 L0 270 L60 300" stroke="#ccc" stroke-width="4" fill="none"/>
+      <svg class="roadmap-svg" viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet">
+        <!-- base gray line -->
+        <path id="basePath" 
+              d="M100,0 L150,100 L50,200 L150,300" 
+              fill="none" stroke="#ccc" stroke-width="4" />
+        <!-- green fill line -->
+        <path id="fillPath" 
+              d="M100,0 L150,100 L50,200 L150,300" 
+              fill="none" stroke="#4caf50" stroke-width="4"
+              stroke-dasharray="0 9999" />
+        <!-- pins at each vertex -->
+        <circle class="pin" data-index="0" cx="150" cy="100" r="8" />
+        <circle class="pin" data-index="1" cx="50"  cy="200" r="8" />
+        <circle class="pin" data-index="2" cx="150" cy="300" r="8" />
       </svg>
-      <div class="line-fill" id="lineFill"></div>
-      <div class="pin" data-index="0"></div>
-      <div class="pin" data-index="1"></div>
-      <div class="pin" data-index="2"></div>
     </div>
 
-
+    <!-- placeholder to avoid layout jump when .roadmap becomes fixed -->
     <div class="roadmap-placeholder"></div>
   </main>
 
