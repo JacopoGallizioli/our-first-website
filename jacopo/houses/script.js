@@ -83,30 +83,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 3) Segments 5 & 6 animation for Section 2
   ScrollTrigger.create({
-    trigger: sections[2],      // third house
+    trigger: sections[2],   // third house
     start:   "top bottom",
     end:     "bottom top",
     scrub:   true,
     onUpdate(self) {
-      const p = self.progress;    // 0 → 1 over Section 2
+      const p = self.progress;  // 0 → 1 over the scroll of Section 2
 
-      // --- Segment 5 solid tail: fill over first 70% of scroll ---
-      const seg5Progress = Math.min(p / 0.7, 1);
-      const drawSolid = lenPostSolid * seg5Progress;
+      // --- Segment 5 solid tail (first 70%) ---
+      const seg5End = 0.7;
+      const seg5Prog = Math.min(p / seg5End, 1);
+      const drawSolid = lenPostSolid * seg5Prog;
       fillPostSolid.style.strokeDasharray = `${drawSolid} ${lenPostSolid}`;
 
-      // --- Segment 6 dashed tail: reveal dashes over last 30% ---
-      if (p < 0.7) {
-        // keep all grey
-        fillPostDash.style.strokeDashoffset = lenPostDash;
+      // --- Segment 6 dashed tail (last 30%), no shift, dash-by-dash ---
+      const dashStart = seg5End;
+      if (p < dashStart) {
+        // nothing green yet
+        fillPostDash.style.strokeDasharray = `0 ${lenPostDash}`;
       } else {
-        // local progress 0→1 over [0.7,1]
-        const localP = (p - 0.7) / 0.3;
-        // offset from len→0 reveals dashes in place
-        fillPostDash.style.strokeDashoffset = lenPostDash * (1 - localP);
+        // compute how many dashes to color
+        const localP = (p - dashStart) / (1 - dashStart); // 0→1 over last 30%
+        const dashLen = 5; 
+        const dashGap = 5;
+        const unit = dashLen + dashGap;
+        const totalUnits = Math.floor(lenPostDash / unit);
+        const unitsToShow = Math.round(totalUnits * localP);
+
+        // build a stroke-dasharray: "5 5 5 5 ... remainingLength"
+        const shownLength = unitsToShow * unit;
+        const remainder = Math.max(lenPostDash - shownLength, 0);
+
+        // green overlay shows dash pattern for shownLength, then gap
+        fillPostDash.style.strokeDasharray = `${shownLength} ${remainder}`;
       }
     },
-    onEnter:      () => pins[2].classList.add("active"),
-    onLeaveBack:  () => pins[2].classList.remove("active")
+    onEnter: () => pins[2].classList.add("active"),
+    onLeaveBack: () => pins[2].classList.remove("active")
   });
 });
