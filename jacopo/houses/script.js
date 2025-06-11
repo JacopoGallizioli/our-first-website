@@ -14,6 +14,7 @@ function resetRoadmap() {
   pins.forEach(pin => pin.classList.remove("active")); // no pin active
 }
 
+// Initial scroll reset (pin0 and line)
 ScrollTrigger.create({
   trigger: sections[0],
   start: "top top",
@@ -67,7 +68,6 @@ function activatePin(index) {
 // Create ScrollTriggers for pin activation and line fill
 const pinOffsets = [];
 const updateOffsets = () => {
-  console.log("Pin Offsets:", pinOffsets);
   const roadmapRect = roadmap.getBoundingClientRect();
   pinOffsets.length = 0;
   pins.forEach(pin => {
@@ -80,43 +80,44 @@ const createLineFillTriggers = () => {
   let previousOffset = 0;
   lineFill.style.height = "0px";
 
-sections.forEach((section, index) => {
-  const targetOffset = pinOffsets[index];
-  if (targetOffset == null) return;
+  sections.forEach((section, index) => {
+    const targetOffset = pinOffsets[index];
+    if (targetOffset == null) return;
 
-  ScrollTrigger.create({
-    trigger: section,
-    start: "top center",
-    end: "bottom center",
-    scrub: true,
-    onUpdate: (self) => {
-      const progress = self.progress;
-      const height = Math.max(0, previousOffset + (targetOffset - previousOffset) * progress);
-      lineFill.style.height = `${height}px`;
-    },
-    onEnter: () => {
-      if (index > 0) activatePin(index - 1);
-    },
-    onEnterBack: () => {
-      if (index > 0) activatePin(index - 1);
-    },
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top center",
+      end: "bottom center",
+      scrub: true,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        const height = Math.max(0, previousOffset + (targetOffset - previousOffset) * progress);
+        lineFill.style.height = `${height}px`;
+      },
+      onEnter: () => {
+        if (index > 0) activatePin(index - 1);
+      },
+      onEnterBack: () => {
+        if (index > 0) activatePin(index - 1);
+      },
+    });
+
+    previousOffset = targetOffset;
   });
+};
 
-  previousOffset = targetOffset;
-});
-
+// Wait for layout to settle before creating triggers
 window.addEventListener("load", () => {
   resetRoadmap();
 
-  // Wait a bit to ensure everything is laid out
   setTimeout(() => {
-    updateOffsets();          // Measure pin positions
-    createLineFillTriggers(); // Create scroll triggers
-    ScrollTrigger.refresh();  // Refresh after all are ready
-  }, 100); // slight delay ensures DOM is painted
+    updateOffsets();
+    createLineFillTriggers();
+    ScrollTrigger.refresh();
+  }, 100);
 });
 
-
+// Recreate triggers on resize
 window.addEventListener("resize", () => {
   ScrollTrigger.getAll().forEach(t => t.kill());
   ScrollTrigger.refresh();
@@ -124,4 +125,3 @@ window.addEventListener("resize", () => {
   updateOffsets();
   createLineFillTriggers();
 });
-
