@@ -90,34 +90,37 @@ document.addEventListener("DOMContentLoaded", () => {
     onEnter:      () => pins[2].classList.add("active"),
     onLeaveBack:  () => pins[2].classList.remove("active"),
     onUpdate(self) {
-      const p = self.progress;  // 0 → 1 across Section 2
+      const p = self.progress;
       const dashStart = 0.7;
-
-      // Segment 5 (solid tail): fill 0→100% over [0,0.7]
+    
+      // Segment 5 (solid)
       const seg5Prog = Math.min(p / dashStart, 1);
       const drawSolid = lenPostSolid * seg5Prog;
       fillPostSolid.style.strokeDasharray = `${drawSolid} ${lenPostSolid}`;
-
-      // Segment 6 (dashed tail): reveal dashes over [0.7,1]
+    
+      // Segment 6 (dashed)
+      const dashLen = 5, gapLen = 5;
+      const unit = dashLen + gapLen;
+      const totalUnits = Math.floor(lenPostDash / unit);
+    
       if (p < dashStart) {
-        // hide all green dashes
         fillPostDash.style.strokeDasharray = `0 ${lenPostDash}`;
       } else {
-        const localP = (p - dashStart) / (1 - dashStart); // normalized 0→1
-        const dashLen = 5, gapLen = 5;
-        const unit   = dashLen + gapLen;
-        const totalUnits = Math.floor(lenPostDash / unit);
-        const unitsToShow = Math.floor(totalUnits * localP);
-
-        // build dashArray: e.g. "5 5 5 5 ... remainder"
-        const shownLength = unitsToShow * unit;
-        const remainder   = Math.max(lenPostDash - shownLength, 0);
-        const arr = [];
-        for (let i = 0; i < unitsToShow; i++) {
-          arr.push(dashLen, gapLen);
+        const localP = (p - dashStart) / (1 - dashStart); // 0 → 1
+    
+        const dashesToShow = Math.floor(localP * totalUnits);
+        const dashArray = [];
+    
+        for (let i = 0; i < dashesToShow; i++) {
+          dashArray.push(dashLen, gapLen);
         }
-
-        fillPostDash.style.strokeDasharray = arr.join(" ");
+    
+        const remainingLength = lenPostDash - dashesToShow * unit;
+        if (remainingLength > 0) {
+          dashArray.push(0, remainingLength); // Just transparent
+        }
+    
+        fillPostDash.style.strokeDasharray = dashArray.join(" ");
       }
     }
   });
