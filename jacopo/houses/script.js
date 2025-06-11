@@ -97,24 +97,29 @@ document.addEventListener("DOMContentLoaded", () => {
       fillPostSolid.style.strokeDasharray = `${drawSolid} ${lenPostSolid}`;
   
       // --- Segment 6 dashed tail (last 30%) ---
-      const dashStart = seg5End;
+      const dashLen   = 5;
+      const dashGap   = 5;
+      const unitCount = Math.floor(lenPostDash / (dashLen + dashGap));
+      
       if (p < dashStart) {
-        // still grey (no green dashes)
+        // hide all green dashes
         fillPostDash.style.strokeDasharray = `0 ${lenPostDash}`;
       } else {
-        // local progress over [0.7,1]
-        const localP = (p - dashStart) / (1 - dashStart);
-        const dashLen = 5, dashGap = 5;
-        const unit = dashLen + dashGap;
-        const totalUnits = Math.floor(lenPostDash / unit);
-        const unitsToShow = Math.round(totalUnits * localP);
-  
-        // compute how many pixels of dash+gap that covers
-        const shownLength = unitsToShow * unit;
+        const localP = (p - dashStart) / (1 - dashStart); // 0→1 over last 30%
+        const count = Math.round(unitCount * localP);
+      
+        // build exactly `count` dash/gap pairs, then the remainder
+        const shownLength = count * (dashLen + dashGap);
         const remainder   = Math.max(lenPostDash - shownLength, 0);
-  
-        // draw green dashes for that length, leave the rest blank
-        fillPostDash.style.strokeDasharray = `${shownLength} ${remainder}`;
+      
+        // e.g. "5 5 5 5 5 5  remainder"
+        const arr = [];
+        for (let i = 0; i < count; i++) {
+          arr.push(dashLen, dashGap);
+        }
+        arr.push(remainder);
+      
+        fillPostDash.style.strokeDasharray = arr.join(" ");
       }
     },
     onEnter:      () => pins[2].classList.add("active"),
