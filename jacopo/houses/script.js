@@ -75,49 +75,45 @@ const updateOffsets = () => {
     pinOffsets.push(rect.top - roadmapRect.top + rect.height / 2);
   });
 };
+
 const createLineFillTriggers = () => {
   let previousOffset = 0;
   lineFill.style.height = "0px";
 
-  sections.forEach((section, index) => {
-    const targetOffset = pinOffsets[index];
+sections.forEach((section, index) => {
+  const targetOffset = pinOffsets[index];
+  if (targetOffset == null) return;
 
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top center",
-      end: "bottom center",
-      scrub: true,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const height = previousOffset + (targetOffset - previousOffset) * progress;
-        lineFill.style.height = `${height}px`;
-      },
-      onEnter: () => {
-        if (index > 0) activatePin(index - 1);
-      },
-      onEnterBack: () => {
-        if (index > 0) activatePin(index - 1);
-      },
-    });
-
-    previousOffset = targetOffset;
+  ScrollTrigger.create({
+    trigger: section,
+    start: "top center",
+    end: "bottom center",
+    scrub: true,
+    onUpdate: (self) => {
+      const progress = self.progress;
+      const height = Math.max(0, previousOffset + (targetOffset - previousOffset) * progress);
+      lineFill.style.height = `${height}px`;
+    },
+    onEnter: () => {
+      if (index > 0) activatePin(index - 1);
+    },
+    onEnterBack: () => {
+      if (index > 0) activatePin(index - 1);
+    },
   });
-};
+
+  previousOffset = targetOffset;
+});
 
 window.addEventListener("load", () => {
   resetRoadmap();
-  updateOffsets();
-  createLineFillTriggers();
+
+  // Wait a bit to ensure everything is laid out
   setTimeout(() => {
-    lineFill.style.height = "0px";
-  }, 50);
-  setTimeout(() => {
-    lineFill.style.height = "0px";
-    pins.forEach(pin => pin.classList.remove("active"));
-  }, 50);
-  setTimeout(() => {
-    ScrollTrigger.refresh(); // ensure everything aligns
-  }, 100);
+    updateOffsets();          // Measure pin positions
+    createLineFillTriggers(); // Create scroll triggers
+    ScrollTrigger.refresh();  // Refresh after all are ready
+  }, 100); // slight delay ensures DOM is painted
 });
 
 
