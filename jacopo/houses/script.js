@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         const localP = (p - dashStart) / (1 - dashStart); // 0 → 1
     
-        const dashesToShow = Math.floor(localP * totalUnits);
+        const dashesToShow = Math.round(localP * totalUnits);
         const dashArray = [];
     
         for (let i = 0; i < dashesToShow; i++) {
