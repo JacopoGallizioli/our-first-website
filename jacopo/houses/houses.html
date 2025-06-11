@@ -44,10 +44,25 @@
     <div class="roadmap">
       <svg class="roadmap-svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
         <!-- Base segments -->
-        <path d="M100,0   L150,100" stroke="#ccc" stroke-width="4" stroke-dasharray="5 5"/>
-        <path d="M150,100 L50,200" stroke="#ccc" stroke-width="4"/>
-        <path d="M50,200  L150,300" stroke="#ccc" stroke-width="4"/>
-        <path d="M150,300 L50,400" stroke="#ccc" stroke-width="4" stroke-dasharray="5 5"/>
+        <path d="M100,0 L150,100"
+              stroke="#ccc"
+              stroke-width="4"
+              stroke-dasharray="33.5 78.3" />
+        
+        <!-- 2) Middle segments (fully solid) -->
+        <path d="M150,100 L50,200"
+              stroke="#ccc"
+              stroke-width="4" />
+        
+        <path d="M50,200 L150,300"
+              stroke="#ccc"
+              stroke-width="4" />
+        
+        <!-- 3) Last segment (70% solid, 30% dashed) -->
+        <path d="M150,300 L50,400"
+              stroke="#ccc"
+              stroke-width="4"
+              stroke-dasharray="78.3 33.5" />
 
         <!-- Fill path (single continuous) -->
         <path id="fillPath"
