@@ -3,7 +3,6 @@ body {
   margin: 0;
   background: #f4f4f4;
 }
-
 header {
   padding: 20px;
   background: #222;
@@ -12,115 +11,86 @@ header {
   position: relative;
   z-index: 10;
 }
-
-.container {
-  display: flex;
-  position: relative;
-}
-
-.roadmap-wrapper {
-  width: 60px;
-  margin-left: 0px;
-}
-
-.roadmap {
-  position: relative;
-  width: 60px;
-  left: 20px; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: left 0.3s ease;
-  margin-left: 0;
-}
-
-.roadmap.fixed {
-  position: fixed;
-  top: 0;                
-  left: 20px;
-  width: 60px;           
-  z-index: 1000;
-  transition: none;      
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-.line {
-  position: absolute;
-  top: 0;
-  left: 28px;
-  width: 4px;
-  background: #ccc;
-  height: 100vh;
-  z-index: 0;
-}
-
-.line-fill {
-  position: absolute;
-  top: 0;
-  left: 28px;
-  width: 4px;
-  background: #4caf50;
-  z-index: 1;
-  height: 0;
-  transition: height 0.3s ease;
-}
-
-.pin {
-  width: 16px;
-  height: 16px;
-  background: white;
-  border: 3px solid #999;
-  border-radius: 50%;
-  margin: 100px 0;
-  z-index: 2;
-  transition: background 0.3s, border 0.3s;
-}
-
-.pin.active {
-  background: #4caf50;
-  border-color: #4caf50;
-}
-
-.story {
-  padding: 20px;
-  max-width: 700px;
-  margin-left: 100px;
-}
-
-.house {
-  margin: 200px 0;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.house.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.house img {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  margin: 10px 0;
-  border-radius: 8px;
-}
-
 #header-spacer {
   height: 1px;
   margin-top: -1px;
 }
 
-
-.roadmap-placeholder {
-  display: none; /* hidden by default */
-  width: 60px;   /* same as .roadmap width */
-  height: 100vh; /* full viewport height, adjust if needed */
-  flex-shrink: 0;
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+}
+.story {
+  flex: 2;
+  max-width: 65%;
+}
+.house {
+  margin-bottom: 200px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.house.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.house-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.house-img.visible {
+  opacity: 1;
 }
 
+/* ROADMAP */
+.roadmap {
+  flex: 1;
+  width: 33vw;
+  position: relative;
+  height: 100vh;
+}
+.roadmap-placeholder {
+  flex: 1;
+  width: 33vw;
+  display: none;
+}
+.roadmap.fixed {
+  position: fixed;
+  top: 0;
+  width: 33vw;
+  height: 100vh;
+  z-index: 1000;
+  transition: none;
+  padding-top: 20px;
+}
 .roadmap.fixed + .roadmap-placeholder {
   display: block;
+}
+
+/* SVG styling */
+.roadmap-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Pins */
+.pin {
+  fill: #fff;
+  stroke: #999;
+  stroke-width: 4;
+  cursor: default;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+.pin.active {
+  fill: #4caf50;
+  stroke: #4caf50;
 }
