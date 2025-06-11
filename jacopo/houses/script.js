@@ -15,20 +15,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const lenPostSolid = fillPostSolid.getTotalLength();
   const lenPostDash  = fillPostDash.getTotalLength();
 
-  // Init: collapse all dynamic segments
+  // Init: collapse dynamic segments
   fillMid1.style.strokeDasharray     = `0 ${lenMid1}`;
   fillMid1.style.strokeDashoffset    = 0;
-
   fillMid2.style.strokeDasharray     = `0 ${lenMid2}`;
   fillMid2.style.strokeDashoffset    = 0;
 
-  // Segment 5: solid tail starts empty
   fillPostSolid.style.strokeDasharray  = `0 ${lenPostSolid}`;
   fillPostSolid.style.strokeDashoffset = 0;
 
-  // Segment 6: dashed tail starts hidden
-  fillPostDash.style.strokeDasharray   = `5 5`;
-  fillPostDash.style.strokeDashoffset  = lenPostDash;
+  fillPostDash.style.strokeDasharray   = `5 5`;         // keep dash pattern
+  fillPostDash.style.strokeDashoffset  = lenPostDash;   // hide all dashes
 
   // Sticky roadmap (unchanged)
   const roadmap = document.querySelector(".roadmap");
@@ -44,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, { threshold: 0 }).observe(spacer);
 
-  // Section reveal
+  // Section reveal (unchanged)
   sections.forEach(sec => {
     ScrollTrigger.create({
       trigger: sec,
@@ -57,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 1) Animate Segment 3 (fillMid1) during Section 0
+  // 1) Segment 3 animation (unchanged)
   ScrollTrigger.create({
     trigger: sections[0],
     start: "top bottom",
@@ -68,10 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
       fillMid1.style.strokeDasharray = `${draw} ${lenMid1}`;
     },
     onEnter: () => pins[0].classList.add("active")
-    // no onEnterBack → pin0 stays active
   });
 
-  // 2) Animate Segment 4 (fillMid2) during Section 1
+  // 2) Segment 4 animation (unchanged)
   ScrollTrigger.create({
     trigger: sections[1],
     start: "top bottom",
@@ -85,29 +81,29 @@ document.addEventListener("DOMContentLoaded", () => {
     onLeaveBack: () => pins[1].classList.remove("active")
   });
 
-  // 3) Animate Segments 5 & 6 during Section 2
+  // 3) Segments 5 & 6 animation for Section 2
   ScrollTrigger.create({
-    trigger: sections[2],      // the third house
+    trigger: sections[2],      // third house
     start:   "top bottom",
     end:     "bottom top",
     scrub:   true,
     onUpdate(self) {
-      const p = self.progress; // 0 → 1 over the scroll of Section 2
-  
-      // --- Segment 5 solid tail (same as before) ---
-      const drawSolid = lenPostSolid * p;
+      const p = self.progress;    // 0 → 1 over Section 2
+
+      // --- Segment 5 solid tail: fill over first 70% of scroll ---
+      const seg5Progress = Math.min(p / 0.7, 1);
+      const drawSolid = lenPostSolid * seg5Progress;
       fillPostSolid.style.strokeDasharray = `${drawSolid} ${lenPostSolid}`;
-  
-      // --- Segment 6 dashed tail: only turn green in last 30% ---
-      const dashStart = 0.7;      // 70% through the section
-      if (p < dashStart) {
-        // still grey: zero-length green dash overlay
-        fillPostDash.style.strokeDasharray = `0 ${lenPostDash}`;
+
+      // --- Segment 6 dashed tail: reveal dashes over last 30% ---
+      if (p < 0.7) {
+        // keep all grey
+        fillPostDash.style.strokeDashoffset = lenPostDash;
       } else {
-        // fraction from 0→1 over last 30% of scroll
-        const localP = (p - dashStart) / (1 - dashStart);
-        const drawDash = lenPostDash * localP;
-        fillPostDash.style.strokeDasharray = `${drawDash} ${lenPostDash}`;
+        // local progress 0→1 over [0.7,1]
+        const localP = (p - 0.7) / 0.3;
+        // offset from len→0 reveals dashes in place
+        fillPostDash.style.strokeDashoffset = lenPostDash * (1 - localP);
       }
     },
     onEnter:      () => pins[2].classList.add("active"),
