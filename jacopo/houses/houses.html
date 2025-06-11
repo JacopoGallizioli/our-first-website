@@ -7,71 +7,59 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>My Housing Journey</h1>
-  </header>
-  <!-- Spacer for sticky trigger -->
+  <header><h1>My Housing Journey</h1></header>
   <div id="header-spacer"></div>
 
   <main class="container">
-    <!-- Left: your house story sections -->
     <div class="story">
       <section class="house" data-index="0">
         <h2>Moved in: January 2015</h2>
         <p>First apartment in Saronno.</p>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
       </section>
       <section class="house" data-index="1">
         <h2>Moved in: March 2018</h2>
         <p>Studio in Kreuzberg, Berlin.</p>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
       </section>
       <section class="house" data-index="2">
         <h2>Moved in: August 2022</h2>
         <p>Apartment by the Isar in Munich.</p>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" alt="Saronno" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
       </section>
     </div>
 
-    <!-- Right: zigzag roadmap -->
     <div class="roadmap">
-      <svg class="roadmap-svg" viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet">
-        <!-- base gray line -->
-        <path id="basePath" 
-              d="M100,10 L150,100 L50,180 L150,250" 
-              fill="none" stroke="#ccc" stroke-width="4" />
-        <!-- green fill line -->
-        <path id="fillPath" 
-              d="M100,10 L150,100 L50,180 L150,250" 
+      <svg class="roadmap-svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Base segments -->
+        <path d="M100,0   L150,100" stroke="#ccc" stroke-width="4" stroke-dasharray="5 5"/>
+        <path d="M150,100 L50,200" stroke="#ccc" stroke-width="4"/>
+        <path d="M50,200  L150,300" stroke="#ccc" stroke-width="4"/>
+        <path d="M150,300 L50,400" stroke="#ccc" stroke-width="4" stroke-dasharray="5 5"/>
+
+        <!-- Fill path (single continuous) -->
+        <path id="fillPath"
+              d="M100,0 L150,100 L50,200 L150,300 L50,400"
               fill="none" stroke="#4caf50" stroke-width="4"
-              stroke-dasharray="0 9999" />
-        <!-- pins at each vertex -->
-        <circle class="pin" data-index="0" cx="150" cy="100" r="8" />
-        <circle class="pin" data-index="1" cx="50"  cy="180" r="8" />
-        <circle class="pin" data-index="2" cx="150" cy="250" r="8" />
+              stroke-dasharray="0 10000" stroke-linecap="butt"/>
+        <!-- Pins at the 3 interior vertices -->
+        <circle class="pin" data-index="0" cx="150" cy="100" r="8"/>
+        <circle class="pin" data-index="1" cx="50"  cy="200" r="8"/>
+        <circle class="pin" data-index="2" cx="150" cy="300" r="8"/>
       </svg>
     </div>
-
-    <!-- placeholder to avoid layout jump when .roadmap becomes fixed -->
     <div class="roadmap-placeholder"></div>
   </main>
 
