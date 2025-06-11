@@ -124,3 +124,7 @@ header {
 .roadmap.fixed + .roadmap-placeholder {
   display: block;
 }
+
+.house-spacer {
+  height: 150px; /* Adjust this to cover space from header bottom to first pin */
+}
