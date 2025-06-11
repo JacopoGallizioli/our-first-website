@@ -1,39 +1,35 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// Grab DOM elements
 const sections = document.querySelectorAll(".house-spacer, .house");
+const houses = document.querySelectorAll(".house");
 const pins = document.querySelectorAll(".pin");
 const lineFill = document.getElementById("lineFill");
 const roadmap = document.querySelector(".roadmap");
 
-// Ensure line is empty initially
+let userHasScrolled = false;
 lineFill.style.height = "0px";
 
-// Reset line and pins on load/resize
+// Reset state
 function resetRoadmap() {
   lineFill.style.height = "0px";
   pins.forEach(pin => pin.classList.remove("active"));
 }
 
-// Make the roadmap bar sticky
+// Roadmap sticky behavior
 const headerSpacer = document.getElementById("header-spacer");
-const observer = new IntersectionObserver(
-  ([entry]) => {
-    roadmap.classList.toggle("fixed", !entry.isIntersecting);
-  },
-  { threshold: 0 }
-);
-observer.observe(headerSpacer);
+new IntersectionObserver(([entry]) => {
+  roadmap.classList.toggle("fixed", !entry.isIntersecting);
+}, { threshold: 0 }).observe(headerSpacer);
 
-// Show sections and images
-sections.forEach((section) => {
+// Fade-in animation
+sections.forEach(section => {
   ScrollTrigger.create({
     trigger: section,
     start: "top 80%",
     onEnter: () => section.classList.add("visible"),
   });
 });
-document.querySelectorAll(".house-img").forEach((img) => {
+document.querySelectorAll(".house-img").forEach(img => {
   ScrollTrigger.create({
     trigger: img,
     start: "top 85%",
@@ -42,14 +38,14 @@ document.querySelectorAll(".house-img").forEach((img) => {
   });
 });
 
-// Activate all pins up to index
+// Pin logic
 function activatePin(index) {
   pins.forEach((pin, i) => {
     pin.classList.toggle("active", i <= index);
   });
 }
 
-// Get vertical center positions of each pin, relative to roadmap
+// Measure pin offsets
 const pinOffsets = [];
 function updateOffsets() {
   const roadmapRect = roadmap.getBoundingClientRect();
@@ -60,36 +56,47 @@ function updateOffsets() {
   });
 }
 
-// Create ScrollTriggers that fill the line progressively
+// Core scroll logic
 function createLineFillTriggers() {
-  let previousOffset = 0;
-  lineFill.style.height = "0px";
+  for (let i = 0; i < houses.length; i++) {
+    const spacer = sections[i * 2];
+    const house = sections[i * 2 + 1];
+    const pinOffset = pinOffsets[i];
 
-  // Start from section 1 (skip first spacer)
-  for (let index = 1; index < sections.length; index++) {
-    const section = sections[index];
-    const currentPinOffset = pinOffsets[index - 1]; // pin 0 goes with section 1
-    if (currentPinOffset == null) continue;
+    if (!spacer || !house || pinOffset == null) continue;
 
     ScrollTrigger.create({
-      trigger: section,
+      trigger: spacer,
       start: "top center",
-      end: "bottom center",
+      endTrigger: house,
+      end: "top center",
       scrub: true,
       onUpdate: (self) => {
-        const progress = self.progress;
-        const height = previousOffset + (currentPinOffset - previousOffset) * progress;
+        if (!userHasScrolled) return; // 🚫 Don't animate yet
+        const height = pinOffset * self.progress;
         lineFill.style.height = `${height}px`;
       },
-      onEnter: () => activatePin(index - 1),
-      onEnterBack: () => activatePin(index - 1),
+      onEnter: () => {
+        if (!userHasScrolled) return;
+        activatePin(i);
+      },
+      onEnterBack: () => {
+        if (!userHasScrolled) return;
+        activatePin(i);
+      }
     });
-
-    previousOffset = currentPinOffset;
   }
 }
 
-// Initial setup after page load
+// Detect first user scroll
+window.addEventListener("scroll", () => {
+  if (!userHasScrolled) {
+    userHasScrolled = true;
+    ScrollTrigger.refresh();
+  }
+}, { once: true });
+
+// On load
 window.addEventListener("load", () => {
   resetRoadmap();
   setTimeout(() => {
@@ -99,7 +106,7 @@ window.addEventListener("load", () => {
   }, 100);
 });
 
-// Recalculate everything on resize
+// On resize
 window.addEventListener("resize", () => {
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
   resetRoadmap();
