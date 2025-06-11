@@ -71,3 +71,25 @@ function updateOnScroll() {
 // attach scroll listener
 window.addEventListener("scroll", updateOnScroll);
 updateOnScroll();
+
+// 1) grab & measure the final dash path
+const postDash = document.getElementById("fillPostDash");
+const postLen  = postDash.getTotalLength();
+
+// initialize hidden
+postDash.style.strokeDasharray  = `0 ${postLen}`;
+postDash.style.strokeDashoffset = 0;
+
+// 2) create a ScrollTrigger scrub for Section 2
+ScrollTrigger.create({
+  trigger: ".house[data-index='2']",
+  start: "top bottom",   // when Section 2 enters viewport
+  end:   "bottom top",   // until Section 2 leaves
+  scrub: true,
+  onUpdate(self) {
+    // gradually reveal the 30% dash
+    const draw = postLen * self.progress;
+    postDash.style.strokeDasharray = `${draw} ${postLen}`;
+  }
+});
+
