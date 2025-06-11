@@ -78,6 +78,11 @@ header {
   overflow: visible;
 }
 
+#fillPreDash,
+#fillPostDash {
+  stroke-linecap: butt;
+}
+
 /* Pins */
 .pin {
   fill: #fff;
