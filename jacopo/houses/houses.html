@@ -77,10 +77,37 @@
           stroke-dasharray="5 5" />
         
         <!-- Fill path (single continuous) -->
-        <path id="fillPath"
-              d="M100,0 L150,100 L50,200 L150,300 L50,400"
+        <path id="fillPreDash"
+              d="M100,0 L115,30"
               fill="none" stroke="#4caf50" stroke-width="4"
-              stroke-dasharray="0 10000" stroke-linecap="butt"/>
+              stroke-dasharray="5 5"
+              stroke-dashoffset="0" />
+      
+        <!-- 2) Pre-solid segment (remaining 70% of first) -->
+        <path id="fillPreSolid"
+              d="M115,30 L150,100"
+              fill="none" stroke="#4caf50" stroke-width="4" />
+      
+        <!-- 3 & 4) Middle two full segments (always solid) -->
+        <path id="fillMid1"
+              d="M150,100 L50,200"
+              fill="none" stroke="#4caf50" stroke-width="4" />
+        <path id="fillMid2"
+              d="M50,200 L150,300"
+              fill="none" stroke="#4caf50" stroke-width="4" />
+      
+        <!-- 5) Pre-solid tail of last (70%) -->
+        <path id="fillPostSolid"
+              d="M150,300 L80,370"
+              fill="none" stroke="#4caf50" stroke-width="4" />
+      
+        <!-- 6) Final 30% dash-overlay to animate -->
+        <path id="fillPostDash"
+              d="M80,370 L50,400"
+              fill="none" stroke="#4caf50" stroke-width="4"
+              stroke-dasharray="0 10000"  <!-- start hidden -->
+              stroke-dashoffset="0" />
+
         <!-- Pins at the 3 interior vertices -->
         <circle class="pin" data-index="0" cx="150" cy="100" r="8"/>
         <circle class="pin" data-index="1" cx="50"  cy="200" r="8"/>
