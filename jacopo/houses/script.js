@@ -87,19 +87,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 3) Animate Segments 5 & 6 during Section 2
   ScrollTrigger.create({
-    trigger: sections[2],
-    start: "top bottom",
-    end:   "bottom top",
-    scrub: true,
+    trigger: sections[2],      // the third house
+    start:   "top bottom",
+    end:     "bottom top",
+    scrub:   true,
     onUpdate(self) {
-      const p = self.progress;
-      // Segment 5: solid tail
+      const p = self.progress; // 0 → 1 over the scroll of Section 2
+  
+      // --- Segment 5 solid tail (same as before) ---
       const drawSolid = lenPostSolid * p;
       fillPostSolid.style.strokeDasharray = `${drawSolid} ${lenPostSolid}`;
-      // Segment 6: dashed tail
-      fillPostDash.style.strokeDashoffset = lenPostDash * (1 - p);
+  
+      // --- Segment 6 dashed tail: only turn green in last 30% ---
+      const dashStart = 0.7;      // 70% through the section
+      if (p < dashStart) {
+        // still grey: zero-length green dash overlay
+        fillPostDash.style.strokeDasharray = `0 ${lenPostDash}`;
+      } else {
+        // fraction from 0→1 over last 30% of scroll
+        const localP = (p - dashStart) / (1 - dashStart);
+        const drawDash = lenPostDash * localP;
+        fillPostDash.style.strokeDasharray = `${drawDash} ${lenPostDash}`;
+      }
     },
-    onEnter: () => pins[2].classList.add("active"),
-    onLeaveBack: () => pins[2].classList.remove("active")
+    onEnter:      () => pins[2].classList.add("active"),
+    onLeaveBack:  () => pins[2].classList.remove("active")
   });
 });
