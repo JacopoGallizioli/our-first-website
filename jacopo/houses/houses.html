@@ -11,104 +11,57 @@
   <div id="header-spacer"></div>
 
   <main class="container">
+    <!-- LEFT: Your story sections -->
     <div class="story">
       <section class="house" data-index="0">
         <h2>Moved in: January 2015</h2>
-        <p>First apartment in Saronno.</p>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <p>Moved into our first apartment in Saronno.</p>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
       </section>
       <section class="house" data-index="1">
         <h2>Moved in: March 2018</h2>
-        <p>Studio in Kreuzberg, Berlin.</p>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <p>Moved to Berlin for a new job; studio in Kreuzberg.</p>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
       </section>
       <section class="house" data-index="2">
         <h2>Moved in: August 2022</h2>
-        <p>Apartment by the Isar in Munich.</p>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
-        <img src="pictures/SaronnoPreview.jpg" class="house-img"/>
+        <p>New chapter in Munich with Linh; near the Isar.</p>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
+        <img src="pictures/SaronnoPreview.jpg" class="house-img" alt="House 1 preview"/>
       </section>
     </div>
 
+    <!-- RIGHT: Zigzag roadmap -->
     <div class="roadmap">
       <svg class="roadmap-svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-        <!-- Base segments -->
-        <!-- 1) First 30% dashed -->
-        <path
-          d="M100,0 L115,30"
-          stroke="#ccc" stroke-width="4"
-          stroke-dasharray="5 5" />
-        
-        <!-- 2) Remaining 70% solid (up to Pin 0) -->
-        <path
-          d="M115,30 L150,100"
-          stroke="#ccc" stroke-width="4" />
-        
-        <!-- 3) Full solid between Pin 0 → Pin 1 -->
-        <path
-          d="M150,100 L50,200"
-          stroke="#ccc" stroke-width="4" />
-        
-        <!-- 4) Full solid between Pin 1 → Pin 2 -->
-        <path
-          d="M50,200 L150,300"
-          stroke="#ccc" stroke-width="4" />
-        
-        <!-- 5) First 70% of last segment (solid) -->
-        <path
-          d="M150,300 L80,370"
-          stroke="#ccc" stroke-width="4" />
-        
-        <!-- 6) Final 30% dashed -->
-        <path
-          d="M80,370 L50,400"
-          stroke="#ccc" stroke-width="4"
-          stroke-dasharray="5 5" />
-        
-        <!-- Fill path (single continuous) -->
-        <path id="fillPreDash"
-              d="M100,0 L115,30"
-              fill="none" stroke="#4caf50" stroke-width="4"
-              stroke-dasharray="5 5"
-              stroke-dashoffset="0" />
-      
-        <!-- 2) Pre-solid segment (remaining 70% of first) -->
-        <path id="fillPreSolid"
-              d="M115,30 L150,100"
-              fill="none" stroke="#4caf50" stroke-width="4" />
-      
-        <!-- 3 & 4) Middle two full segments (always solid) -->
-        <path id="fillMid1"
-              d="M150,100 L50,200"
-              fill="none" stroke="#4caf50" stroke-width="4" />
-        <path id="fillMid2"
-              d="M50,200 L150,300"
-              fill="none" stroke="#4caf50" stroke-width="4" />
-      
-        <!-- 5) Pre-solid tail of last (70%) -->
-        <path id="fillPostSolid"
-              d="M150,300 L80,370"
-              fill="none" stroke="#4caf50" stroke-width="4" />
-      
-        <!-- 6) Final 30% dash-overlay to animate -->
-        <path id="fillPostDash"
-              d="M80,370 L50,400"
-              fill="none" stroke="#4caf50" stroke-width="4"
-              stroke-dasharray="0 10000"  <!-- start hidden -->
-              stroke-dashoffset="0" />
+        <!-- BASE SEGMENTS (gray) -->
+        <path d="M100,0   L115,30"    stroke="#ccc" stroke-width="4" stroke-dasharray="5 5"/>
+        <path d="M115,30  L150,100"  stroke="#ccc" stroke-width="4"/>
+        <path d="M150,100 L50,200"   stroke="#ccc" stroke-width="4"/>
+        <path d="M50,200  L150,300"  stroke="#ccc" stroke-width="4"/>
+        <path d="M150,300 L80,370"   stroke="#ccc" stroke-width="4"/>
+        <path d="M80,370  L50,400"   stroke="#ccc" stroke-width="4" stroke-dasharray="5 5"/>
 
-        <!-- Pins at the 3 interior vertices -->
+        <!-- GREEN OVERLAYS -->
+        <path id="fillPreDash"   d="M100,0   L115,30"  fill="none" stroke="#4caf50" stroke-width="4" stroke-dasharray="5 5"/>
+        <path id="fillPreSolid"  d="M115,30  L150,100" fill="none" stroke="#4caf50" stroke-width="4"/>
+        <path id="fillMid1"      d="M150,100 L50,200"  fill="none" stroke="#4caf50" stroke-width="4" stroke-dasharray="0 1"/>
+        <path id="fillMid2"      d="M50,200  L150,300" fill="none" stroke="#4caf50" stroke-width="4"/>
+        <path id="fillPostSolid" d="M150,300 L80,370"  fill="none" stroke="#4caf50" stroke-width="4"/>
+        <path id="fillPostDash"  d="M80,370  L50,400" fill="none" stroke="#4caf50" stroke-width="4" stroke-dasharray="0 1"/>
+
+        <!-- PINS -->
         <circle class="pin" data-index="0" cx="150" cy="100" r="8"/>
         <circle class="pin" data-index="1" cx="50"  cy="200" r="8"/>
         <circle class="pin" data-index="2" cx="150" cy="300" r="8"/>
@@ -117,6 +70,7 @@
     <div class="roadmap-placeholder"></div>
   </main>
 
+  <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
