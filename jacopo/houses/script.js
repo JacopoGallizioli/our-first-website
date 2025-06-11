@@ -6,6 +6,8 @@ const pins = document.querySelectorAll(".pin");
 const lineFill = document.getElementById("lineFill");
 const roadmap = document.querySelector(".roadmap");
 
+lineFill.style.height = "0px";
+
 // Reset line and pins on load/resize
 function resetRoadmap() {
   lineFill.style.height = "0px"; // line empty
