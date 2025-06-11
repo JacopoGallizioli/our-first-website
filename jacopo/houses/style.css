@@ -8,8 +8,8 @@ header {
   background: #222;
   color: white;
   text-align: center;
-  position: relative;
   z-index: 10;
+  position: relative;
 }
 #header-spacer {
   height: 1px;
@@ -18,8 +18,6 @@ header {
 
 .container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   gap: 20px;
   padding: 20px;
 }
@@ -31,7 +29,7 @@ header {
   margin-bottom: 200px;
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.6s, transform 0.6s;
 }
 .house.visible {
   opacity: 1;
@@ -44,18 +42,18 @@ header {
   margin-top: 10px;
   border-radius: 8px;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.6s;
 }
 .house-img.visible {
   opacity: 1;
 }
 
-/* ROADMAP */
+/* Roadmap container + sticky placeholder */
 .roadmap {
   flex: 1;
   width: 33vw;
-  position: relative;
   height: 100vh;
+  position: relative;
 }
 .roadmap-placeholder {
   flex: 1;
@@ -65,11 +63,9 @@ header {
 .roadmap.fixed {
   position: fixed;
   top: 0;
-  width: 33vw;
+  /* left set via JS */
   height: 100vh;
   z-index: 1000;
-  transition: none;
-  padding-top: 20px;
 }
 .roadmap.fixed + .roadmap-placeholder {
   display: block;
@@ -86,9 +82,8 @@ header {
 .pin {
   fill: #fff;
   stroke: #999;
-  stroke-width: 4;
-  cursor: default;
-  transition: fill 0.3s ease, stroke 0.3s ease;
+  stroke-width: 3;
+  transition: fill 0.3s, stroke 0.3s;
 }
 .pin.active {
   fill: #4caf50;
