@@ -1,95 +1,82 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// -- Setup fill path --
-const fillPath    = document.getElementById("fillPath");
-const totalLength = fillPath.getTotalLength();
-fillPath.style.strokeDasharray  = `0 ${totalLength}`;
-fillPath.style.strokeDashoffset = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  // Grab all fill segments
+  const fillMid1      = document.getElementById("fillMid1");
+  const fillPostDash  = document.getElementById("fillPostDash");
+  const pins          = Array.from(document.querySelectorAll(".pin"));
+  const sections      = Array.from(document.querySelectorAll(".house"));
 
-// grab pins & sections
-const pins     = Array.from(document.querySelectorAll(".pin"));
-const sections = Array.from(document.querySelectorAll(".house"));
-const segCount = pins.length + 1; // now 4 segments
+  // Measure lengths for the two animated segments
+  const lenMid1 = fillMid1.getTotalLength();
+  const lenPost = fillPostDash.getTotalLength();
 
-// compute scroll triggers for each section
-let triggers = [];
-function calcTriggers() {
-  triggers = sections.map(sec =>
-    sec.getBoundingClientRect().top + window.scrollY - window.innerHeight
-  );
-}
-calcTriggers();
-window.addEventListener("resize", calcTriggers);
+  // Initialize both to zero-length dasharray
+  fillMid1.style.strokeDasharray     = `0 ${lenMid1}`;
+  fillMid1.style.strokeDashoffset    = 0;
+  fillPostDash.style.strokeDasharray = `0 ${lenPost}`;
+  fillPostDash.style.strokeDashoffset= 0;
 
-// sticky roadmap (lock left)
-const roadmap  = document.querySelector(".roadmap");
-const spacer   = document.getElementById("header-spacer");
-const origLeft = roadmap.getBoundingClientRect().left + "px";
-new IntersectionObserver(([e]) => {
-  if (!e.isIntersecting) {
-    roadmap.classList.add("fixed");
-    roadmap.style.left = origLeft;
-  } else {
-    roadmap.classList.remove("fixed");
-    roadmap.style.left = "";
-  }
-}, { threshold: 0 }).observe(spacer);
+  // Sticky roadmap (lock left)
+  const roadmap = document.querySelector(".roadmap");
+  const spacer  = document.getElementById("header-spacer");
+  const origLeft = roadmap.getBoundingClientRect().left + "px";
 
-// GSAP reveal sections/images
-sections.forEach(sec => {
-  ScrollTrigger.create({
-    trigger: sec,
-    start: "top 80%",
-    onEnter: () => {
-      sec.classList.add("visible");
-      sec.querySelectorAll(".house-img").forEach(img =>
-        img.classList.add("visible")
-      );
+  new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) {
+      roadmap.classList.add("fixed");
+      roadmap.style.left = origLeft;
+    } else {
+      roadmap.classList.remove("fixed");
+      roadmap.style.left = "";
     }
+  }, { threshold: 0 }).observe(spacer);
+
+  // Reveal sections + images
+  sections.forEach(sec => {
+    ScrollTrigger.create({
+      trigger: sec,
+      start: "top 80%",
+      onEnter: () => {
+        sec.classList.add("visible");
+        sec.querySelectorAll(".house-img").forEach(i => i.classList.add("visible"));
+      }
+    });
+  });
+
+  // 1) Animate Segment 1 (dash→solid) during Section 0
+  ScrollTrigger.create({
+    trigger: sections[0],
+    start: "top bottom",
+    end:   "bottom top",
+    scrub: true,
+    onUpdate(self) {
+      const draw = lenMid1 * self.progress;
+      fillMid1.style.strokeDasharray = `${draw} ${lenMid1}`;
+    },
+    onEnter: () => pins[0].classList.add("active"),
+    onEnterBack: () => pins[0].classList.toggle("active", false)
+  });
+
+  // 2) Activate Pin 1 on Section 1 entry
+  ScrollTrigger.create({
+    trigger: sections[1],
+    start: "top bottom",
+    onEnter: () => pins[1].classList.add("active"),
+    onEnterBack: () => pins[1].classList.remove("active")
+  });
+
+  // 3) Animate last dash (Segment 3) during Section 2
+  ScrollTrigger.create({
+    trigger: sections[2],
+    start: "top bottom",
+    end:   "bottom top",
+    scrub: true,
+    onUpdate(self) {
+      const draw = lenPost * self.progress;
+      fillPostDash.style.strokeDasharray = `${draw} ${lenPost}`;
+    },
+    onEnter: () => pins[2].classList.add("active"),
+    onEnterBack: () => pins[2].classList.remove("active")
   });
 });
-
-// -- Scroll handler for fill & pins --
-function updateOnScroll() {
-  const y = window.scrollY;
-  // compute overall progress (0→1) across the entire story scroll
-  const topY    = sections[0].getBoundingClientRect().top + y;
-  const bottomY = sections[sections.length-1].getBoundingClientRect().bottom + y - window.innerHeight;
-  let prog = (y - topY) / (bottomY - topY);
-  prog = Math.min(Math.max(prog, 0), 1);
-
-  // update fillPath length
-  const draw = prog * totalLength;
-  fillPath.style.strokeDasharray = `${draw} ${totalLength}`;
-
-  // activate pins when entering each section
-  pins.forEach((pin, i) => {
-    pin.classList.toggle("active", y >= triggers[i]);
-  });
-}
-
-// attach scroll listener
-window.addEventListener("scroll", updateOnScroll);
-updateOnScroll();
-
-// 1) grab & measure the final dash path
-const postDash = document.getElementById("fillPostDash");
-const postLen  = postDash.getTotalLength();
-
-// initialize hidden
-postDash.style.strokeDasharray  = `0 ${postLen}`;
-postDash.style.strokeDashoffset = 0;
-
-// 2) create a ScrollTrigger scrub for Section 2
-ScrollTrigger.create({
-  trigger: ".house[data-index='2']",
-  start: "top bottom",   // when Section 2 enters viewport
-  end:   "bottom top",   // until Section 2 leaves
-  scrub: true,
-  onUpdate(self) {
-    // gradually reveal the 30% dash
-    const draw = postLen * self.progress;
-    postDash.style.strokeDasharray = `${draw} ${postLen}`;
-  }
-});
-
