@@ -3,7 +3,6 @@ body {
   margin: 0;
   background: #f4f4f4;
 }
-
 header {
   padding: 20px;
   background: #222;
@@ -12,146 +11,84 @@ header {
   position: relative;
   z-index: 10;
 }
+#header-spacer {
+  height: 1px;
+  margin-top: -1px;
+}
 
 .container {
   display: flex;
   justify-content: space-between;
-  position: relative;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
 }
-
 .story {
   flex: 2;
-  padding: 20px;
   max-width: 65%;
 }
-
-/* Roadmap container on the right, fixed when scrolling */
-.roadmap {
-  flex: 1;
-  width: 33vw; /* Take 1/3 of viewport width */
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh; /* full viewport height */
-  padding-top: 20px;
-  box-sizing: border-box;
+.house {
+  margin-bottom: 200px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.house.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.house-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.house-img.visible {
+  opacity: 1;
 }
 
+/* ROADMAP */
+.roadmap {
+  flex: 1;
+  width: 33vw;
+  position: relative;
+  height: 100vh;
+}
 .roadmap-placeholder {
   flex: 1;
   width: 33vw;
   display: none;
 }
-
 .roadmap.fixed {
   position: fixed;
   top: 0;
   right: 0;
-  width: 33vw;
   height: 100vh;
   z-index: 1000;
-  transition: none;
-  padding-top: 20px;
 }
-
 .roadmap.fixed + .roadmap-placeholder {
   display: block;
 }
 
-/* Zigzag SVG or div container */
-.zigzag-svg {
-  width: 60px;
-  height: 300px;
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 0;
-}
-
-/* Pins aligned with zigzag vertices */
-.pin {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  background: white;
-  border: 3px solid #999;
-  border-radius: 50%;
-  margin: 90px 0; /* space between pins adjusted for zigzag */
-  z-index: 2;
-  cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Zigzag effect: horizontal bar next to pin */
-.pin::before {
-  content: "";
-  position: absolute;
-  width: 40px;
-  height: 2px;
-  background: #ccc;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%);
-  transition: background-color 0.3s ease;
-}
-
-/* Alternate zigzag directions for horizontal bars */
-.pin:nth-child(odd)::before {
-  transform: translateY(-50%) translateX(-100%);
-}
-
-.pin:nth-child(even)::before {
-  transform: translateY(-50%);
-}
-
-/* Green progress line overlay on zigzag line */
-#line-fill {
-  position: absolute;
-  top: 20px; /* same top offset as .zigzag-svg */
-  left: 50%;
-  width: 60px; /* match svg width */
-  height: 0; /* start with zero height */
-  background-color: #4caf50;
-  pointer-events: none;
-  z-index: 1;
-  transition: height 0.3s ease;
-  border-radius: 2px;
-}
-
-/* Active pin styling changes color */
-.pin.active {
-  background: #4caf50;
-  border-color: #4caf50;
-}
-
-.pin.active::before {
-  background: #4caf50;
-}
-
-/* House content */
-.house {
-  margin: 200px 0;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.house.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.house img {
+/* SVG styling */
+.roadmap-svg {
   width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  margin: 10px 0;
-  border-radius: 8px;
+  height: 100%;
+  overflow: visible;
 }
 
-#header-spacer {
-  height: 1px;
-  margin-top: -1px;
+/* Pins */
+.pin {
+  fill: #fff;
+  stroke: #999;
+  stroke-width: 4;
+  cursor: default;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+.pin.active {
+  fill: #4caf50;
+  stroke: #4caf50;
 }
