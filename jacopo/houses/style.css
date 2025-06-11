@@ -15,58 +15,58 @@ header {
 
 .container {
   display: flex;
+  justify-content: space-between;
   position: relative;
 }
 
-.roadmap-wrapper {
-  width: 60px;
-  margin-left: 0px;
+.story {
+  flex: 2;
+  padding: 20px;
+  max-width: 65%;
 }
 
 .roadmap {
+  flex: 1;
+  width: 33%;
   position: relative;
-  width: 60px;
-  left: 20px; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: left 0.3s ease;
-  margin-left: 0;
+}
+
+.roadmap-placeholder {
+  flex: 1;
+  width: 33%;
+  display: none;
 }
 
 .roadmap.fixed {
   position: fixed;
-  top: 0;                
-  left: 20px;
-  width: 60px;           
+  top: 0;
+  right: 0; /* Right side */
+  width: 33%;
   z-index: 1000;
-  transition: none;      
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+  transition: none;
 }
 
-.line {
+.roadmap.fixed + .roadmap-placeholder {
+  display: block;
+}
+
+/* Zigzag line base (just a placeholder for alignment) */
+.zigzag-line {
   position: absolute;
   top: 0;
-  left: 28px;
+  left: 50%;
   width: 4px;
-  background: #ccc;
-  height: 100vh;
+  background: transparent;
+  height: 100%;
   z-index: 0;
 }
 
-.line-fill {
-  position: absolute;
-  top: 0;
-  left: 28px;
-  width: 4px;
-  background: #4caf50;
-  z-index: 1;
-  height: 0;
-  transition: height 0.3s ease;
-}
-
+/* Actual pins */
 .pin {
+  position: relative;
   width: 16px;
   height: 16px;
   background: white;
@@ -74,18 +74,45 @@ header {
   border-radius: 50%;
   margin: 100px 0;
   z-index: 2;
-  transition: background 0.3s, border 0.3s;
 }
 
+/* Zigzag effect using horizontal bars */
+.pin::before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  background: #ccc;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%);
+}
+
+/* Alternate direction for zigzag */
+.pin:nth-child(odd)::before {
+  transform: translateY(-50%) translateX(-100%);
+}
+
+.pin:nth-child(even)::before {
+  transform: translateY(-50%);
+}
+
+/* Green progress line */
+.line-fill {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;
+  background: #4caf50;
+  z-index: 1;
+  height: 0;
+  transition: height 0.3s ease;
+}
+
+/* Active pin styling */
 .pin.active {
   background: #4caf50;
   border-color: #4caf50;
-}
-
-.story {
-  padding: 20px;
-  max-width: 700px;
-  margin-left: 100px;
 }
 
 .house {
@@ -111,16 +138,4 @@ header {
 #header-spacer {
   height: 1px;
   margin-top: -1px;
-}
-
-
-.roadmap-placeholder {
-  display: none; /* hidden by default */
-  width: 60px;   /* same as .roadmap width */
-  height: 100vh; /* full viewport height, adjust if needed */
-  flex-shrink: 0;
-}
-
-.roadmap.fixed + .roadmap-placeholder {
-  display: block;
 }
