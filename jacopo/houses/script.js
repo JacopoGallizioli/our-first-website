@@ -99,12 +99,12 @@ window.addEventListener("load", () => {
   setTimeout(() => {
     lineFill.style.height = "0px";
   }, 50);
+  setTimeout(() => {
+    lineFill.style.height = "0px";
+    pins.forEach(pin => pin.classList.remove("active"));
+  }, 50);
 });
 
-setTimeout(() => {
-  lineFill.style.height = "0px";
-  pins.forEach(pin => pin.classList.remove("active"));
-}, 50);
 
 window.addEventListener("resize", () => {
   ScrollTrigger.getAll().forEach(t => t.kill());
