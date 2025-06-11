@@ -65,9 +65,11 @@ header {
 .roadmap.fixed {
   position: fixed;
   top: 0;
-  right: 0;
+  width: 33vw;
   height: 100vh;
   z-index: 1000;
+  transition: none;
+  padding-top: 20px;
 }
 .roadmap.fixed + .roadmap-placeholder {
   display: block;
