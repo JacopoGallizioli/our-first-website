@@ -1,7 +1,11 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // Reveal house sections
-document.querySelectorAll(".house").forEach((section) => {
+const sections = document.querySelectorAll(".house");
+const pins = document.querySelectorAll(".pin");
+const lineFill = document.getElementById("lineFill");
+
+sections.forEach((section) => {
   ScrollTrigger.create({
     trigger: section,
     start: "top 80%",
@@ -20,90 +24,74 @@ document.querySelectorAll(".house-img").forEach((img) => {
 });
 
 // Stick roadmap
-const roadmap = document.querySelector('.roadmap');
-const headerSpacer = document.getElementById('header-spacer');
+const roadmap = document.querySelector(".roadmap");
+const headerSpacer = document.getElementById("header-spacer");
 const observer = new IntersectionObserver(
   ([entry]) => {
-    roadmap.classList.toggle('fixed', !entry.isIntersecting);
+    roadmap.classList.toggle("fixed", !entry.isIntersecting);
   },
   { root: null, threshold: 0 }
 );
 observer.observe(headerSpacer);
 
-// Activate pins
+// Activate pins cumulatively
 function activatePin(index) {
-  const pins = document.querySelectorAll(".pin");
   pins.forEach((pin, i) => {
-    pin.classList.toggle("active", i === index);
+    pin.classList.toggle("active", i <= index);
   });
 }
 
-// ScrollTrigger for each house section to activate pins
-const sections = document.querySelectorAll(".house");
-sections.forEach((section, index) => {
-  ScrollTrigger.create({
-    trigger: section,
-    start: "top center",
-    end: "bottom center",
-    onEnter: () => activatePin(index),
-    onEnterBack: () => activatePin(index),
+// Create ScrollTriggers for pin activation and line fill
+const pinOffsets = [];
+const updateOffsets = () => {
+  const roadmapRect = roadmap.getBoundingClientRect();
+  pinOffsets.length = 0;
+  pins.forEach(pin => {
+    const rect = pin.getBoundingClientRect();
+    pinOffsets.push(rect.top - roadmapRect.top + rect.height / 2);
   });
+};
+
+const createLineFillTriggers = () => {
+  let previousOffset = 0;
+  lineFill.style.height = "0px";
+
+  sections.forEach((section, index) => {
+    const targetOffset = pinOffsets[index];
+
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top center",
+      end: "bottom center",
+      scrub: true,
+      onUpdate: self => {
+        const progress = self.progress;
+        const height = previousOffset + (targetOffset - previousOffset) * progress;
+        lineFill.style.height = `${height}px`;
+      },
+      onLeave: () => {
+        lineFill.style.height = `${targetOffset}px`;
+      },
+      onEnter: () => activatePin(index),
+      onEnterBack: () => activatePin(index),
+      onEnterBack: () => {
+        lineFill.style.height = `${previousOffset}px`;
+        activatePin(index);
+      }
+    });
+
+    previousOffset = targetOffset;
+  });
+};
+
+window.addEventListener("load", () => {
+  updateOffsets();
+  createLineFillTriggers();
 });
 
-// Fill line progressively with scroll
-(() => {
-  const roadmap = document.querySelector(".roadmap");
-  const lineFill = document.getElementById("lineFill");
-  const pins = document.querySelectorAll(".pin");
-  const houses = document.querySelectorAll(".house");
-
-  if (!roadmap || !lineFill || pins.length !== houses.length) return;
-
-  const updateOffsetsAndCreateTriggers = () => {
-    const roadmapRect = roadmap.getBoundingClientRect();
-    const pinOffsets = Array.from(pins).map(pin => {
-      const rect = pin.getBoundingClientRect();
-      return rect.top - roadmapRect.top + rect.height / 2;
-    });
-
-    lineFill.style.height = "0px";
-
-    // Clear existing triggers
-    ScrollTrigger.getAll().forEach(trigger => {
-      if (trigger.vars && trigger.vars.id === "line-fill") trigger.kill();
-    });
-
-    let previousOffset = 0;
-    houses.forEach((section, index) => {
-      const targetOffset = pinOffsets[index];
-
-      ScrollTrigger.create({
-        id: "line-fill",
-        trigger: section,
-        start: "top center",
-        end: "bottom center",
-        scrub: true,
-        onUpdate: self => {
-          const progress = self.progress;
-          const height = previousOffset + (targetOffset - previousOffset) * progress;
-          lineFill.style.height = `${height}px`;
-        },
-        onLeave: () => {
-          lineFill.style.height = `${targetOffset}px`;
-        },
-        onEnterBack: () => {
-          lineFill.style.height = `${previousOffset}px`;
-        }
-      });
-
-      previousOffset = targetOffset;
-    });
-  };
-
-  // Run on load and resize
-  window.addEventListener("load", updateOffsetsAndCreateTriggers);
-  window.addEventListener("resize", () => {
-    ScrollTrigger.refresh();
-    updateOffsetsAndCreateTriggers();
-  });
-})();
+window.addEventListener("resize", () => {
+  ScrollTrigger.getAll().forEach(t => t.kill());
+  ScrollTrigger.refresh();
+  updateOffsets();
+  createLineFillTriggers();
+});
