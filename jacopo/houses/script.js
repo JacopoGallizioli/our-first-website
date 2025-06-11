@@ -79,6 +79,7 @@ const createLineFillTriggers = () => {
         const height = previousOffset + (targetOffset - previousOffset) * progress;
         lineFill.style.height = `${height}px`;
       },
+      // Skip pin activation for section 0
       onEnter: () => {
         if (index > 0) activatePin(index - 1);
       },
@@ -99,6 +100,11 @@ window.addEventListener("load", () => {
     lineFill.style.height = "0px";
   }, 50);
 });
+
+setTimeout(() => {
+  lineFill.style.height = "0px";
+  pins.forEach(pin => pin.classList.remove("active"));
+}, 50);
 
 window.addEventListener("resize", () => {
   ScrollTrigger.getAll().forEach(t => t.kill());
