@@ -1,109 +1,105 @@
 gsap.registerPlugin(ScrollTrigger);
 
-const roadmap = document.querySelector(".roadmap");
-const lineFill = document.getElementById("lineFill");
+const sections = document.querySelectorAll(".house-spacer, .house");
 const pins = document.querySelectorAll(".pin");
-const houseSpacers = document.querySelectorAll(".house-spacer");
-const houses = document.querySelectorAll(".house");
+const lineFill = document.getElementById("lineFill");
+const roadmap = document.querySelector(".roadmap");
 
-let pinOffsets = [];
-let userHasScrolled = false;
+// Reset line fill and pins
+function resetRoadmap() {
+  lineFill.style.height = "0px";
+  pins.forEach(pin => pin.classList.remove("active"));
+}
 
-lineFill.style.height = "0px";
-
-// Sticky roadmap
-const headerSpacer = document.getElementById("header-spacer");
-new IntersectionObserver(([entry]) => {
-  roadmap.classList.toggle("fixed", !entry.isIntersecting);
-}, { threshold: 0 }).observe(headerSpacer);
-
-// Fade in elements
-[...houseSpacers, ...houses].forEach((section) => {
-  ScrollTrigger.create({
-    trigger: section,
-    start: "top 80%",
-    onEnter: () => section.classList.add("visible"),
-  });
-});
-document.querySelectorAll(".house-img").forEach((img) => {
-  ScrollTrigger.create({
-    trigger: img,
-    start: "top 85%",
-    onEnter: () => img.classList.add("visible"),
-    onEnterBack: () => img.classList.add("visible"),
-  });
-});
-
-// Activate pins
+// Activate pins cumulatively up to given index
 function activatePin(index) {
   pins.forEach((pin, i) => {
     pin.classList.toggle("active", i <= index);
   });
 }
 
-// Measure pin positions inside roadmap
-function updatePinOffsets() {
+let pinOffsets = [];
+
+function updateOffsets() {
+  pinOffsets = [];
   const roadmapRect = roadmap.getBoundingClientRect();
-  pinOffsets = [...pins].map(pin => {
+  pins.forEach(pin => {
     const rect = pin.getBoundingClientRect();
-    return rect.top - roadmapRect.top + rect.height / 2;
+    // Calculate vertical center relative to roadmap top
+    pinOffsets.push(rect.top - roadmapRect.top + rect.height / 2);
   });
 }
 
-// Fill logic
-function createScrollTriggers() {
-  houseSpacers.forEach((spacer, index) => {
-    const house = houses[index];
-    const pinOffset = pinOffsets[index];
-    if (!spacer || !house || pinOffset == null) return;
+function createLineFillTriggers() {
+  let previousOffset = 0;
+  lineFill.style.height = "0px";
 
-    // Fill the line from 0 to this pin during spacer scroll
+  sections.forEach((section, index) => {
+    // Skip the first section (house-spacer) because it's the trigger for starting fill to pin 0
+    // We'll handle pin activation from house sections (index 1 and onward)
+    const targetOffset = pinOffsets[index - 1]; // index - 1 because pins correspond to houses starting at index 1
+
+    if (index === 0) {
+      // For the spacer section: fill from 0 to pin 0 as we scroll through the spacer
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        onUpdate: (self) => {
+          const height = pinOffsets[0] * self.progress; // fill grows from 0 to pin 0 offset
+          lineFill.style.height = `${height}px`;
+          // Activate no pins during spacer scroll, pins start activating entering first house
+          activatePin(-1);
+        },
+        onEnter: () => {
+          // Line fill might be zero here
+          activatePin(-1);
+        },
+        onLeave: () => {
+          activatePin(0);
+        },
+        onEnterBack: () => {
+          activatePin(-1);
+        }
+      });
+      return; // move to next iteration
+    }
+
+    if (targetOffset == null) return;
+
+    // For house sections, fill line from previous pin to current pin
     ScrollTrigger.create({
-      trigger: spacer,
-      start: "top bottom",
-      endTrigger: house,
-      end: "top center",
+      trigger: section,
+      start: "top center",
+      end: "bottom center",
       scrub: true,
       onUpdate: (self) => {
-        if (!userHasScrolled) return;
-        const fillHeight = pinOffset * self.progress;
-        lineFill.style.height = `${fillHeight}px`;
+        const progress = self.progress;
+        const height = Math.max(0, previousOffset + (targetOffset - previousOffset) * progress);
+        lineFill.style.height = `${height}px`;
+        // Activate pins up to current index - 1 (because first house activates pin 0)
+        activatePin(index - 1);
+      },
+      onEnter: () => {
+        activatePin(index - 1);
+      },
+      onEnterBack: () => {
+        activatePin(index - 1);
       }
     });
 
-    // Activate the pin on house entrance
-    ScrollTrigger.create({
-      trigger: house,
-      start: "top center",
-      onEnter: () => {
-        if (userHasScrolled) activatePin(index);
-      },
-      onEnterBack: () => {
-        if (userHasScrolled) activatePin(index);
-      }
-    });
+    previousOffset = targetOffset;
   });
 }
 
-// Wait until user scrolls before enabling animation
-window.addEventListener("scroll", () => {
-  if (!userHasScrolled) {
-    userHasScrolled = true;
-    ScrollTrigger.refresh();
-  }
-}, { once: true });
-
-// Reset on load and resize
-function resetRoadmap() {
-  lineFill.style.height = "0px";
-  pins.forEach(pin => pin.classList.remove("active"));
-}
-
+// On load and resize, initialize/reset everything
 window.addEventListener("load", () => {
   resetRoadmap();
+
   setTimeout(() => {
-    updatePinOffsets();
-    createScrollTriggers();
+    updateOffsets();
+    createLineFillTriggers();
     ScrollTrigger.refresh();
   }, 100);
 });
@@ -111,7 +107,7 @@ window.addEventListener("load", () => {
 window.addEventListener("resize", () => {
   ScrollTrigger.getAll().forEach(t => t.kill());
   resetRoadmap();
-  updatePinOffsets();
-  createScrollTriggers();
+  updateOffsets();
+  createLineFillTriggers();
   ScrollTrigger.refresh();
 });
