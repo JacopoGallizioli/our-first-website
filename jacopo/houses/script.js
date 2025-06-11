@@ -3,6 +3,7 @@ gsap.registerPlugin(ScrollTrigger);
 // prepare the fill path
 const fillPath = document.getElementById("fillPath");
 const totalLength = fillPath.getTotalLength();
+// hide entire path initially
 fillPath.style.strokeDasharray = `0 ${totalLength}`;
 fillPath.style.strokeDashoffset = 0;
 
@@ -42,11 +43,25 @@ document.querySelectorAll(".house").forEach((section, idx) => {
   });
 });
 
-// sticky roadmap
+// sticky roadmap with locked horizontal position
 const roadmap = document.querySelector(".roadmap");
 const spacer = document.getElementById("header-spacer");
+
+// capture its original left offset (px) relative to viewport
+const originalLeft = roadmap.getBoundingClientRect().left + "px";
+
 new IntersectionObserver(
-  ([e]) => roadmap.classList.toggle("fixed", !e.isIntersecting),
+  ([entry]) => {
+    if (!entry.isIntersecting) {
+      roadmap.classList.add("fixed");
+      // lock horizontal position
+      roadmap.style.left = originalLeft;
+    } else {
+      roadmap.classList.remove("fixed");
+      // clear inline left so it flows back in flex
+      roadmap.style.left = "";
+    }
+  },
   { threshold: 0 }
 ).observe(spacer);
 
