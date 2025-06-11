@@ -116,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < unitsToShow; i++) {
           arr.push(dashLen, gapLen);
         }
-        arr.push(remainder);
 
         fillPostDash.style.strokeDasharray = arr.join(" ");
       }
