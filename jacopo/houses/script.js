@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Segment 6 (dashed)
       const dashLen = 5, gapLen = 5;
       const unit = dashLen + gapLen;
-      const totalUnits = Math.round(lenPostDash / unit);
+      const totalUnits = 2 * Math.round(lenPostDash / unit);
     
       if (p < dashStart) {
         fillPostDash.style.strokeDasharray = `0 ${lenPostDash}`;
