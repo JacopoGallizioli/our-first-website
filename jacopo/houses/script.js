@@ -2,24 +2,33 @@ gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener("DOMContentLoaded", () => {
   // Grab paths
-  const fillMid1      = document.getElementById("fillMid1");     // Segment 3
-  const fillMid2      = document.getElementById("fillMid2");     // Segment 4
-  const fillPostDash  = document.getElementById("fillPostDash"); // Segment 6
+  const fillMid1      = document.getElementById("fillMid1");      // Segment 3
+  const fillMid2      = document.getElementById("fillMid2");      // Segment 4
+  const fillPostSolid = document.getElementById("fillPostSolid"); // Segment 5 (solid tail)
+  const fillPostDash  = document.getElementById("fillPostDash");  // Segment 6 (dashed tail)
   const pins          = Array.from(document.querySelectorAll(".pin"));
   const sections      = Array.from(document.querySelectorAll(".house"));
 
   // Measure lengths
-  const lenMid1 = fillMid1.getTotalLength();
-  const lenMid2 = fillMid2.getTotalLength();
-  const lenPost = fillPostDash.getTotalLength();
+  const lenMid1      = fillMid1.getTotalLength();
+  const lenMid2      = fillMid2.getTotalLength();
+  const lenPostSolid = fillPostSolid.getTotalLength();
+  const lenPostDash  = fillPostDash.getTotalLength();
 
   // Init: collapse all dynamic segments
-  fillMid1.style.strokeDasharray    = `0 ${lenMid1}`;
-  fillMid1.style.strokeDashoffset   = 0;
-  fillMid2.style.strokeDasharray    = `0 ${lenMid2}`;
-  fillMid2.style.strokeDashoffset   = 0;
-  fillPostDash.style.strokeDasharray  = `5 5`;     // maintain dash pattern
-  fillPostDash.style.strokeDashoffset = lenPost;   // hide by offset
+  fillMid1.style.strokeDasharray     = `0 ${lenMid1}`;
+  fillMid1.style.strokeDashoffset    = 0;
+
+  fillMid2.style.strokeDasharray     = `0 ${lenMid2}`;
+  fillMid2.style.strokeDashoffset    = 0;
+
+  // Segment 5: solid tail starts empty
+  fillPostSolid.style.strokeDasharray  = `0 ${lenPostSolid}`;
+  fillPostSolid.style.strokeDashoffset = 0;
+
+  // Segment 6: dashed tail starts hidden
+  fillPostDash.style.strokeDasharray   = `5 5`;
+  fillPostDash.style.strokeDashoffset  = lenPostDash;
 
   // Sticky roadmap (unchanged)
   const roadmap = document.querySelector(".roadmap");
@@ -42,7 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
       start: "top 80%",
       onEnter: () => {
         sec.classList.add("visible");
-        sec.querySelectorAll(".house-img").forEach(img => img.classList.add("visible"));
+        sec.querySelectorAll(".house-img")
+           .forEach(img => img.classList.add("visible"));
       }
     });
   });
@@ -75,15 +85,19 @@ document.addEventListener("DOMContentLoaded", () => {
     onLeaveBack: () => pins[1].classList.remove("active")
   });
 
-  // 3) Animate dashed Segment 6 (fillPostDash) during Section 2
+  // 3) Animate Segments 5 & 6 during Section 2
   ScrollTrigger.create({
     trigger: sections[2],
     start: "top bottom",
     end:   "bottom top",
     scrub: true,
     onUpdate(self) {
-      // Reveal dashes by moving dashoffset
-      fillPostDash.style.strokeDashoffset = lenPost * (1 - self.progress);
+      const p = self.progress;
+      // Segment 5: solid tail
+      const drawSolid = lenPostSolid * p;
+      fillPostSolid.style.strokeDasharray = `${drawSolid} ${lenPostSolid}`;
+      // Segment 6: dashed tail
+      fillPostDash.style.strokeDashoffset = lenPostDash * (1 - p);
     },
     onEnter: () => pins[2].classList.add("active"),
     onLeaveBack: () => pins[2].classList.remove("active")
