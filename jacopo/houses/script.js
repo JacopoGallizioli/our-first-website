@@ -48,33 +48,16 @@ const observer = new IntersectionObserver(
 
 observer.observe(headerSpacer);
 
-// Smooth progressive fill using scroll progress
-const roadmap = document.querySelector(".roadmap");
-const lineFill = document.getElementById("lineFill");
-const firstPin = document.querySelector(".pin[data-index='0']");
-const lastPin = document.querySelector(`.pin[data-index="${document.querySelectorAll(".pin").length - 1}"]`);
-
-ScrollTrigger.create({
-  trigger: ".story",
-  start: "top center",
-  end: "bottom center",
-  scrub: true,
-  onUpdate: (self) => {
-    const roadmapRect = roadmap.getBoundingClientRect();
-    const firstPinRect = firstPin.getBoundingClientRect();
-    const lastPinRect = lastPin.getBoundingClientRect();
-
-    const scrollProgress = self.progress;
-
-    const startY = firstPinRect.top - roadmapRect.top + firstPinRect.height / 2;
-    const endY = lastPinRect.top - roadmapRect.top + lastPinRect.height / 2;
-
-    const filledHeight = startY + (endY - startY) * scrollProgress;
-
-    lineFill.style.height = `${filledHeight}px`;
-  }
-});
-
+function activatePin(index) {
+  const pins = document.querySelectorAll(".pin");
+  pins.forEach((pin, i) => {
+    if (i <= index) {
+      pin.classList.add("active");
+    } else {
+      pin.classList.remove("active");
+    }
+  });
+}
 
 // Create ScrollTriggers for each section to activate pins and line fill
 document.querySelectorAll(".house").forEach((section, index, sections) => {
@@ -86,3 +69,33 @@ document.querySelectorAll(".house").forEach((section, index, sections) => {
     onEnterBack: () => activatePin(index),
   });
 });
+
+// Smooth progressive fill of lineFill
+(() => {
+  const roadmap = document.querySelector(".roadmap");
+  const lineFill = document.getElementById("lineFill");
+  const pins = document.querySelectorAll(".pin");
+
+  if (!roadmap || !lineFill || pins.length < 2) return;
+
+  const firstPin = pins[0];
+  const lastPin = pins[pins.length - 1];
+
+  ScrollTrigger.create({
+    trigger: ".story",
+    start: "top center",
+    end: "bottom center",
+    scrub: true,
+    onUpdate: self => {
+      const roadmapRect = roadmap.getBoundingClientRect();
+      const firstRect = firstPin.getBoundingClientRect();
+      const lastRect = lastPin.getBoundingClientRect();
+
+      const startY = firstRect.top - roadmapRect.top + firstRect.height / 2;
+      const endY = lastRect.top - roadmapRect.top + lastRect.height / 2;
+
+      const filledHeight = startY + (endY - startY) * self.progress;
+      lineFill.style.height = `${filledHeight}px`;
+    }
+  });
+})();
