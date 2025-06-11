@@ -83,46 +83,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 3) Segments 5 & 6 animation for Section 2
   ScrollTrigger.create({
-    trigger: sections[2],
+    trigger: sections[2],      // third house
     start:   "top bottom",
     end:     "bottom top",
     scrub:   true,
+    onEnter:      () => pins[2].classList.add("active"),
+    onLeaveBack:  () => pins[2].classList.remove("active"),
     onUpdate(self) {
-      const p = self.progress;    // 0 → 1
-  
-      // --- Segment 5 solid tail (first 70%) ---
-      const seg5End = 0.7;
-      const seg5Prog = Math.min(p / seg5End, 1);
+      const p = self.progress;  // 0 → 1 across Section 2
+      const dashStart = 0.7;
+
+      // Segment 5 (solid tail): fill 0→100% over [0,0.7]
+      const seg5Prog = Math.min(p / dashStart, 1);
       const drawSolid = lenPostSolid * seg5Prog;
       fillPostSolid.style.strokeDasharray = `${drawSolid} ${lenPostSolid}`;
-  
-      // --- Segment 6 dashed tail (last 30%) ---
-      const dashLen   = 5;
-      const dashGap   = 5;
-      const unitCount = Math.floor(lenPostDash / (dashLen + dashGap));
-      
+
+      // Segment 6 (dashed tail): reveal dashes over [0.7,1]
       if (p < dashStart) {
         // hide all green dashes
         fillPostDash.style.strokeDasharray = `0 ${lenPostDash}`;
       } else {
-        const localP = (p - dashStart) / (1 - dashStart); // 0→1 over last 30%
-        const count = Math.round(unitCount * localP);
-      
-        // build exactly `count` dash/gap pairs, then the remainder
-        const shownLength = count * (dashLen + dashGap);
+        const localP = (p - dashStart) / (1 - dashStart); // normalized 0→1
+        const dashLen = 5, gapLen = 5;
+        const unit   = dashLen + gapLen;
+        const totalUnits = Math.floor(lenPostDash / unit);
+        const unitsToShow = Math.round(totalUnits * localP);
+
+        // build dashArray: e.g. "5 5 5 5 ... remainder"
+        const shownLength = unitsToShow * unit;
         const remainder   = Math.max(lenPostDash - shownLength, 0);
-      
-        // e.g. "5 5 5 5 5 5  remainder"
         const arr = [];
-        for (let i = 0; i < count; i++) {
-          arr.push(dashLen, dashGap);
+        for (let i = 0; i < unitsToShow; i++) {
+          arr.push(dashLen, gapLen);
         }
         arr.push(remainder);
-      
+
         fillPostDash.style.strokeDasharray = arr.join(" ");
       }
-    },
-    onEnter:      () => pins[2].classList.add("active"),
-    onLeaveBack:  () => pins[2].classList.remove("active")
+    }
   });
 });
