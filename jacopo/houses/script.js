@@ -70,32 +70,48 @@ document.querySelectorAll(".house").forEach((section, index, sections) => {
   });
 });
 
-// Smooth progressive fill of lineFill
+// Progressive lineFill synced exactly to pin activation points
 (() => {
   const roadmap = document.querySelector(".roadmap");
   const lineFill = document.getElementById("lineFill");
   const pins = document.querySelectorAll(".pin");
+  const sections = document.querySelectorAll(".house");
 
-  if (!roadmap || !lineFill || pins.length < 2) return;
+  if (!roadmap || !lineFill || pins.length !== sections.length) return;
 
-  const firstPin = pins[0];
-  const lastPin = pins[pins.length - 1];
+  // Get pin center offsets relative to roadmap
+  const roadmapRect = roadmap.getBoundingClientRect();
+  const pinOffsets = Array.from(pins).map(pin => {
+    const rect = pin.getBoundingClientRect();
+    return rect.top - roadmapRect.top + rect.height / 2;
+  });
 
-  ScrollTrigger.create({
-    trigger: ".story",
-    start: "top center",
-    end: "bottom center",
-    scrub: true,
-    onUpdate: self => {
-      const roadmapRect = roadmap.getBoundingClientRect();
-      const firstRect = firstPin.getBoundingClientRect();
-      const lastRect = lastPin.getBoundingClientRect();
+  // Build sequential ScrollTriggers for smooth fill between sections
+  let previousOffset = 0;
+  sections.forEach((section, index) => {
+    const targetOffset = pinOffsets[index];
 
-      const startY = firstRect.top - roadmapRect.top + firstRect.height / 2;
-      const endY = lastRect.top - roadmapRect.top + lastRect.height / 2;
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top center",
+      end: "bottom center",
+      scrub: true,
+      onUpdate: self => {
+        const progress = self.progress;
+        const height = previousOffset + (targetOffset - previousOffset) * progress;
+        lineFill.style.height = `${height}px`;
+      },
+      onLeave: () => {
+        // Clamp to full height for this section
+        lineFill.style.height = `${targetOffset}px`;
+        previousOffset = targetOffset;
+      },
+      onEnterBack: () => {
+        // Also clamp correctly when scrolling up
+        lineFill.style.height = `${previousOffset}px`;
+      }
+    });
 
-      const filledHeight = startY + (endY - startY) * self.progress;
-      lineFill.style.height = `${filledHeight}px`;
-    }
+    previousOffset = targetOffset;
   });
 })();
