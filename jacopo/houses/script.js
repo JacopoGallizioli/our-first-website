@@ -48,35 +48,33 @@ const observer = new IntersectionObserver(
 
 observer.observe(headerSpacer);
 
-function activatePin(index) {
-  const pins = document.querySelectorAll(".pin");
-  pins.forEach((pin, i) => {
-    if (i <= index) {
-      pin.classList.add("active");
-    } else {
-      pin.classList.remove("active");
-    }
-  });
-  
-  // Set the fill line height to the active pin's vertical position
-  const lineFill = document.getElementById("lineFill");
-  if (!lineFill) return;
+// Smooth progressive fill using scroll progress
+const roadmap = document.querySelector(".roadmap");
+const lineFill = document.getElementById("lineFill");
+const firstPin = document.querySelector(".pin[data-index='0']");
+const lastPin = document.querySelector(`.pin[data-index="${document.querySelectorAll(".pin").length - 1}"]`);
 
-  // Get position of the pin relative to the roadmap container
-  const roadmap = document.querySelector(".roadmap");
-  const activePin = document.querySelector(`.pin[data-index="${index}"]`);
-  if (!activePin || !roadmap) return;
+ScrollTrigger.create({
+  trigger: ".story",
+  start: "top center",
+  end: "bottom center",
+  scrub: true,
+  onUpdate: (self) => {
+    const roadmapRect = roadmap.getBoundingClientRect();
+    const firstPinRect = firstPin.getBoundingClientRect();
+    const lastPinRect = lastPin.getBoundingClientRect();
 
-  // Calculate vertical offset of pin center within roadmap
-  const roadmapRect = roadmap.getBoundingClientRect();
-  const pinRect = activePin.getBoundingClientRect();
+    const scrollProgress = self.progress;
 
-  // Distance from top of roadmap to center of active pin
-  const offset = pinRect.top - roadmapRect.top + pinRect.height / 2;
+    const startY = firstPinRect.top - roadmapRect.top + firstPinRect.height / 2;
+    const endY = lastPinRect.top - roadmapRect.top + lastPinRect.height / 2;
 
-  // Set lineFill height to offset (in px)
-  lineFill.style.height = `${offset}px`;
-}
+    const filledHeight = startY + (endY - startY) * scrollProgress;
+
+    lineFill.style.height = `${filledHeight}px`;
+  }
+});
+
 
 // Create ScrollTriggers for each section to activate pins and line fill
 document.querySelectorAll(".house").forEach((section, index, sections) => {
