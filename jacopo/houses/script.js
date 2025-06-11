@@ -53,6 +53,7 @@ function activatePin(index) {
 // Create ScrollTriggers for pin activation and line fill
 const pinOffsets = [];
 const updateOffsets = () => {
+  console.log("Pin Offsets:", pinOffsets);
   const roadmapRect = roadmap.getBoundingClientRect();
   pinOffsets.length = 0;
   pins.forEach(pin => {
@@ -78,14 +79,10 @@ const createLineFillTriggers = () => {
         const height = previousOffset + (targetOffset - previousOffset) * progress;
         lineFill.style.height = `${height}px`;
       },
-      onLeave: () => {
-        lineFill.style.height = `${targetOffset}px`;
-      },
       onEnter: () => {
         if (index > 0) activatePin(index - 1);
       },
       onEnterBack: () => {
-        lineFill.style.height = `${previousOffset}px`;
         if (index > 0) activatePin(index - 1);
       }
     });
@@ -98,6 +95,9 @@ window.addEventListener("load", () => {
   resetRoadmap();
   updateOffsets();
   createLineFillTriggers();
+  setTimeout(() => {
+    lineFill.style.height = "0px";
+  }, 50);
 });
 
 window.addEventListener("resize", () => {
