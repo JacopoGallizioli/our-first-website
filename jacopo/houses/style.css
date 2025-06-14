@@ -96,29 +96,20 @@ header {
 }
 
 .town-label {
-  position: absolute;
-  top: 0; /* you’ll adjust via JS */
+  position: fixed;          
+  top: 0;
+  left: 0;
+  padding: 6px 10px;
   background: #2f4f2f;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 14px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.9em;
+  pointer-events: none;      
   white-space: nowrap;
-  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 2000;
 }
 
-/* Shift to the left of the pin */
-.town-label.left {
-  transform: translate(-110%, -50%);
-  text-align: right;
-}
-
-/* Shift to the right of the pin */
-.town-label.right {
-  transform: translate(10%, -50%);
-  text-align: left;
-}
+.town-label.left  { transform: translate(-110%, -50%); }
+.town-label.right { transform: translate(10%, -50%);  }
