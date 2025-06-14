@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Listen to scroll to update labels
   pins.forEach((pin, index) => {
-    if (index === 0) return; // Already shown
-
     ScrollTrigger.create({
       trigger: document.querySelector(`.house[data-index="${index}"]`),
       start: "top center",
