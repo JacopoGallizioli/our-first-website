@@ -97,8 +97,8 @@ header {
 
 .town-label {
   position: absolute;
-  transform: translateX(-50%);
-  background: #2f4f2f; /* darker background for better contrast */
+  top: 0; /* you’ll adjust via JS */
+  background: #2f4f2f;
   color: #fff;
   padding: 6px 12px;
   border-radius: 6px;
@@ -110,7 +110,15 @@ header {
   white-space: nowrap;
   z-index: 10;
 }
-.town-label.visible {
-  opacity: 1;
+
+/* Shift to the left of the pin */
+.town-label.left {
+  transform: translate(-110%, -50%);
+  text-align: right;
 }
 
+/* Shift to the right of the pin */
+.town-label.right {
+  transform: translate(10%, -50%);
+  text-align: left;
+}
