@@ -98,17 +98,19 @@ header {
 .town-label {
   position: absolute;
   transform: translateX(-50%);
-  background: #4caf50;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.8); /* darker background for better contrast */
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-weight: bold;
   font-size: 14px;
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
 }
-
 .town-label.visible {
   opacity: 1;
 }
+
