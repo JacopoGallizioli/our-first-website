@@ -9,9 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(label);
 
   const townNames = ["Saronno", "Augsburg", "Munich"];
+  let currentIdx = 0;
 
-  // Show “Saronno” immediately
+  // initial
   showLabel(0);
+
+  // update label on scroll: always re‐position next to the pin
+  window.addEventListener("scroll", () => {
+    showLabel(currentIdx, /*repositionOnly=*/true);
+  });
 
   pins.forEach((pin, i) => {
     ScrollTrigger.create({
@@ -23,28 +29,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  function showLabel(idx) {
+  function showLabel(idx, repositionOnly = false) {
     if (idx < 0 || idx >= pins.length) {
       label.style.opacity = 0;
       return;
     }
-    const pinRect = pins[idx].getBoundingClientRect();
+    currentIdx = idx;
 
-    label.textContent = townNames[idx];
+    // reposition only?
+    if (!repositionOnly) {
+      label.textContent = townNames[idx];
+      label.style.opacity = 1;
 
-    // fixed positioning: viewport coords
-    label.style.top  = (pinRect.top + pinRect.height/2) + "px";
-    label.style.left = pinRect.left + "px";
-
-    // choose left/right offset
-    if (idx === 1) {
-      label.classList.add("right");
-      label.classList.remove("left");
-    } else {
-      label.classList.add("left");
-      label.classList.remove("right");
+      // side selection
+      if (idx === 1) {
+        label.classList.add("right");
+        label.classList.remove("left");
+      } else {
+        label.classList.add("left");
+        label.classList.remove("right");
+      }
     }
 
-    label.style.opacity = 1;
+    // always recompute viewport position
+    const pinRect = pins[idx].getBoundingClientRect();
+    label.style.top  = (pinRect.top + pinRect.height/2) + "px";
+    label.style.left = pinRect.left + "px";
   }
 });
