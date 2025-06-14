@@ -1,44 +1,53 @@
+// script2.js
+gsap.registerPlugin(ScrollTrigger);
+
 document.addEventListener("DOMContentLoaded", () => {
-  const pins = document.querySelectorAll(".pin");
+  const pins     = Array.from(document.querySelectorAll(".pin"));
+  const sections = Array.from(document.querySelectorAll(".house"));
+  const label    = document.createElement("div");
+  
+  label.classList.add("town-label");
+  document.body.appendChild(label);
 
-  const labels = {
-    0: "Saronno",
-    1: "Augsburg",
-    2: "Munich"
-  };
+  const townNames = ["Saronno", "Augsburg", "Munich"];
 
-  const roadmap = document.querySelector(".roadmap");
-
-  // Create label element
-  const townLabel = document.createElement("div");
-  townLabel.className = "town-label";
-  roadmap.appendChild(townLabel);
-
-  // Style and position the label based on the pin
-  const updateLabel = (pin, text) => {
-    const pinRect = pin.getBoundingClientRect();
-    const roadmapRect = roadmap.getBoundingClientRect();
-
-    const top = pinRect.top - roadmapRect.top - 30;
-    const left = pinRect.left - roadmapRect.left + pinRect.width / 2;
-
-    townLabel.style.top = `${top}px`;
-    townLabel.style.left = `${left}px`;
-    townLabel.textContent = text;
-    townLabel.classList.add("visible");
-  };
-
-  // Set initial label for first pin
-  const pin0 = pins[0];
-  updateLabel(pin0, labels[0]);
-
-  // Listen to scroll to update labels
-  pins.forEach((pin, index) => {
+  pins.forEach((pin, i) => {
+    // Make sure label hides when scrolling back above first section
     ScrollTrigger.create({
-      trigger: document.querySelector(`.house[data-index="${index}"]`),
-      start: "top center",
-      onEnter: () => updateLabel(pin, labels[index]),
-      onEnterBack: () => updateLabel(pin, labels[index])
+      trigger: sections[i],
+      start: "top bottom",
+      end:   "bottom top",
+      onEnter:    () => showLabel(i),
+      onLeaveBack:() => showLabel(i - 1)
     });
   });
+
+  // Helper to position & show/hide
+  function showLabel(idx) {
+    if (idx < 0 || idx >= pins.length) {
+      label.style.opacity = 0;
+      return;
+    }
+    const pin   = pins[idx];
+    const rect  = pin.getBoundingClientRect();
+    const name  = townNames[idx] || "";
+
+    // Set text
+    label.textContent = name;
+
+    // Position vertically centered on pin
+    label.style.top = window.scrollY + rect.top + "px";
+
+    // Attach left/right class
+    if (idx === 1) {
+      label.classList.remove("left");
+      label.classList.add("right");
+    } else {
+      label.classList.remove("right");
+      label.classList.add("left");
+    }
+
+    // Show it
+    label.style.opacity = 1;
+  }
 });
