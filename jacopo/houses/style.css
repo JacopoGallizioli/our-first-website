@@ -111,5 +111,5 @@ header {
   z-index: 2000;
 }
 
-.town-label.left  { transform: translate(-110%, -50%); }
-.town-label.right { transform: translate(10%, -50%);  }
+.town-label.left  { transform: translate(-130%, -50%); }
+.town-label.right { transform: translate(20%, -50%);  }
