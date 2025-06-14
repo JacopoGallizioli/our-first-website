@@ -94,3 +94,21 @@ header {
   fill: #4caf50;
   stroke: #4caf50;
 }
+
+.town-label {
+  position: absolute;
+  transform: translateX(-50%);
+  background: #4caf50;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.town-label.visible {
+  opacity: 1;
+}
