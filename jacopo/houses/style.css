@@ -98,7 +98,7 @@ header {
 .town-label {
   position: absolute;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8); /* darker background for better contrast */
+  background: #2f4f2f; /* darker background for better contrast */
   color: #fff;
   padding: 6px 12px;
   border-radius: 6px;
