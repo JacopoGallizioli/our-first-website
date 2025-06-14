@@ -11,43 +11,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const townNames = ["Saronno", "Augsburg", "Munich"];
 
+  // Show the first label immediately
+  positionLabel(0);
+
   pins.forEach((pin, i) => {
-    // Make sure label hides when scrolling back above first section
     ScrollTrigger.create({
       trigger: sections[i],
       start: "top bottom",
       end:   "bottom top",
-      onEnter:    () => showLabel(i),
-      onLeaveBack:() => showLabel(i - 1)
+      onEnter:     () => positionLabel(i),
+      onLeaveBack: () => positionLabel(i - 1)
     });
   });
 
-  // Helper to position & show/hide
-  function showLabel(idx) {
+  function positionLabel(idx) {
     if (idx < 0 || idx >= pins.length) {
       label.style.opacity = 0;
       return;
     }
-    const pin   = pins[idx];
-    const rect  = pin.getBoundingClientRect();
-    const name  = townNames[idx] || "";
+    const pin  = pins[idx];
+    const rect = pin.getBoundingClientRect();
 
-    // Set text
-    label.textContent = name;
+    // set text
+    label.textContent = townNames[idx];
 
-    // Position vertically centered on pin
-    label.style.top = window.scrollY + rect.top + "px";
+    // absolute position so it's beside the pin
+    label.style.top  = window.scrollY + rect.top + "px";
+    label.style.left = window.scrollX + rect.left + "px";
 
-    // Attach left/right class
+    // choose left/right offset class
     if (idx === 1) {
-      label.classList.remove("left");
       label.classList.add("right");
+      label.classList.remove("left");
     } else {
-      label.classList.remove("right");
       label.classList.add("left");
+      label.classList.remove("right");
     }
 
-    // Show it
     label.style.opacity = 1;
   }
 });
+
