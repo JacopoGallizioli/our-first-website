@@ -1,12 +1,13 @@
-/* Pink page background */
+/* Pink page background and full viewport */
 body {
   margin: 0;
   background-color: pink;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  overflow: hidden;  /* Prevent scrolling */
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   flex-direction: column;
 }
 
@@ -26,9 +27,9 @@ nav a:hover {
   text-decoration: underline;
 }
 
-/* Game container centered with vertical stacking */
+/* Game container */
 #gameContainer {
-  background: rgba(255, 192, 203, 0.3); /* translucent pink */
+  background: rgba(255, 192, 203, 0.3);
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 0 25px #ff66a3aa;
@@ -51,13 +52,20 @@ nav a:hover {
   margin: 5px 0;
 }
 
+/* Wrap canvas and buttons so buttons overlay on canvas */
+#canvasWrapper {
+  position: relative;
+  width: 800px;
+  height: 500px;
+}
+
 /* Canvas styling */
 canvas {
   border: 5px solid #ff99cc;
   border-radius: 20px;
   max-width: 100%;
   height: auto;
-  display: block; /* removes inline gap */
+  display: block;
 }
 
 /* Message below canvas */
@@ -69,20 +77,25 @@ canvas {
   min-height: 30px;
 }
 
-/* Gift buttons container below canvas & message */
+/* Gift buttons overlay on canvas */
 #giftBox {
-  margin-top: 20px; /* space above buttons */
-  width: 100%;
-  display: none; /* hidden until needed */
-  justify-content: center;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: none; /* hidden initially */
   gap: 15px;
-  display: flex;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(255, 102, 147, 0.6);
+  z-index: 10;
+  user-select: none;
 }
 
 #giftBox button {
   background-color: #ff66a3;
   border: none;
-  padding: 10px 25px;
+  padding: 10px 20px;
   font-size: 18px;
   color: white;
   border-radius: 10px;
@@ -111,7 +124,7 @@ canvas {
 #memoryContent {
   background-color: white;
   border-radius: 15px;
-  padding: 10px 10px 25px 10px; /* extra bottom padding for text */
+  padding: 10px 10px 25px 10px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   position: relative;
   max-width: 320px;
