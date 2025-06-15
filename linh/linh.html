@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Heart Collector Game</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <nav>
@@ -13,25 +13,28 @@
     <a href="../jacopo/magnets.html">Magnets</a>
   </nav>
 
-  <div class="intro">
-    <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
-    <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
-    <p>Collect every heart to unlock a special surprise!</p>
+  <div id="gameContainer">
+    <div class="intro">
+      <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
+      <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
+      <p>Collect every heart to unlock a special surprise!</p>
+    </div>
+
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+
+    <div id="message"></div>
   </div>
 
-  <canvas id="gameCanvas" width="800" height="500"></canvas>
-
-  <!-- Memory Overlay (on top of everything) -->
+  <!-- Memory popup overlay -->
   <div id="memoryOverlay">
     <div id="memoryContent">
+      <button id="closeMemory">×</button>
       <img id="memoryImage" src="" alt="Memory Image" />
       <div id="memoryText"></div>
-      <button id="closeMemory">✖</button>
     </div>
   </div>
 
-  <div id="message"></div>
-
+  <!-- Gift box -->
   <div id="giftBox">
     <button onclick="openGift()">Open Your Gift 🎁</button>
     <button id="restartButton">Restart Game 🔄</button>
@@ -39,6 +42,6 @@
 
   <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
 
-  <script src="script.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>
