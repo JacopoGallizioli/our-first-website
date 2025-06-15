@@ -41,15 +41,17 @@ header {
 }
 
 .house-img {
-  max-width: 90%;
+  display: block;
+  width: 100%;   /* make image fill wrapper */
+  height: auto;
   max-height: 400px;
   object-fit: cover;
-  margin-top: 10px;
   border-radius: 8px;
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.6s;
   display: block;
 }
+
 .house-img.visible {
   opacity: 1;
 }
@@ -145,11 +147,8 @@ header {
   margin-top: -40px; /* keep your margin from images img */
 }
 
-.image-wrapper img.house-img {
-  display: block;
-  width: 100%; /* fill wrapper */
-  height: auto;
-  border-radius: 8px;
+.image-wrapper:first-child {
+  margin-top: 0;
 }
 
 .caption {
