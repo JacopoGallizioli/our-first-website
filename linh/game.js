@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 const playerSize = 64;
 const heartSize = 30;
-const castleSize = 100;
+const castleSize = 120;
 
 let player = { x: 50, y: 200, width: playerSize, height: playerSize, speed: 4 };
 const castle = { x: canvas.width - castleSize - 30, y: canvas.height/2 - castleSize/2, width: castleSize, height: castleSize };
@@ -26,15 +26,23 @@ const memoryImage = document.getElementById('memoryImage');
 const memoryText = document.getElementById('memoryText');
 const closeMemoryBtn = document.getElementById('closeMemory');
 
-const finalReward = document.getElementById('finalReward');
-const finalRestartButton = document.getElementById('finalRestartButton');
+const giftContainer = document.getElementById('giftContainer');
+const openGiftBtn = document.getElementById('openGiftBtn');
+const restartBtn = document.getElementById('restartBtn');
 
 const message = document.getElementById('message');
 
 const collectSound = document.getElementById('collectSound');
 
+// Load player and castle images
+const playerImg = new Image();
+playerImg.src = 'Jacopo.png'; // Replace with your character image filename
+
+const castleImg = new Image();
+castleImg.src = 'castle.png'; // Replace with your castle image filename
+
 document.addEventListener('keydown', (e) => {
-  if(memoryOverlay.style.display === 'flex' || finalReward.style.display === 'flex') return;
+  if(memoryOverlay.style.display === 'flex' || giftContainer.style.display === 'flex') return;
   keys[e.key] = true;
 });
 
@@ -48,10 +56,14 @@ closeMemoryBtn.onclick = () => {
   message.innerText = '';
 };
 
-finalRestartButton.onclick = () => {
-  finalReward.style.display = 'none';
+restartBtn.onclick = () => {
+  giftContainer.style.display = 'none';
   initializeGame();
   message.innerText = '';
+};
+
+openGiftBtn.onclick = () => {
+  alert('🎁 Surprise! Thank you for playing! 🎉');
 };
 
 function initializeGame() {
@@ -61,7 +73,6 @@ function initializeGame() {
   memoryIndex = 0;
   hearts = [];
 
-  // Generate random hearts positions
   for(let i = 0; i < memories.length; i++) {
     hearts.push({
       x: Math.random() * (canvas.width - heartSize - 100) + 50,
@@ -71,19 +82,28 @@ function initializeGame() {
   }
 
   memoryOverlay.style.display = 'none';
-  finalReward.style.display = 'none';
+  giftContainer.style.display = 'none';
   canvas.style.filter = 'none';
   message.innerText = '';
 }
 
 function drawPlayer() {
-  ctx.fillStyle = '#900c3f';
-  ctx.fillRect(player.x, player.y, player.width, player.height);
+  if(playerImg.complete) {
+    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+  } else {
+    // fallback rectangle if image not loaded
+    ctx.fillStyle = '#900c3f';
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+  }
 }
 
 function drawCastle() {
-  ctx.fillStyle = '#ff69b4';
-  ctx.fillRect(castle.x, castle.y, castle.width, castle.height);
+  if(castleImg.complete) {
+    ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+  } else {
+    ctx.fillStyle = '#ff69b4';
+    ctx.fillRect(castle.x, castle.y, castle.width, castle.height);
+  }
 }
 
 function drawHearts() {
@@ -105,7 +125,7 @@ function collision(rect1, rect2) {
 }
 
 function update() {
-  if(memoryOverlay.style.display === 'flex' || finalReward.style.display === 'flex') return;
+  if(memoryOverlay.style.display === 'flex' || giftContainer.style.display === 'flex') return;
 
   if(keys['ArrowUp']) player.y -= player.speed;
   if(keys['ArrowDown']) player.y += player.speed;
@@ -131,7 +151,7 @@ function update() {
 
   // Check if all hearts collected and player reached castle
   if(collected === memories.length && collision(player, castle)) {
-    showFinalReward();
+    showGiftAndRestart();
   }
 }
 
@@ -142,10 +162,10 @@ function showMemory(idx) {
   canvas.style.filter = 'blur(3px)';
 }
 
-function showFinalReward() {
-  finalReward.style.display = 'flex';
+function showGiftAndRestart() {
+  giftContainer.style.display = 'flex';
   canvas.style.filter = 'blur(3px)';
-  message.innerText = 'You collected all hearts! Reach the castle to win!';
+  message.innerText = 'You collected all hearts and reached the castle! 🎉';
 }
 
 function gameLoop() {
