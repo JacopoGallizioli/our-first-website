@@ -30,7 +30,7 @@ const closeMemoryBtn = document.getElementById('closeMemory');
 
 document.addEventListener('keydown', e => {
   if (memoryOverlay.style.display === 'flex') {
-    // If memory popup is showing, allow arrow keys to close it
+    // Close memory popup on arrow keys
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       hideMemory();
     }
