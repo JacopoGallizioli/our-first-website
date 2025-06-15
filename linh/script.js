@@ -13,8 +13,6 @@ const collectSound = document.getElementById('collectSound');
 
 let player, castle, hearts, collected, memoryIndex;
 const keys = {};
-let memoryShown = false;
-
 const memories = [
   { text: "Our first year together 🌸", image: "1styear.JPG" },
   { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
@@ -25,17 +23,27 @@ const memories = [
 
 const totalHearts = memories.length;
 
+const memoryOverlay = document.getElementById('memoryOverlay');
+const memoryImage = document.getElementById('memoryImage');
+const memoryText = document.getElementById('memoryText');
+const closeMemoryBtn = document.getElementById('closeMemory');
+
 document.addEventListener('keydown', e => {
-  if (memoryShown) {
+  if (memoryOverlay.style.display === 'flex') {
+    // If memory popup is showing, allow arrow keys to close it
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       hideMemory();
     }
-    return;
+  } else {
+    keys[e.key] = true;
   }
-  keys[e.key] = true;
 });
 
-document.addEventListener('keyup', e => keys[e.key] = false);
+document.addEventListener('keyup', e => {
+  keys[e.key] = false;
+});
+
+closeMemoryBtn.addEventListener('click', hideMemory);
 
 function initializeGame() {
   player = { x: 50, y: 200, width: 64, height: 64, speed: 3 };
@@ -43,7 +51,6 @@ function initializeGame() {
   hearts = [];
   collected = 0;
   memoryIndex = 0;
-  memoryShown = false;
 
   for (let i = 0; i < totalHearts; i++) {
     hearts.push({
@@ -56,7 +63,7 @@ function initializeGame() {
 
   document.getElementById('message').innerText = '';
   document.getElementById('giftBox').style.display = 'none';
-  document.getElementById('memoryOverlay').style.display = 'none';
+  hideMemory();
   canvas.style.filter = 'none';
 }
 
@@ -89,26 +96,22 @@ function drawHearts() {
 }
 
 function showMemory(index) {
-  const overlay = document.getElementById('memoryOverlay');
-  const text = document.getElementById('memoryText');
-  const image = document.getElementById('memoryImage');
-
-  text.innerText = memories[index].text;
-  image.src = memories[index].image;
-
-  overlay.style.display = 'flex';
+  memoryText.innerText = memories[index].text;
+  memoryImage.src = memories[index].image;
+  memoryOverlay.style.display = 'flex';
   canvas.style.filter = 'blur(3px)';
-  memoryShown = true;
 }
 
 function hideMemory() {
-  document.getElementById('memoryOverlay').style.display = 'none';
+  memoryOverlay.style.display = 'none';
   canvas.style.filter = 'none';
-  memoryShown = false;
 }
 
 function update() {
-  if (memoryShown) return; // Pause game logic if memory is showing
+  if (memoryOverlay.style.display === 'flex') {
+    // Pause game update while memory is shown
+    return;
+  }
 
   if (keys['ArrowUp']) player.y -= player.speed;
   if (keys['ArrowDown']) player.y += player.speed;
@@ -159,10 +162,6 @@ function openGift() {
 
 document.getElementById('restartButton').addEventListener('click', () => {
   initializeGame();
-});
-
-document.getElementById('closeMemory').addEventListener('click', () => {
-  hideMemory();
 });
 
 let loaded = 0;
