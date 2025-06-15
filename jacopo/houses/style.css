@@ -29,30 +29,6 @@ header {
   max-width: 65%;
 }
 
-.house {
-  margin-bottom: 200px;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.6s, transform 0.6s;
-}
-.house.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.house-img {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  margin-top: 10px;
-  border-radius: 8px;
-  opacity: 0;
-  transition: opacity 0.6s;
-}
-.house-img.visible {
-  opacity: 1;
-}
-
 /* ROADMAP */
 .roadmap {
   flex: 1;
@@ -113,3 +89,52 @@ header {
 
 .town-label.left  { transform: translate(-125%, -50%); }
 .town-label.right { transform: translate(50%, -50%);  }
+
+.images {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+
+.image-wrapper {
+  position: relative;
+  display: inline-block; /* keep image size */
+  max-width: 90%; /* same as image max-width */
+  margin-top: -40px; /* keep your margin from images img */
+}
+
+.image-wrapper:first-child {
+  margin-top: 0;
+}
+
+.image-wrapper .caption {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  pointer-events: none; /* so it doesn't block image interaction */
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+.image-wrapper .house-img {
+  display: block;
+  width: 100%;   /* make image fill wrapper */
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+.image-wrapper.visible .house-img,
+.image-wrapper.visible .caption {
+  opacity: 1;
+}

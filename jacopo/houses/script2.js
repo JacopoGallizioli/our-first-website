@@ -36,12 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     currentIdx = idx;
 
-    // reposition only?
     if (!repositionOnly) {
       label.textContent = townNames[idx];
       label.style.opacity = 1;
 
-      // side selection
       if (idx === 1) {
         label.classList.add("right");
         label.classList.remove("left");
@@ -51,9 +49,44 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // always recompute viewport position
     const pinRect = pins[idx].getBoundingClientRect();
     label.style.top  = (pinRect.top + pinRect.height/2) + "px";
     label.style.left = pinRect.left + "px";
   }
+
+  document.querySelectorAll('.image-wrapper').forEach((wrapper) => {
+    const offset = Math.floor(Math.random() * 80); // or any logic you want
+    wrapper.style.transform = `translateX(${offset}px)`;
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const wrappers = document.querySelectorAll('.image-wrapper');
+
+  // Show only the first wrapper (with image + caption) initially
+  wrappers.forEach((wrapper, i) => {
+    if (i === 0) {
+      wrapper.classList.add("visible");
+    } else {
+      wrapper.classList.remove("visible");
+    }
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        } else {
+          entry.target.classList.remove("visible");
+        }
+      });
+    },
+    {
+      root: null,
+      threshold: 0.3, // trigger when 30% visible
+    }
+  );
+
+  wrappers.forEach(wrapper => observer.observe(wrapper));
 });
