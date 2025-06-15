@@ -140,4 +140,41 @@ function update() {
       player.x < castle.x + castle.width &&
       player.y + player.height > castle.y &&
       player.y < castle.y + castle.height) {
-    document.getElementById('message').innerText = 'You made it to th
+    document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
+    canvas.style.filter = 'blur(3px)';
+    document.getElementById('giftBox').style.display = 'block';
+  }
+}
+
+function openGift() {
+  alert('Surprise! 💝 You unlocked the special gift!');
+}
+
+function restartGame() {
+  initializeGame();
+}
+
+function gameLoop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBackground();
+  drawCastle();
+  drawHearts();
+  drawPlayer();
+  update();
+  requestAnimationFrame(gameLoop);
+}
+
+// Restart button event
+document.getElementById('restartButton').addEventListener('click', restartGame);
+
+// Wait for images to load then initialize game and start loop
+let assetsLoaded = 0;
+[bgImg, playerImg, castleImg].forEach(img => {
+  img.onload = () => {
+    assetsLoaded++;
+    if (assetsLoaded === 3) {
+      initializeGame();
+      requestAnimationFrame(gameLoop);
+    }
+  };
+});
