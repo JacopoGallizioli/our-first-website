@@ -1,46 +1,59 @@
+// script2.js
+gsap.registerPlugin(ScrollTrigger);
+
 document.addEventListener("DOMContentLoaded", () => {
-  const pins = document.querySelectorAll(".pin");
+  const pins     = Array.from(document.querySelectorAll(".pin"));
+  const sections = Array.from(document.querySelectorAll(".house"));
+  const label    = document.createElement("div");
+  label.classList.add("town-label");
+  document.body.appendChild(label);
 
-  const labels = {
-    0: "Saronno",
-    1: "Augsburg",
-    2: "Munich"
-  };
+  const townNames = ["Saronno", "Augsburg", "Munich"];
+  let currentIdx = 0;
 
-  const roadmap = document.querySelector(".roadmap");
+  // initial
+  showLabel(0);
 
-  // Create label element
-  const townLabel = document.createElement("div");
-  townLabel.className = "town-label";
-  roadmap.appendChild(townLabel);
+  // update label on scroll: always re‐position next to the pin
+  window.addEventListener("scroll", () => {
+    showLabel(currentIdx, /*repositionOnly=*/true);
+  });
 
-  // Style and position the label based on the pin
-  const updateLabel = (pin, text) => {
-    const pinRect = pin.getBoundingClientRect();
-    const roadmapRect = roadmap.getBoundingClientRect();
-
-    const top = pinRect.top - roadmapRect.top - 30;
-    const left = pinRect.left - roadmapRect.left + pinRect.width / 2;
-
-    townLabel.style.top = `${top}px`;
-    townLabel.style.left = `${left}px`;
-    townLabel.textContent = text;
-    townLabel.classList.add("visible");
-  };
-
-  // Set initial label for first pin
-  const pin0 = pins[0];
-  updateLabel(pin0, labels[0]);
-
-  // Listen to scroll to update labels
-  pins.forEach((pin, index) => {
-    if (index === 0) return; // Already shown
-
+  pins.forEach((pin, i) => {
     ScrollTrigger.create({
-      trigger: document.querySelector(`.house[data-index="${index}"]`),
-      start: "top center",
-      onEnter: () => updateLabel(pin, labels[index]),
-      onEnterBack: () => updateLabel(pin, labels[index])
+      trigger: sections[i],
+      start:   "top bottom",
+      end:     "bottom top",
+      onEnter:     () => showLabel(i),
+      onLeaveBack: () => showLabel(i - 1)
     });
   });
+
+  function showLabel(idx, repositionOnly = false) {
+    if (idx < 0 || idx >= pins.length) {
+      label.style.opacity = 0;
+      return;
+    }
+    currentIdx = idx;
+
+    // reposition only?
+    if (!repositionOnly) {
+      label.textContent = townNames[idx];
+      label.style.opacity = 1;
+
+      // side selection
+      if (idx === 1) {
+        label.classList.add("right");
+        label.classList.remove("left");
+      } else {
+        label.classList.add("left");
+        label.classList.remove("right");
+      }
+    }
+
+    // always recompute viewport position
+    const pinRect = pins[idx].getBoundingClientRect();
+    label.style.top  = (pinRect.top + pinRect.height/2) + "px";
+    label.style.left = pinRect.left + "px";
+  }
 });

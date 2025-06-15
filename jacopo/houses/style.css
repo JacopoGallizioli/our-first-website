@@ -96,19 +96,20 @@ header {
 }
 
 .town-label {
-  position: absolute;
-  transform: translateX(-50%);
-  background: #4caf50;
+  position: fixed;          
+  top: 0;
+  left: 0;
+  padding: 6px 10px;
+  background: #2f4f2f;
   color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 14px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  pointer-events: none;      
+  white-space: nowrap;
   opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 2000;
 }
 
-.town-label.visible {
-  opacity: 1;
-}
+.town-label.left  { transform: translate(-125%, -50%); }
+.town-label.right { transform: translate(50%, -50%);  }
