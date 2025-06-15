@@ -36,12 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     currentIdx = idx;
 
-    // reposition only?
     if (!repositionOnly) {
       label.textContent = townNames[idx];
       label.style.opacity = 1;
 
-      // side selection
       if (idx === 1) {
         label.classList.add("right");
         label.classList.remove("left");
@@ -51,14 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // always recompute viewport position
     const pinRect = pins[idx].getBoundingClientRect();
     label.style.top  = (pinRect.top + pinRect.height/2) + "px";
     label.style.left = pinRect.left + "px";
   }
-});
 
-document.querySelectorAll('.images img').forEach((img) => {
-  const offset = Math.floor(Math.random() * 21) - 10; // random value between -10 and +10
-  img.style.transform = `translateX(${offset}px)`;
+  document.querySelectorAll('.images img').forEach((img) => {
+    const offset = Math.floor(Math.random() * 21) - 10; // -10px to +10px
+    img.style.transform = `translateX(${offset}px)`;
+  });
 });
