@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Games</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
   <div class="page-header">
@@ -32,14 +31,12 @@
   <div id="gameWrapper">
     <div id="gameContainer">
       <canvas id="gameCanvas" width="800" height="500"></canvas>
-      <div id="message"></div>
+      <div id="message">Collecting...</div>
 
       <!-- Gift box overlay -->
       <div id="giftBox" class="hidden">
-        <div class="centered-buttons">
-          <button class="pretty-button" onclick="openGift()">🎁 Open Your Gift</button>
-          <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
-        </div>
+        <button class="pretty-button">🎁 Receive Your Gift</button>
+        <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
       </div>
     </div>
   </div>
@@ -49,7 +46,7 @@
     <div id="memoryContent">
       <button id="closeMemory" title="Close">×</button>
       <img id="memoryImage" src="" alt="Memory Image" />
-      <div id="memoryText"></div>
+      <div id="memoryText">Memory caption goes here</div>
     </div>
   </div>
 
