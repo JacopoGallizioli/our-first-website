@@ -223,7 +223,7 @@ nav a:hover,
   position: absolute;
   background-color: #2e4b2e;
   min-width: 160px;
-  z-index: 1;
+  z-index: 20;
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(20, 40, 20, 0.6);
   top: 100%;
