@@ -73,8 +73,9 @@ nav a:hover {
 /* Gift buttons overlay */
 #giftBox {
   position: absolute;
-  bottom: 15px;
-  right: 15px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: none; /* Hide by default */
   background: rgba(255, 255, 255, 0.9);
   padding: 12px 18px;
