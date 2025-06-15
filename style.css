@@ -1,145 +1,48 @@
-/* Reset and full page pink background */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive;
-  background-color: #ff99cc; /* Pink background */
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-#gameContainer {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
+body {
+  font-family: sans-serif;
+  background-color: #f0f0f0;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 0 20px rgba(255, 105, 180, 0.7);
-  max-width: 850px;
-  width: 90vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* Navigation at top inside container */
-nav {
-  margin-bottom: 15px;
+h1 {
+  color: #2c3e50;
 }
 
-nav a {
-  color: #ffccdd;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.intro {
-  margin-bottom: 15px;
-  line-height: 1.4;
-}
-
-canvas {
-  display: block;
-  border: 5px solid #ff99cc;
-  border-radius: 20px;
-  background-color: transparent;
-  transition: filter 0.3s ease;
-  max-width: 100%;
-  height: auto;
-}
-
-/* Message below canvas */
-#message {
-  font-size: 24px;
-  color: #ffccdd;
-  margin-top: 15px;
-}
-
-/* Gift box container below canvas & message */
-#giftBox {
+table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 20px;
-  display: none;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
 }
 
-#giftBox button {
-  background-color: #ff66a3;
-  border: none;
-  padding: 10px 25px;
-  font-size: 18px;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
 }
 
-#giftBox button:hover {
-  background-color: #ff4d8a;
-}
-
-/* Memory Overlay */
-#memoryOverlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
-
-#memoryContent {
-  background-color: white;
-  border-radius: 15px;
-  padding: 10px 10px 25px 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  position: relative;
-  max-width: 320px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#memoryContent img {
-  width: 300px;
+img {
+  width: 100px;
   height: auto;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-#memoryText {
-  margin-top: 10px;
-  width: 100%;
-  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive;
-  font-size: 18px;
-  color: #333;
-  text-align: center;
-  user-select: none;
-}
-
-#closeMemory {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: #ff6699;
-  border: none;
-  border-radius: 50%;
-  color: white;
-  font-size: 18px;
-  width: 30px;
-  height: 30px;
+button {
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
-  z-index: 10;
+}
+
+.magnet-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.magnet-pill {
+  background-color: #e0e0e0;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  display: inline-block;
 }
