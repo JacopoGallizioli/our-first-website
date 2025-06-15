@@ -1,4 +1,4 @@
-/* Reset margin/padding and set full viewport height */
+/* Reset and full page background */
 html, body {
   margin: 0;
   padding: 0;
@@ -10,12 +10,11 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* prevent scroll */
+  overflow: hidden;
 }
 
-/* Container that holds the game and UI */
 #gameContainer {
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black for readability */
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 20px;
   padding: 20px;
   text-align: center;
@@ -24,7 +23,6 @@ html, body {
   width: 90vw;
 }
 
-/* Navigation styling */
 nav {
   margin-bottom: 15px;
 }
@@ -37,32 +35,28 @@ nav a {
   font-size: 1.1rem;
 }
 
-/* Intro text */
 .intro {
   margin-bottom: 15px;
   line-height: 1.4;
 }
 
-/* Canvas styling */
 canvas {
   display: block;
   margin: 0 auto;
   border: 5px solid #ff99cc;
   border-radius: 20px;
-  background-color: transparent; /* let background show */
+  background-color: transparent;
   transition: filter 0.3s ease;
   max-width: 100%;
   height: auto;
 }
 
-/* Message below canvas */
 #message {
   font-size: 24px;
   color: #ffccdd;
   margin-top: 15px;
 }
 
-/* Gift box buttons container */
 #giftBox {
   margin-top: 20px;
   display: none;
