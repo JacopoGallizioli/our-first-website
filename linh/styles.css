@@ -1,14 +1,8 @@
-/* Global Styles */
 body {
+  font-family: sans-serif;
   margin: 0;
-  padding: 0;
-  background-color: pink;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden; /* Prevent scrolling */
-  height: 100vh;
+  background-color: #f3faf0;  /* very light green */
+  color: #2f4f2f;             /* dark moss green for text */
 }
 
 /* Page Header Bar */
@@ -20,7 +14,7 @@ body {
   position: relative;
   background-color: #355e35;  /* dark green */
   padding: 0.5em 1em;
-  height: 4.5em;
+  height: 4.5em; /* enough for subtitle */
   color: #d0e6d0;
   margin-bottom: 0;
 }
@@ -33,6 +27,7 @@ body {
   white-space: nowrap;
 }
 
+/* Subtitle under h1 */
 .page-header .subtitle {
   font-size: 0.9em;
   color: #b3d9b3; /* lighter green */
@@ -45,6 +40,7 @@ nav {
   gap: 0.5em;
   position: absolute;
   left: 1em;
+  top: 0.6em;
 }
 
 nav a,
@@ -88,7 +84,7 @@ nav a:hover,
 }
 
 .dropdown-content a {
-  color: #d0e6d0;
+  color: #d0e6d0; /* light green */
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -104,131 +100,4 @@ nav a:hover,
 
 .dropdown:hover .dropdown-content {
   display: block;
-}
-
-#gameWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-/* Intro Text */
-.intro {
-  margin-bottom: 10px;
-}
-
-#gameContainer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#gameCanvas {
-  border: 3px solid #ff66a3;
-  border-radius: 12px;
-  background-color: #fff;
-}
-
-/* Gift box overlay */
-#giftBox {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  z-index: 10;
-}
-
-.button-group {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Enhanced pretty button style */
-.pretty-button {
-  background: linear-gradient(135deg, #ff66a3, #ff99bb);
-  border: none;
-  padding: 12px 24px;
-  font-size: 18px;
-  color: white;
-  border-radius: 30px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.pretty-button:hover {
-  background-color: #ff4d8a;
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-}
-
-/* Memory Overlay Styles */
-#memoryOverlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-}
-
-#memoryContent {
-  background-color: white;
-  border-radius: 15px;
-  padding: 10px 10px 25px 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  position: relative;
-  max-width: 320px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#memoryContent img {
-  width: 300px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-#memoryText {
-  margin-top: 10px;
-  width: 100%;
-  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive;
-  font-size: 18px;
-  color: #333;
-  text-align: center;
-  user-select: none;
-}
-
-#closeMemory {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: #ff6699;
-  border: none;
-  border-radius: 50%;
-  color: white;
-  font-size: 18px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  z-index: 10;
-}
-
-#message {
-  margin-top: 10px;
-  font-size: 20px;
-  color: #d63384;
-  font-weight: bold;
 }
