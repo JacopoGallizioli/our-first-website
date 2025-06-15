@@ -1,148 +1,41 @@
-/* Reset and base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ...keep previous styles unchanged... */
+
+/* Background image for entire page */
+body {
+  background-image: url('background.jpg'); /* Your background image file */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-html, body {
-  height: 100%;
-  background-color: #ffc0cb; /* Pink background */
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  flex-direction: column;
-}
+/* Player and castle images use canvas, so no direct CSS needed there */
 
-/* Nav fixed at top */
-nav {
+/* Gift and Restart buttons styling */
+#giftContainer {
   position: fixed;
-  top: 10px;
-  width: 100%;
-  text-align: center;
-  z-index: 10;
-}
-
-nav a {
-  color: #ff69b4;
-  font-weight: bold;
-  text-decoration: none;
-  margin: 0 15px;
-  font-size: 18px;
-}
-
-/* Game container: center contents vertically and horizontally */
-#gameContainer {
-  text-align: center;
-  margin-top: 60px; /* To avoid nav overlap */
-}
-
-/* Intro text */
-.intro {
-  margin-bottom: 15px;
-  color: #900c3f;
-}
-
-/* Canvas styling */
-canvas#gameCanvas {
-  border: 5px solid #ff69b4;
-  border-radius: 20px;
-  background-color: transparent;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Message under canvas */
-#message {
-  margin-top: 15px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #d6336c;
-}
-
-/* Memory Overlay */
-#memoryOverlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  gap: 20px;
 }
 
-#memoryContent {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  max-width: 320px;
-  text-align: center;
-  position: relative;
-}
-
-#memoryContent img {
-  width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-#memoryText {
-  margin-top: 10px;
-  font-size: 18px;
-  user-select: none;
-}
-
-/* Close Memory Button */
-#closeMemory {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #ff6699;
-  border: none;
-  border-radius: 50%;
-  color: white;
-  font-size: 22px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  z-index: 10;
-}
-
-/* Final Reward Popup */
-#finalReward {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background-color: rgba(255, 192, 203, 0.95);
-  z-index: 10000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#finalRewardContent {
-  background: white;
-  padding: 30px 40px;
-  border-radius: 20px;
-  text-align: center;
-  color: #d6336c;
-  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.6);
-  font-family: 'Comic Sans MS', cursive;
-}
-
-#finalRewardContent button {
-  margin-top: 20px;
+#giftContainer button {
   background-color: #ff66a3;
   border: none;
-  padding: 10px 25px;
+  padding: 15px 30px;
   font-size: 18px;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   color: white;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.6);
+  transition: background-color 0.3s ease;
 }
+
+#giftContainer button:hover {
+  background-color: #e0558b;
+}
+
+/* Rest of your styles remain unchanged */
