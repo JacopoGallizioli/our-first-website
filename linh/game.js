@@ -1,171 +1,106 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const bgImg = new Image();
-const playerImg = new Image();
-const castleImg = new Image();
-
-bgImg.src = 'Forest.png';
-playerImg.src = 'Jacopo.png';
-castleImg.src = 'castle.png';
-
+const giftBox = document.getElementById('giftBox');
+const restartButton = document.getElementById('restartButton');
 const collectSound = document.getElementById('collectSound');
 
-let player, castle, hearts, collected, memoryIndex;
-const keys = {};
+let player = { x: 50, y: 50, width: 40, height: 40 };
+let hearts = [];
+let castle = { x: 720, y: 420, width: 60, height: 60 };
+let keys = {};
 
-const memories = [
-  { text: "Our first year together 🌸", image: "1styear.JPG" },
-  { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
-  { text: "Finally had electricity and moved in together", image: "Saronno.JPG" },
-  { text: "Moved to Germany 📸", image: "augsburg.jpeg" },
-  { text: "Living in Munich now", image: "Munich.jpeg" }
-];
+let heartImg = new Image();
+heartImg.src = 'heart.png';
 
-const totalHearts = memories.length;
+let playerImg = new Image();
+playerImg.src = 'Jacopo.png';
 
-const memoryOverlay = document.getElementById('memoryOverlay');
-const memoryImage = document.getElementById('memoryImage');
-const memoryText = document.getElementById('memoryText');
-const closeMemoryBtn = document.getElementById('closeMemory');
+let castleImg = new Image();
+castleImg.src = 'castle.png';
 
-function initializeGame() {
-  player = { x: 50, y: 200, width: 64, height: 64, speed: 3 };
-  castle = { x: canvas.width - 128, y: canvas.height / 2 - 64, width: 128, height: 128 };
+function spawnHearts() {
   hearts = [];
-  collected = 0;
-  memoryIndex = 0;
-
-  for (let i = 0; i < totalHearts; i++) {
+  for (let i = 0; i < 5; i++) {
     hearts.push({
-      x: Math.random() * (canvas.width - 40),
-      y: Math.random() * (canvas.height - 40),
-      size: 40,
+      x: Math.random() * 740,
+      y: Math.random() * 440,
+      width: 30,
+      height: 30,
       collected: false
     });
   }
-
-  document.getElementById('message').innerText = '';
-  document.getElementById('giftBox').style.display = 'none';
-  hideMemory();
-  canvas.style.filter = 'none';
 }
 
-function drawBackground() {
-  ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-}
-
-function drawPlayer() {
-  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
-}
-
-function drawCastle() {
-  ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
-}
-
-function drawHearts() {
-  hearts.forEach(h => {
-    if (!h.collected) {
-      ctx.fillStyle = '#ff4da6';
-      ctx.beginPath();
-      ctx.moveTo(h.x, h.y);
-      ctx.arc(h.x - 10, h.y - 10, 14, 0, Math.PI * 2);
-      ctx.arc(h.x + 10, h.y - 10, 14, 0, Math.PI * 2);
-      ctx.lineTo(h.x, h.y + 20);
-      ctx.fill();
-    }
-  });
+function rectsCollide(r1, r2) {
+  return !(
+    r1.x + r1.width < r2.x ||
+    r1.x > r2.x + r2.width ||
+    r1.y + r1.height < r2.y ||
+    r1.y > r2.y + r2.height
+  );
 }
 
 function update() {
-  if (memoryOverlay.style.display === 'flex') return;
+  let speed = 3;
+  if (keys['ArrowUp']) player.y -= speed;
+  if (keys['ArrowDown']) player.y += speed;
+  if (keys['ArrowLeft']) player.x -= speed;
+  if (keys['ArrowRight']) player.x += speed;
 
-  if (keys['ArrowUp']) player.y -= player.speed;
-  if (keys['ArrowDown']) player.y += player.speed;
-  if (keys['ArrowLeft']) player.x -= player.speed;
-  if (keys['ArrowRight']) player.x += player.speed;
-
-  player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
-  player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
-
-  hearts.forEach((h, i) => {
-    if (!h.collected &&
-        player.x < h.x + h.size &&
-        player.x + player.width > h.x &&
-        player.y < h.y + h.size &&
-        player.y + player.height > h.y) {
+  hearts.forEach(h => {
+    if (!h.collected && rectsCollide(player, h)) {
       h.collected = true;
       collectSound.play();
-      showMemory(memoryIndex);
-      memoryIndex++;
-      collected++;
     }
   });
 
-  if (collected === totalHearts &&
-      player.x + player.width > castle.x &&
-      player.x < castle.x + castle.width &&
-      player.y + player.height > castle.y &&
-      player.y < castle.y + castle.height) {
-    document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
-    canvas.style.filter = 'blur(3px)';
-    document.getElementById('giftBox').style.display = 'flex';
+  let allCollected = hearts.every(h => h.collected);
+  if (allCollected && rectsCollide(player, castle)) {
+    giftBox.style.display = 'flex';
   }
 }
 
-function gameLoop() {
+function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBackground();
-  drawCastle();
-  drawHearts();
-  drawPlayer();
+  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+
+  hearts.forEach(h => {
+    if (!h.collected) {
+      ctx.drawImage(heartImg, h.x, h.y, h.width, h.height);
+    }
+  });
+
+  ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+}
+
+function gameLoop() {
   update();
+  draw();
   requestAnimationFrame(gameLoop);
 }
 
-function showMemory(index) {
-  memoryText.innerText = memories[index].text;
-  memoryImage.src = memories[index].image;
-  memoryOverlay.style.display = 'flex';
-  canvas.style.filter = 'blur(3px)';
-}
-
-function hideMemory() {
-  memoryOverlay.style.display = 'none';
-  canvas.style.filter = 'none';
-}
-
 function openGift() {
-  alert("🏱 Here's your surprise! I love you! 💌");
+  alert('🎁 You got a surprise! Thank you for playing!');
 }
 
-closeMemoryBtn.addEventListener('click', hideMemory);
+restartButton.addEventListener('click', () => {
+  player = { x: 50, y: 50, width: 40, height: 40 };
+  spawnHearts();
+  giftBox.style.display = 'none';
+});
 
-document.addEventListener('keydown', e => {
-  if (memoryOverlay.style.display === 'flex') {
-    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) hideMemory();
-  } else {
+window.addEventListener('keydown', e => {
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    e.preventDefault();
     keys[e.key] = true;
   }
 });
 
-document.addEventListener('keyup', e => {
+window.addEventListener('keyup', e => {
   keys[e.key] = false;
 });
 
-document.getElementById('restartButton').addEventListener('click', () => {
-  initializeGame();
-});
-
-let loaded = 0;
-function checkAllLoaded() {
-  loaded++;
-  if (loaded === 3) {
-    initializeGame();
-    gameLoop();
-  }
-}
-
-bgImg.onload = checkAllLoaded;
-playerImg.onload = checkAllLoaded;
-castleImg.onload = checkAllLoaded;
+// Start
+spawnHearts();
+gameLoop();
