@@ -59,3 +59,34 @@ document.addEventListener("DOMContentLoaded", () => {
     img.style.transform = `translateX(${offset}px)`;
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const images = document.querySelectorAll(".images img");
+
+  // Show only first image initially
+  images.forEach((img, i) => {
+    if (i === 0) {
+      img.classList.add("visible");
+    } else {
+      img.classList.remove("visible");
+    }
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        } else {
+          entry.target.classList.remove("visible");
+        }
+      });
+    },
+    {
+      root: null,          // viewport
+      threshold: 0.1,      // trigger when 10% of image is visible
+    }
+  );
+
+  images.forEach((img) => observer.observe(img));
+});
