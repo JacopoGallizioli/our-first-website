@@ -8,9 +8,9 @@
 </head>
 <body>
   <nav>
-    <a href="#">Home</a> |
-    <a href="#">Games</a> |
-    <a href="#">Magnets</a>
+    <a href="../index.html">Home</a> |
+    <a href="linh.html">Games</a> |
+    <a href="../jacopo/magnets.html">Magnets</a>
   </nav>
 
   <div id="gameContainer">
@@ -23,20 +23,20 @@
     <canvas id="gameCanvas" width="800" height="500"></canvas>
 
     <div id="message"></div>
+
+    <div id="giftBox">
+      <button onclick="openGift()">Open Your Gift 🎁</button>
+      <button id="restartButton">Restart Game 🔄</button>
+    </div>
   </div>
 
+  <!-- Memory popup overlay -->
   <div id="memoryOverlay">
     <div id="memoryContent">
       <button id="closeMemory" title="Close">×</button>
       <img id="memoryImage" src="" alt="Memory Image" />
       <div id="memoryText"></div>
     </div>
-  </div>
-
-  <!-- Gift and Restart Buttons container -->
-  <div id="giftContainer" style="display:none;">
-    <button id="openGiftBtn">Open Your Gift 🎁</button>
-    <button id="restartBtn">Restart Game 🔄</button>
   </div>
 
   <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
