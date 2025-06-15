@@ -4,96 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Heart Collector Game</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #222;
-      font-family: 'Comic Sans MS', cursive;
-      color: #fff;
-    }
-
-    nav {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    nav a {
-      color: #ff99cc;
-      text-decoration: none;
-      margin: 0 10px;
-      font-weight: bold;
-    }
-
-    .intro {
-      text-align: center;
-      margin-top: 10px;
-      line-height: 1.4;
-    }
-
-    canvas {
-      display: block;
-      margin: 20px auto;
-      border: 5px solid #ff99cc;
-      border-radius: 20px;
-      background-color: transparent;
-      transition: filter 0.3s ease;
-    }
-
-    #message {
-      text-align: center;
-      font-size: 24px;
-      color: #ffccdd;
-      margin-top: 20px;
-    }
-
-    #giftBox {
-      display: none;
-      text-align: center;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 20px;
-      border-radius: 15px;
-      z-index: 10;
-    }
-
-    #giftBox button, #restartButton {
-      background-color: #ff66a3;
-      border: none;
-      padding: 10px 20px;
-      font-size: 18px;
-      color: white;
-      border-radius: 10px;
-      cursor: pointer;
-      margin: 5px;
-    }
-
-    #memoryBox {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      margin: 30px auto;
-      max-width: 800px;
-      padding: 20px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 10px;
-    }
-
-    #memoryImage {
-      max-width: 300px;
-      max-height: 200px;
-      border-radius: 10px;
-    }
-
-    #memoryText {
-      max-width: 400px;
-      text-align: left;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav>
@@ -110,9 +21,13 @@
 
   <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-  <div id="memoryBox">
-    <img id="memoryImage" src="" alt="Memory Image" />
-    <div id="memoryText"></div>
+  <!-- Memory Overlay (on top of everything) -->
+  <div id="memoryOverlay">
+    <div id="memoryContent">
+      <img id="memoryImage" src="" alt="Memory Image" />
+      <div id="memoryText"></div>
+      <button id="closeMemory">✖</button>
+    </div>
   </div>
 
   <div id="message"></div>
@@ -124,163 +39,6 @@
 
   <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
 
-  <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-
-    const bgImg = new Image();
-    const playerImg = new Image();
-    const castleImg = new Image();
-
-    bgImg.src = 'Forest.png';
-    playerImg.src = 'Jacopo.png';
-    castleImg.src = 'castle.png';
-
-    const collectSound = document.getElementById('collectSound');
-
-    let player, castle, hearts, collected, memoryIndex;
-    const keys = {};
-    const memories = [
-      { text: "Our first year together 🌸", image: "1styear.JPG" },
-      { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
-      { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
-      { text: "We moved to Germany in 3rd year together 📸", image: "augsburg.jpeg" },
-      { text: "We are staying in Munich and who knows where we will be next year", image: "Munich.jpeg" }
-    ];
-
-    const totalHearts = memories.length;
-
-    document.addEventListener('keydown', e => keys[e.key] = true);
-    document.addEventListener('keyup', e => keys[e.key] = false);
-
-    function initializeGame() {
-      player = { x: 50, y: 200, width: 64, height: 64, speed: 3 };
-      castle = { x: canvas.width - 128, y: canvas.height / 2 - 64, width: 128, height: 128 };
-      hearts = [];
-      collected = 0;
-      memoryIndex = 0;
-
-      for (let i = 0; i < totalHearts; i++) {
-        hearts.push({
-          x: Math.random() * (canvas.width - 40),
-          y: Math.random() * (canvas.height - 40),
-          size: 40,
-          collected: false
-        });
-      }
-
-      document.getElementById('message').innerText = '';
-      document.getElementById('giftBox').style.display = 'none';
-      document.getElementById('memoryBox').style.display = 'none';
-      canvas.style.filter = 'none';
-    }
-
-    function drawBackground() {
-      ctx.fillStyle = '#228B22';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-    }
-
-    function drawPlayer() {
-      ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
-    }
-
-    function drawCastle() {
-      ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
-    }
-
-    function drawHearts() {
-      hearts.forEach(h => {
-        if (!h.collected) {
-          ctx.fillStyle = '#ff4da6';
-          ctx.beginPath();
-          ctx.moveTo(h.x, h.y);
-          ctx.arc(h.x - 10, h.y - 10, 14, 0, Math.PI * 2);
-          ctx.arc(h.x + 10, h.y - 10, 14, 0, Math.PI * 2);
-          ctx.lineTo(h.x, h.y + 20);
-          ctx.fill();
-        }
-      });
-    }
-
-    function showMemory(index) {
-      const memoryBox = document.getElementById('memoryBox');
-      const memoryText = document.getElementById('memoryText');
-      const memoryImage = document.getElementById('memoryImage');
-
-      memoryText.innerText = memories[index].text;
-      memoryImage.src = memories[index].image;
-      memoryBox.style.display = 'flex';
-
-      // Scroll into view
-      memoryBox.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function update() {
-      if (keys['ArrowUp']) player.y -= player.speed;
-      if (keys['ArrowDown']) player.y += player.speed;
-      if (keys['ArrowLeft']) player.x -= player.speed;
-      if (keys['ArrowRight']) player.x += player.speed;
-
-      player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
-      player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
-
-      hearts.forEach((h, i) => {
-        if (!h.collected &&
-            player.x < h.x + h.size &&
-            player.x + player.width > h.x &&
-            player.y < h.y + h.size &&
-            player.y + player.height > h.y) {
-          h.collected = true;
-          collectSound.play();
-          showMemory(memoryIndex);
-          memoryIndex++;
-          collected++;
-        }
-      });
-
-      if (collected === totalHearts &&
-          player.x + player.width > castle.x &&
-          player.x < castle.x + castle.width &&
-          player.y + player.height > castle.y &&
-          player.y < castle.y + castle.height) {
-        document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
-        canvas.style.filter = 'blur(3px)';
-        document.getElementById('giftBox').style.display = 'block';
-      }
-    }
-
-    function gameLoop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBackground();
-      drawCastle();
-      drawHearts();
-      drawPlayer();
-      update();
-      requestAnimationFrame(gameLoop);
-    }
-
-    function openGift() {
-      alert("🎁 Here's your surprise! I love you! 💌");
-    }
-
-    document.getElementById('restartButton').addEventListener('click', () => {
-      initializeGame();
-    });
-
-    let loaded = 0;
-    const totalImages = 3;
-    function checkAllLoaded() {
-      loaded++;
-      if (loaded === totalImages) {
-        initializeGame();
-        gameLoop();
-      }
-    }
-
-    bgImg.onload = checkAllLoaded;
-    playerImg.onload = checkAllLoaded;
-    castleImg.onload = checkAllLoaded;
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
