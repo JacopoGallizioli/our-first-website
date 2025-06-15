@@ -147,7 +147,7 @@ header {
   font-size: 0.9em;
   pointer-events: none; /* so it doesn't block image interaction */
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.6s;
 }
 
 .image-wrapper .house-img {
@@ -163,5 +163,5 @@ header {
 
 .image-wrapper.visible .house-img,
 .image-wrapper.visible .caption {
-  opacity: 0;
+  opacity: 1;
 }
