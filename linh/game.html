@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Games</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
+
   <div class="page-header">
     <nav>
       <a href="../index.html">Home</a>
@@ -21,40 +21,14 @@
       </div>
     </nav>
     <h1>🎮 Games 🎮</h1>
-    <p class="subtitle">A collection of fun games we've created and shared</p>
+    <div class="subtitle">A collection of fun games we've created and shared</div>
   </div>
 
-  <div id="gameWrapper">
-    <div class="intro">
-      <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
-      <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
-      <p>Collect every heart to unlock a special surprise!</p>
-    </div>
-
-    <div id="gameContainer">
-      <canvas id="gameCanvas" width="800" height="500"></canvas>
-      <div id="message"></div>
-
-      <!-- Gift box overlay -->
-      <div id="giftBox">
-        <div class="button-group">
-          <button class="pretty-button" onclick="openGift()">🎁 Open Your Gift</button>
-          <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
-        </div>
-      </div>
-    </div>
+  <div class="content-center" style="padding: 2em; text-align: center;">
+    <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
+    <h2>Let's grab all the hearts and come to the castle 💖🏰</h2>
+    <p>Collect every heart to unlock a special surprise!</p>
   </div>
 
-  <!-- Memory popup overlay -->
-  <div id="memoryOverlay">
-    <div id="memoryContent">
-      <button id="closeMemory" title="Close">×</button>
-      <img id="memoryImage" src="" alt="Memory Image" />
-      <div id="memoryText"></div>
-    </div>
-  </div>
-
-  <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
-  <script src="game.js"></script>
 </body>
 </html>
