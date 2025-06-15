@@ -14,7 +14,7 @@
       <div class="dropdown">
         <button class="dropdown-btn">Pages</button>
         <div class="dropdown-content">
-          <a href="../linh/linh.html">Linh</a>
+          <a href="../linh/linh.html">Games</a>
           <a href="../jacopo/magnets.html">Magnets</a>
           <a href="../jacopo/houses/houses.html">Houses</a>
         </div>
@@ -24,11 +24,37 @@
     <div class="subtitle">A collection of fun games we've created and shared</div>
   </div>
 
-  <div class="content-center" style="padding: 2em; text-align: center;">
+  <main class="main-content">
     <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
     <h2>Let's grab all the hearts and come to the castle 💖🏰</h2>
     <p>Collect every heart to unlock a special surprise!</p>
+
+    <div id="gameWrapper">
+      <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+        <div id="message"></div>
+
+        <!-- Gift box overlay -->
+        <div id="giftBox" class="hidden">
+          <div class="centered-buttons">
+            <button class="pretty-button" onclick="openGift()">🎁 Open Your Gift</button>
+            <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Memory popup overlay -->
+  <div id="memoryOverlay" class="hidden">
+    <div id="memoryContent">
+      <button id="closeMemory" title="Close">×</button>
+      <img id="memoryImage" src="" alt="Memory Image" />
+      <div id="memoryText"></div>
+    </div>
   </div>
 
+  <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
+  <script src="game.js"></script>
 </body>
 </html>
