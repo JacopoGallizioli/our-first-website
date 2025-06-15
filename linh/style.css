@@ -1,58 +1,166 @@
-/* Memory Overlay Styles */
-#memoryOverlay {
+/* Pink background and center all content */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #ffc0cb; /* Pink */
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Center nav with some margin */
+nav {
+  text-align: center;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+nav a {
+  color: #ff3399;
+  text-decoration: none;
+  margin: 0 12px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Game container center */
+#gameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Intro text center */
+.intro {
+  text-align: center;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+/* Canvas styling */
+canvas#gameCanvas {
+  display: block;
+  border: 5px solid #ff66a3;
+  border-radius: 20px;
+  background-color: transparent;
+  box-shadow: 0 0 20px #ff99cc88;
+  margin-bottom: 10px;
+}
+
+/* Message below canvas */
+#message {
+  text-align: center;
+  font-size: 22px;
+  color: #a60050;
+  min-height: 30px;
+}
+
+/* Gift box styles */
+#giftBox {
   display: none;
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(255, 105, 180, 0.5);
+  z-index: 9999;
+}
+
+#giftBox button,
+#restartButton {
+  background-color: #ff3399;
+  border: none;
+  padding: 12px 25px;
+  font-size: 18px;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  margin: 8px;
+  transition: background-color 0.3s ease;
+}
+#giftBox button:hover,
+#restartButton:hover {
+  background-color: #cc297a;
+}
+
+/* Memory Overlay */
+#memoryOverlay {
+  display: none; /* Hidden initially */
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
+  background-color: rgba(255, 192, 203, 0.9); /* pink translucent */
+  z-index: 10000;
+
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* Fuji Polaroid style memory content */
 #memoryContent {
-  background-color: white;
+  background: white;
   border-radius: 15px;
-  padding: 10px 10px 25px 10px; /* extra bottom padding for text */
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  padding: 10px 10px 35px 10px; /* extra bottom for text */
+  box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
   position: relative;
   max-width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-#memoryContent img {
-  width: 300px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-#memoryText {
-  margin-top: 10px;
-  width: 100%;
-  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive;
-  font-size: 18px;
-  color: #333;
-  text-align: center;
+  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive, sans-serif;
   user-select: none;
 }
 
-/* Close button */
+/* Memory Image styled as Fuji instant photo */
+#memoryContent img {
+  width: 300px;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(255, 105, 180, 0.8);
+  margin-bottom: 12px;
+}
+
+/* Text right below image with handwriting font */
+#memoryText {
+  font-size: 18px;
+  color: #7a4b59;
+  text-align: center;
+  width: 100%;
+  white-space: normal;
+  line-height: 1.3;
+}
+
+/* Close button - circle with pink background */
 #closeMemory {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: #ff6699;
+  background: #ff3399;
   border: none;
   border-radius: 50%;
   color: white;
-  font-size: 18px;
-  width: 30px;
-  height: 30px;
+  font-size: 22px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
+  font-weight: bold;
+  line-height: 28px;
+  user-select: none;
+  transition: background-color 0.3s ease;
   z-index: 10;
+}
+#closeMemory:hover {
+  background-color: #cc297a;
 }
