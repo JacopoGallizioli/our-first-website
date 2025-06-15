@@ -148,3 +148,7 @@ header {
   z-index: 5;
   border-bottom: 1px solid #ccc;
 }
+
+.section-content {
+  padding-top: 20px; /* optional spacing under the sticky title */
+}
