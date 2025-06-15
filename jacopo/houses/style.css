@@ -125,8 +125,15 @@ header {
 .images img {
   flex-shrink: 0;
   margin-top: -40px; 
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.images img.visible {
+  opacity: 1;
 }
 
 .images img:first-child {
   margin-top: 0;
+  opacity: 1;
 }
