@@ -54,9 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
     label.style.left = pinRect.left + "px";
   }
 
-  document.querySelectorAll('.images img').forEach((img) => {
-    const offset = Math.floor(Math.random() * 80); // 0px to 80px
-    img.style.transform = `translateX(${offset}px)`;
+  document.querySelectorAll('.image-wrapper').forEach((wrapper) => {
+    const offset = Math.floor(Math.random() * 80); // or any logic you want
+    wrapper.style.transform = `translateX(${offset}px)`;
   });
 });
 
