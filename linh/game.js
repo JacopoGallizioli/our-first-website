@@ -5,14 +5,11 @@ const bgImg = new Image();
 const playerImg = new Image();
 const castleImg = new Image();
 
-bgImg.src = 'Forest.png'; // Background image
-playerImg.src = 'Jacopo.png'; // Player character image
-castleImg.src = 'castle.png'; // Castle image
+bgImg.src = 'Forest.png';
+playerImg.src = 'Jacopo.png';
+castleImg.src = 'castle.png';
 
 const collectSound = document.getElementById('collectSound');
-
-let player, castle, hearts, collected, memoryIndex;
-const keys = {};
 
 const memories = [
   { text: "Our first year together 🌸", image: "1styear.JPG" },
@@ -24,14 +21,20 @@ const memories = [
 
 const totalHearts = memories.length;
 
+let player, castle, hearts, collected, memoryIndex;
+const keys = {};
+
 const memoryOverlay = document.getElementById('memoryOverlay');
 const memoryImage = document.getElementById('memoryImage');
 const memoryText = document.getElementById('memoryText');
 const closeMemoryBtn = document.getElementById('closeMemory');
+const messageDiv = document.getElementById('message');
+const giftBox = document.getElementById('giftBox');
+const openGiftBtn = document.getElementById('openGiftBtn');
 
 document.addEventListener('keydown', e => {
   if (memoryOverlay.style.display === 'flex') {
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Escape'].includes(e.key)) {
       hideMemory();
     }
   } else {
@@ -45,26 +48,29 @@ document.addEventListener('keyup', e => {
 
 closeMemoryBtn.addEventListener('click', hideMemory);
 
+openGiftBtn.addEventListener('click', () => {
+  alert("🎁 Here's your surprise! I love you so much! 💌");
+});
+
 function initializeGame() {
-  player = { x: 50, y: 200, width: 64, height: 64, speed: 3 };
-  castle = { x: canvas.width - 128, y: canvas.height / 2 - 64, width: 128, height: 128 };
-  hearts = [];
+  player = { x: 50, y: 200, width: 64, height: 64, speed: 4 };
+  castle = { x: canvas.width - 140, y: canvas.height / 2 - 64, width: 128, height: 128 };
   collected = 0;
   memoryIndex = 0;
+  messageDiv.innerText = '';
+  giftBox.classList.add('hidden');
+  hideMemory();
 
+  // Hearts array with x,y and collected flag
+  hearts = [];
   for (let i = 0; i < totalHearts; i++) {
     hearts.push({
-      x: Math.random() * (canvas.width - 40),
-      y: Math.random() * (canvas.height - 40),
-      size: 40,
+      x: 100 + i * 120, // spread hearts horizontally
+      y: 100 + (i % 2) * 120, // alternate row
+      size: 30,
       collected: false
     });
   }
-
-  document.getElementById('message').innerText = '';
-  document.getElementById('giftBox').classList.add('hidden');
-  hideMemory();
-  canvas.style.filter = 'none';
 }
 
 function drawBackground() {
@@ -82,27 +88,32 @@ function drawCastle() {
 function drawHearts() {
   hearts.forEach(h => {
     if (!h.collected) {
-      ctx.fillStyle = '#ff4da6';
-      ctx.beginPath();
-      ctx.moveTo(h.x, h.y);
-      ctx.arc(h.x - 10, h.y - 10, 14, 0, Math.PI * 2);
-      ctx.arc(h.x + 10, h.y - 10, 14, 0, Math.PI * 2);
-      ctx.lineTo(h.x, h.y + 20);
-      ctx.fill();
+      ctx.font = '30px serif';
+      ctx.fillStyle = 'red';
+      ctx.fillText('❤️', h.x, h.y);
     }
   });
 }
 
 function showMemory(index) {
-  memoryText.innerText = memories[index].text;
-  memoryImage.src = memories[index].image;
-  memoryOverlay.style.display = 'flex';
-  canvas.style.filter = 'blur(3px)';
+  if(index < memories.length){
+    memoryText.innerText = memories[index].text;
+    memoryImage.src = memories[index].image;
+    memoryOverlay.style.display = 'flex';
+    canvas.style.filter = 'blur(3px)';
+  }
 }
 
 function hideMemory() {
   memoryOverlay.style.display = 'none';
   canvas.style.filter = 'none';
+}
+
+function rectanglesOverlap(r1, r2) {
+  return !(r2.x > r1.x + r1.width || 
+           r2.x + r2.width < r1.x || 
+           r2.y > r1.y + r1.height ||
+           r2.y + r2.height < r1.y);
 }
 
 function update() {
@@ -113,31 +124,33 @@ function update() {
   if (keys['ArrowLeft']) player.x -= player.speed;
   if (keys['ArrowRight']) player.x += player.speed;
 
+  // Keep player inside canvas
   player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
   player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
 
+  // Check collision with hearts
   hearts.forEach((h, i) => {
-    if (!h.collected &&
-        player.x < h.x + h.size &&
-        player.x + player.width > h.x &&
-        player.y < h.y + h.size &&
-        player.y + player.height > h.y) {
-      h.collected = true;
-      collectSound.play();
-      showMemory(memoryIndex);
-      memoryIndex++;
-      collected++;
+    if (!h.collected) {
+      const heartRect = { x: h.x - 20, y: h.y - 30, width: 30, height: 30 };
+      if (rectanglesOverlap(player, heartRect)) {
+        h.collected = true;
+        collected++;
+        collectSound.currentTime = 0;
+        collectSound.play();
+        showMemory(memoryIndex);
+        memoryIndex++;
+      }
     }
   });
 
-  if (collected === totalHearts &&
-      player.x + player.width > castle.x &&
-      player.x < castle.x + castle.width &&
-      player.y + player.height > castle.y &&
-      player.y < castle.y + castle.height) {
-    document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
-    canvas.style.filter = 'blur(3px)';
-    document.getElementById('giftBox').classList.remove('hidden');
+  // Check if all hearts collected and near castle
+  if (collected === totalHearts) {
+    const castleRect = castle;
+    if (rectanglesOverlap(player, castleRect)) {
+      messageDiv.innerText = "You made it to the castle with all the hearts! 💖";
+      giftBox.classList.remove('hidden');
+      canvas.style.filter = 'blur(3px)';
+    }
   }
 }
 
@@ -151,24 +164,22 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-function openGift() {
-  alert("🎁 Here's your surprise! I love you so much! 💌");
-}
-
 document.getElementById('restartButton').addEventListener('click', () => {
   initializeGame();
+  canvas.style.filter = 'none';
+  messageDiv.innerText = '';
+  giftBox.classList.add('hidden');
 });
 
-let loaded = 0;
-const totalImages = 3;
-function checkAllLoaded() {
-  loaded++;
-  if (loaded === totalImages) {
+let loadedImages = 0;
+function imageLoaded() {
+  loadedImages++;
+  if (loadedImages === 3) {
     initializeGame();
     gameLoop();
   }
 }
 
-bgImg.onload = checkAllLoaded;
-playerImg.onload = checkAllLoaded;
-castleImg.onload = checkAllLoaded;
+bgImg.onload = imageLoaded;
+playerImg.onload = imageLoaded;
+castleImg.onload = imageLoaded;
