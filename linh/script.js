@@ -13,20 +13,28 @@ const collectSound = document.getElementById('collectSound');
 
 let player, castle, hearts, collected, memoryIndex;
 const keys = {};
+let memoryShown = false;
+
 const memories = [
   { text: "Our first year together 🌸", image: "1styear.JPG" },
   { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
-  {
-    text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)",
-    image: "Saronno.JPG"
-  },
+  { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
   { text: "We moved to Germany in 3rd year together 📸", image: "augsburg.jpeg" },
   { text: "We are staying in Munich and who knows where we will be next year", image: "Munich.jpeg" }
 ];
 
 const totalHearts = memories.length;
 
-document.addEventListener('keydown', e => keys[e.key] = true);
+document.addEventListener('keydown', e => {
+  if (memoryShown) {
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      hideMemory();
+    }
+    return;
+  }
+  keys[e.key] = true;
+});
+
 document.addEventListener('keyup', e => keys[e.key] = false);
 
 function initializeGame() {
@@ -35,6 +43,7 @@ function initializeGame() {
   hearts = [];
   collected = 0;
   memoryIndex = 0;
+  memoryShown = false;
 
   for (let i = 0; i < totalHearts; i++) {
     hearts.push({
@@ -89,18 +98,18 @@ function showMemory(index) {
 
   overlay.style.display = 'flex';
   canvas.style.filter = 'blur(3px)';
+  memoryShown = true;
 }
 
 function hideMemory() {
   document.getElementById('memoryOverlay').style.display = 'none';
   canvas.style.filter = 'none';
+  memoryShown = false;
 }
 
-document.getElementById('closeMemory').addEventListener('click', () => {
-  hideMemory();
-});
-
 function update() {
+  if (memoryShown) return; // Pause game logic if memory is showing
+
   if (keys['ArrowUp']) player.y -= player.speed;
   if (keys['ArrowDown']) player.y += player.speed;
   if (keys['ArrowLeft']) player.x -= player.speed;
@@ -111,10 +120,10 @@ function update() {
 
   hearts.forEach((h, i) => {
     if (!h.collected &&
-      player.x < h.x + h.size &&
-      player.x + player.width > h.x &&
-      player.y < h.y + h.size &&
-      player.y + player.height > h.y) {
+        player.x < h.x + h.size &&
+        player.x + player.width > h.x &&
+        player.y < h.y + h.size &&
+        player.y + player.height > h.y) {
       h.collected = true;
       collectSound.play();
       showMemory(memoryIndex);
@@ -124,10 +133,10 @@ function update() {
   });
 
   if (collected === totalHearts &&
-    player.x + player.width > castle.x &&
-    player.x < castle.x + castle.width &&
-    player.y + player.height > castle.y &&
-    player.y < castle.y + castle.height) {
+      player.x + player.width > castle.x &&
+      player.x < castle.x + castle.width &&
+      player.y + player.height > castle.y &&
+      player.y < castle.y + castle.height) {
     document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
     canvas.style.filter = 'blur(3px)';
     document.getElementById('giftBox').style.display = 'block';
@@ -150,6 +159,10 @@ function openGift() {
 
 document.getElementById('restartButton').addEventListener('click', () => {
   initializeGame();
+});
+
+document.getElementById('closeMemory').addEventListener('click', () => {
+  hideMemory();
 });
 
 let loaded = 0;
