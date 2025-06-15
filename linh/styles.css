@@ -1,11 +1,12 @@
-body {
-  font-family: 'Comic Sans MS', sans-serif;
+/* Reset */
+* {
+  box-sizing: border-box;
   margin: 0;
-  background-color: #ffe4f0;
-  color: #702963;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Header Bar */
+/* Page header */
 .page-header {
   display: flex;
   flex-direction: column;
@@ -16,15 +17,16 @@ body {
   color: white;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 .page-header h1 {
-  margin: 0;
-  font-size: 2em;
+  margin-bottom: 0.2em;
+  font-size: 2.5em;
 }
 
 .page-header .subtitle {
-  font-size: 1em;
+  font-size: 1.2em;
   color: #ffe4f0;
 }
 
@@ -87,122 +89,136 @@ nav a:hover,
   display: block;
 }
 
-/* Centered Text */
+/* Centered description below header */
 .centered-description {
   text-align: center;
-  padding: 2em;
+  margin: 1.5em 0 2em;
   color: #702963;
 }
 
-/* Game Container */
-#gameWrapper {
-  display: flex;
-  justify-content: center;
-  padding: 1em;
+.centered-description h1 {
+  font-size: 1.8em;
+  margin-bottom: 0.3em;
 }
 
-#gameContainer {
-  position: relative;
-  border: 5px solid #d36ba6;
-  border-radius: 12px;
-  background: white;
-  padding: 1em;
-  box-shadow: 0 0 15px rgba(200, 100, 150, 0.5);
+.centered-description p {
+  font-size: 1.2em;
+}
+
+/* Canvas */
+#gameCanvas {
+  display: block;
+  margin: 0 auto 1em;
+  background-color: #a8d0a8;
+  border: 4px solid #d36ba6;
+  border-radius: 10px;
 }
 
 /* Message */
 #message {
   text-align: center;
+  font-size: 1.4em;
   font-weight: bold;
-  font-size: 1.2em;
   color: #d36ba6;
-  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
-/* Gift Overlay */
-#giftBox {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(211, 107, 166, 0.8);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
-  border-radius: 12px;
-  z-index: 10;
-}
-
-.pretty-button {
-  background-color: #e48fb8;
+/* Restart button */
+#restartButton {
+  display: block;
+  margin: 0 auto 2em;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  background-color: #d36ba6;
   color: white;
   border: none;
-  font-size: 1.1em;
+  border-radius: 30px;
   cursor: pointer;
-  padding: 0.5em 1.5em;
-  border-radius: 25px;
   transition: background-color 0.3s ease;
 }
 
-.pretty-button:hover {
+#restartButton:hover {
   background-color: #f1a6cc;
 }
 
-/* Memory popup */
-#memoryOverlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(112, 41, 99, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 20;
+/* Gift Box */
+#giftBox {
+  text-align: center;
+  margin-bottom: 2em;
 }
 
-#memoryOverlay.hidden {
+#giftBox.hidden {
   display: none;
 }
 
-#memoryContent {
-  background: #fff0f5;
-  border-radius: 12px;
-  padding: 1em;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(112, 41, 99, 0.6);
-  max-width: 90%;
-  max-height: 90%;
-  overflow-y: auto;
-  position: relative;
+#giftBox button {
+  padding: 0.8em 1.8em;
+  font-size: 1.2em;
+  background-color: #ff66a3;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-#memoryContent img {
+#giftBox button:hover {
+  background-color: #ff8cc7;
+}
+
+/* Memory overlay */
+#memoryOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(220, 160, 190, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  display: none; /* hidden by default */
+}
+
+#memoryOverlay.flex {
+  display: flex;
+}
+
+#memoryContent {
+  background: white;
+  border-radius: 15px;
+  padding: 1em;
+  max-width: 90vw;
+  max-height: 90vh;
+  text-align: center;
+  box-shadow: 0 0 15px #b377aa;
+}
+
+#memoryImage {
   max-width: 100%;
-  border-radius: 8px;
+  max-height: 60vh;
+  border-radius: 10px;
   margin-bottom: 1em;
-  border: 4px solid #d36ba6;
-  box-shadow: 0 4px 10px rgba(112, 41, 99, 0.3);
 }
 
 #memoryText {
-  font-size: 1.1em;
+  font-size: 1.3em;
+  margin-bottom: 1em;
   color: #702963;
-  font-weight: bold;
-  padding-top: 0.5em;
 }
 
 #closeMemory {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #e48fb8;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.2em;
-  width: 30px;
-  height: 30px;
+  padding: 0.5em 1em;
+  font-size: 1.1em;
+  background-color: #d36ba6;
   color: white;
+  border: none;
+  border-radius: 30px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#closeMemory:hover {
+  background-color: #f1a6cc;
 }
