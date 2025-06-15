@@ -61,36 +61,32 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const images = document.querySelectorAll(".images img");
+  const wrappers = document.querySelectorAll(".image-wrapper");
 
-  // Show only first image initially
-  images.forEach((img, i) => {
+  // Show only first image-wrapper initially
+  wrappers.forEach((wrapper, i) => {
     if (i === 0) {
-      img.classList.add("visible");
+      wrapper.classList.add("visible");
     } else {
-      img.classList.remove("visible");
+      wrapper.classList.remove("visible");
     }
   });
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        const caption = entry.target.parentElement.querySelector('.caption');
-        if (caption) caption.classList.add('visible');
-      } else {
-        entry.target.classList.remove("visible");
-        const caption = entry.target.parentElement.querySelector('.caption');
-        if (caption) caption.classList.remove('visible');
-      }
-    });
-  },
-  {
-    root: null,
-    threshold: 0.3,
-  }
-);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        } else {
+          entry.target.classList.remove("visible");
+        }
+      });
+    },
+    {
+      root: null,
+      threshold: 0.3,
+    }
+  );
 
-  images.forEach((img) => observer.observe(img));
+  wrappers.forEach((wrapper) => observer.observe(wrapper));
 });
