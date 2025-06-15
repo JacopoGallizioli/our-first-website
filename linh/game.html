@@ -3,15 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Heart Collector Game</title>
+  <title>Games</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <nav>
-    <a href="../index.html">Home</a> |
-    <a href="linh.html">Games</a> |
-    <a href="../jacopo/magnets.html">Magnets</a>
-  </nav>
+  <div class="page-header">
+    <nav>
+      <a href="../index.html">Home</a>
+      <div class="dropdown">
+        <button class="dropdown-btn">Pages</button>
+        <div class="dropdown-content">
+          <a href="linh.html">Linh</a>
+          <a href="../jacopo/magnets.html">Magnets</a>
+          <a href="../jacopo/houses/houses.html">Houses</a>
+        </div>
+      </div>
+    </nav>
+    <h1>🎮 Games 🎮</h1>
+    <p class="subtitle">A collection of fun games we've created and shared</p>
+  </div>
 
   <div id="gameWrapper">
     <div class="intro">
@@ -26,8 +36,10 @@
 
       <!-- Gift box overlay -->
       <div id="giftBox">
-        <button class="pretty-button" onclick="openGift()">🎁 Open Your Gift</button>
-        <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
+        <div class="button-group">
+          <button class="pretty-button" onclick="openGift()">🎁 Open Your Gift</button>
+          <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
+        </div>
       </div>
     </div>
   </div>
