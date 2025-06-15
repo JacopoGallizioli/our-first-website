@@ -61,30 +61,37 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const wrappers = document.querySelectorAll(".image-wrapper");
+  const wrappers = document.querySelectorAll('.caption-wrapper');
 
-  // Show only first image-wrapper initially
+  // Show only the first wrapper/image initially
   wrappers.forEach((wrapper, i) => {
+    const img = wrapper.querySelector('img');
     if (i === 0) {
       wrapper.classList.add("visible");
+      img.classList.add("visible");
     } else {
       wrapper.classList.remove("visible");
+      img.classList.remove("visible");
     }
   });
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
+        const wrapper = entry.target;
+        const img = wrapper.querySelector('img');
         if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
+          wrapper.classList.add("visible");
+          img.classList.add("visible");
         } else {
-          entry.target.classList.remove("visible");
+          wrapper.classList.remove("visible");
+          img.classList.remove("visible");
         }
       });
     },
     {
       root: null,
-      threshold: 0.3,
+      threshold: 0.3, // adjust this value as you want for when to trigger
     }
   );
 
