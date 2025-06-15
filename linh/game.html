@@ -2,25 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Games</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heart Collector Game</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <div class="page-header">
     <nav>
       <a href="../index.html">Home</a>
       <div class="dropdown">
         <button class="dropdown-btn">Pages</button>
         <div class="dropdown-content">
-          <a href="../linh/linh.html">Games</a>
-          <a href="../jacopo/magnets.html">Magnets</a>
+          <a href="../linh/game.html">Game</a>
+          <a href="magnets.html">Magnets</a>
           <a href="../jacopo/houses/houses.html">Houses</a>
         </div>
       </div>
     </nav>
+
     <h1>🎮 Games 🎮</h1>
-    <div class="subtitle">A collection of fun games we've created and shared</div>
+    <p class="subtitle">A collection of fun games we've created and shared</p>
   </div>
 
   <div class="centered-description">
@@ -28,29 +30,26 @@
     <p>Collect every heart to unlock a special surprise!</p>
   </div>
 
-  <div id="gameWrapper">
-    <div id="gameContainer">
-      <canvas id="gameCanvas" width="800" height="500"></canvas>
-      <div id="message">Collecting...</div>
+  <canvas id="gameCanvas" width="800" height="450"></canvas>
 
-      <!-- Gift box overlay -->
-      <div id="giftBox" class="hidden">
-        <button class="pretty-button">🎁 Receive Your Gift</button>
-        <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
-      </div>
-    </div>
+  <div id="message"></div>
+  <button id="restartButton">Restart Game</button>
+
+  <div id="giftBox" class="hidden">
+    <button onclick="openGift()">Open Gift 🎁</button>
   </div>
 
-  <!-- Memory popup overlay -->
+  <!-- Memory overlay -->
   <div id="memoryOverlay" class="hidden">
     <div id="memoryContent">
-      <button id="closeMemory" title="Close">×</button>
       <img id="memoryImage" src="" alt="Memory Image" />
-      <div id="memoryText">Memory caption goes here</div>
+      <p id="memoryText"></p>
+      <button id="closeMemory">Close</button>
     </div>
   </div>
 
-  <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
+  <audio id="collectSound" src="collect.mp3"></audio>
+
   <script src="game.js"></script>
 </body>
 </html>
