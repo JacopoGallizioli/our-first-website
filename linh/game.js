@@ -27,10 +27,11 @@ const memoryOverlay = document.getElementById('memoryOverlay');
 const memoryImage = document.getElementById('memoryImage');
 const memoryText = document.getElementById('memoryText');
 const closeMemoryBtn = document.getElementById('closeMemory');
+const message = document.getElementById('message');
+const giftBox = document.getElementById('giftBox');
 
 document.addEventListener('keydown', e => {
   if (memoryOverlay.style.display === 'flex') {
-    // If memory popup is showing, allow arrow keys to close it
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       hideMemory();
     }
@@ -61,15 +62,13 @@ function initializeGame() {
     });
   }
 
-  document.getElementById('message').innerText = '';
-  document.getElementById('giftBox').style.display = 'none';
+  message.innerText = '';
+  giftBox.style.display = 'none';
   hideMemory();
   canvas.style.filter = 'none';
 }
 
 function drawBackground() {
-  ctx.fillStyle = '#228B22';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
 }
 
@@ -84,64 +83,64 @@ function drawCastle() {
 function drawHearts() {
   hearts.forEach(h => {
     if (!h.collected) {
-      ctx.fillStyle = 'pink';
+      ctx.fillStyle = '#ff4da6';
       ctx.beginPath();
-      ctx.moveTo(h.x + h.size / 2, h.y + h.size / 5);
-      ctx.bezierCurveTo(h.x + h.size / 2, h.y, h.x, h.y, h.x, h.y + h.size / 3);
-      ctx.bezierCurveTo(h.x, h.y + h.size * 0.7, h.x + h.size / 2, h.y + h.size, h.x + h.size / 2, h.y + h.size);
-      ctx.bezierCurveTo(h.x + h.size / 2, h.y + h.size, h.x + h.size, h.y + h.size * 0.7, h.x + h.size, h.y + h.size / 3);
-      ctx.bezierCurveTo(h.x + h.size, h.y, h.x + h.size / 2, h.y, h.x + h.size / 2, h.y + h.size / 5);
-      ctx.closePath();
+      ctx.moveTo(h.x, h.y);
+      ctx.arc(h.x - 10, h.y - 10, 14, 0, Math.PI * 2);
+      ctx.arc(h.x + 10, h.y - 10, 14, 0, Math.PI * 2);
+      ctx.lineTo(h.x, h.y + 20);
       ctx.fill();
     }
   });
 }
 
-function rectsOverlap(r1, r2) {
-  return !(r2.x > r1.x + r1.width ||
-           r2.x + r2.width < r1.x ||
-           r2.y > r1.y + r1.height ||
-           r2.y + r2.height < r1.y);
+function showMemory(index) {
+  memoryText.innerText = memories[index].text;
+  memoryImage.src = memories[index].image;
+  memoryOverlay.style.display = 'flex';
+  canvas.style.filter = 'blur(3px)';
+}
+
+function hideMemory() {
+  memoryOverlay.style.display = 'none';
+  canvas.style.filter = 'none';
 }
 
 function update() {
-  // Move player with arrow keys or WASD
-  if (keys['ArrowUp'] || keys['w']) player.y -= player.speed;
-  if (keys['ArrowDown'] || keys['s']) player.y += player.speed;
-  if (keys['ArrowLeft'] || keys['a']) player.x -= player.speed;
-  if (keys['ArrowRight'] || keys['d']) player.x += player.speed;
+  if (memoryOverlay.style.display === 'flex') {
+    return; // pause game when memory popup shown
+  }
 
-  // Boundaries check
+  if (keys['ArrowUp']) player.y -= player.speed;
+  if (keys['ArrowDown']) player.y += player.speed;
+  if (keys['ArrowLeft']) player.x -= player.speed;
+  if (keys['ArrowRight']) player.x += player.speed;
+
+  // Keep player inside canvas
   player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
   player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
 
-  // Check collisions with hearts
   hearts.forEach((h, i) => {
-    if (!h.collected) {
-      const heartRect = { x: h.x, y: h.y, width: h.size, height: h.size };
-      const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
-
-      if (rectsOverlap(playerRect, heartRect)) {
-        h.collected = true;
-        collected++;
-        collectSound.currentTime = 0;
-        collectSound.play();
-        showMemory(memoryIndex);
-        memoryIndex++;
-      }
+    if (!h.collected &&
+        player.x < h.x + h.size &&
+        player.x + player.width > h.x &&
+        player.y < h.y + h.size &&
+        player.y + player.height > h.y) {
+      h.collected = true;
+      collectSound.play();
+      showMemory(memoryIndex);
+      memoryIndex++;
+      collected++;
     }
   });
 
-  // If all hearts collected and player reaches castle, show gift box
-  if (collected === totalHearts) {
-    const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
-    const castleRect = { x: castle.x, y: castle.y, width: castle.width, height: castle.height };
-
-    if (rectsOverlap(playerRect, castleRect)) {
-      document.getElementById('message').innerText = "You reached the castle! Open your gift!";
-      document.getElementById('giftBox').style.display = 'block';
-      // Stop game loop by not calling update anymore or disabling keys (optional)
-    }
+  if (collected === totalHearts &&
+      player.x + player.width > castle.x &&
+      player.x < castle.x + castle.width &&
+      player.y + player.height > castle.y &&
+      player.y < castle.y + castle.height) {
+    message.innerText = 'You made it to the castle with all the hearts! 🎉';
+    giftBox.style.display = 'flex';
   }
 }
 
@@ -159,39 +158,17 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-function showMemory(index) {
-  if (index >= memories.length) return;
-  memoryImage.src = memories[index].image;
-  memoryText.innerText = memories[index].text;
-  memoryOverlay.style.display = 'flex';
-}
-
-function hideMemory() {
-  memoryOverlay.style.display = 'none';
-}
-
 function openGift() {
-  alert("🎉 Congratulations! Here's your special surprise! 🎉");
+  alert("Surprise! 💝 Thank you for playing!");
 }
 
 document.getElementById('restartButton').addEventListener('click', () => {
   initializeGame();
+  message.innerText = '';
+  giftBox.style.display = 'none';
 });
 
-memoryOverlay.addEventListener('click', (e) => {
-  if (e.target === memoryOverlay) hideMemory();
-});
-
-// Start the game once all images are loaded
-let imagesLoaded = 0;
-const totalImages = 3;
-
-[bgImg, playerImg, castleImg].forEach(img => {
-  img.onload = () => {
-    imagesLoaded++;
-    if (imagesLoaded === totalImages) {
-      initializeGame();
-      gameLoop();
-    }
-  };
-});
+bgImg.onload = () => {
+  initializeGame();
+  gameLoop();
+};
