@@ -222,3 +222,13 @@ nav a:hover,
 #closeMemory:hover {
   background-color: #f1a6cc;
 }
+
+/* ... Your existing CSS ... */
+
+/* Heart emoji style */
+.heart-emoji {
+  font-size: 30px;
+  position: absolute;
+  pointer-events: none; /* So clicks pass through */
+  user-select: none;
+}
