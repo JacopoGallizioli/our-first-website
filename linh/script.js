@@ -91,7 +91,6 @@ function drawHearts() {
     if(!h.collected) {
       ctx.fillStyle = '#ff4da6';
       ctx.beginPath();
-      // Draw simple heart shape (circle for simplicity)
       ctx.arc(h.x + heartSize/2, h.y + heartSize/2, heartSize/2, 0, Math.PI * 2);
       ctx.fill();
     }
