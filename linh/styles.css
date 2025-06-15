@@ -1,80 +1,100 @@
-/* Reset and full page background */
-html, body {
+/* Pink page background */
+body {
   margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive;
-  background: url('Forest.png') no-repeat center center fixed;
-  background-size: cover;
-  color: #fff;
+  background-color: pink;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
-#gameContainer {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(255, 105, 180, 0.7);
-  max-width: 850px;
-  width: 90vw;
-}
-
+/* Navigation styling */
 nav {
-  margin-bottom: 15px;
+  margin: 10px 0;
 }
 
 nav a {
-  color: #ff99cc;
+  color: #800040;
   text-decoration: none;
-  margin: 0 10px;
   font-weight: bold;
-  font-size: 1.1rem;
+  margin: 0 10px;
 }
 
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Game container centered with vertical stacking */
+#gameContainer {
+  background: rgba(255, 192, 203, 0.3); /* translucent pink */
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px #ff66a3aa;
+  max-width: 850px;
+  width: 90vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Intro text styling */
 .intro {
+  text-align: center;
   margin-bottom: 15px;
-  line-height: 1.4;
+  color: #800040;
 }
 
+.intro p {
+  margin: 5px 0;
+}
+
+/* Canvas styling */
 canvas {
-  display: block;
-  margin: 0 auto;
   border: 5px solid #ff99cc;
   border-radius: 20px;
-  background-color: transparent;
-  transition: filter 0.3s ease;
   max-width: 100%;
   height: auto;
+  display: block; /* removes inline gap */
 }
 
+/* Message below canvas */
 #message {
-  font-size: 24px;
-  color: #ffccdd;
   margin-top: 15px;
+  font-size: 24px;
+  color: #800040;
+  text-align: center;
+  min-height: 30px;
 }
 
+/* Gift buttons container below canvas & message */
 #giftBox {
-  margin-top: 20px;
-  display: none;
+  margin-top: 20px; /* space above buttons */
+  width: 100%;
+  display: none; /* hidden until needed */
+  justify-content: center;
+  gap: 15px;
+  display: flex;
 }
 
-#giftBox button,
-#restartButton {
+#giftBox button {
   background-color: #ff66a3;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 25px;
   font-size: 18px;
   color: white;
   border-radius: 10px;
   cursor: pointer;
-  margin: 5px;
+  transition: background-color 0.2s ease;
 }
 
-/* Memory Overlay */
+#giftBox button:hover {
+  background-color: #ff4d8a;
+}
+
+/* Memory Overlay Styles */
 #memoryOverlay {
   display: none;
   position: fixed;
@@ -86,14 +106,13 @@ canvas {
   z-index: 9999;
   justify-content: center;
   align-items: center;
-  display: flex;
 }
 
 #memoryContent {
   background-color: white;
   border-radius: 15px;
-  padding: 10px 10px 25px 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  padding: 10px 10px 25px 10px; /* extra bottom padding for text */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   position: relative;
   max-width: 320px;
   display: flex;
@@ -105,7 +124,7 @@ canvas {
   width: 300px;
   height: auto;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 #memoryText {
@@ -118,6 +137,7 @@ canvas {
   user-select: none;
 }
 
+/* Close button */
 #closeMemory {
   position: absolute;
   top: 8px;
