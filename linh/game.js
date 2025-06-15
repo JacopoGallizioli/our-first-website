@@ -74,112 +74,118 @@ function initializeGame() {
 }
 
 function drawBackground() {
-  ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (bgImg.complete) {
+    ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+  } else {
+    ctx.fillStyle = '#a8d0a8';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 }
 
 function drawPlayer() {
-  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+  if (playerImg.complete) {
+    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+  } else {
+    ctx.fillStyle = '#702963';
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+  }
 }
 
 function drawCastle() {
-  ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+  if (castleImg.complete) {
+    ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
+  } else {
+    ctx.fillStyle = '#d36ba6';
+    ctx.fillRect(castle.x, castle.y, castle.width, castle.height);
+  }
 }
 
 function drawHearts() {
   hearts.forEach(h => {
     if (!h.collected) {
-      ctx.font = '30px serif';
+      ctx.font = '40px serif';
+      ctx.shadowColor = 'rgba(255,0,0,0.7)';
+      ctx.shadowBlur = 4;
       ctx.fillStyle = 'red';
       ctx.fillText('❤️', h.x, h.y);
+      ctx.shadowBlur = 0;
     }
   });
 }
 
-function showMemory(index) {
-  if(index < memories.length){
-    memoryText.innerText = memories[index].text;
-    memoryImage.src = memories[index].image;
-    memoryOverlay.style.display = 'flex';
-    canvas.style.filter = 'blur(3px)';
-  }
-}
-
-function hideMemory() {
-  memoryOverlay.style.display = 'none';
-  canvas.style.filter = 'none';
-}
-
-function rectanglesOverlap(r1, r2) {
-  return !(r2.x > r1.x + r1.width || 
-           r2.x + r2.width < r1.x || 
-           r2.y > r1.y + r1.height ||
-           r2.y + r2.height < r1.y);
-}
-
-function update() {
-  if (memoryOverlay.style.display === 'flex') return;
-
+function updatePlayer() {
   if (keys['ArrowUp']) player.y -= player.speed;
   if (keys['ArrowDown']) player.y += player.speed;
   if (keys['ArrowLeft']) player.x -= player.speed;
   if (keys['ArrowRight']) player.x += player.speed;
 
-  // Keep player inside canvas
+  // keep player inside canvas
   player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
   player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
+}
 
-  // Check collision with hearts
-  hearts.forEach((h, i) => {
+function checkHeartCollision() {
+  hearts.forEach((h, index) => {
     if (!h.collected) {
-      const heartRect = { x: h.x - 20, y: h.y - 30, width: 30, height: 30 };
-      if (rectanglesOverlap(player, heartRect)) {
+      const heartRect = { x: h.x, y: h.y - 30, width: 40, height: 40 };
+      const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
+
+      if (rectIntersect(heartRect, playerRect)) {
         h.collected = true;
         collected++;
-        collectSound.currentTime = 0;
-        collectSound.play();
-        showMemory(memoryIndex);
-        memoryIndex++;
+        playSound();
+        showMemory(index);
+        if (collected === totalHearts) {
+          messageDiv.innerText = "You collected all hearts! Go to the castle to unlock your gift!";
+          giftBox.classList.remove('hidden');
+        } else {
+          messageDiv.innerText = `Hearts collected: ${collected} / ${totalHearts}`;
+        }
       }
     }
   });
+}
 
-  // Check if all hearts collected and near castle
-  if (collected === totalHearts) {
-    const castleRect = castle;
-    if (rectanglesOverlap(player, castleRect)) {
-      messageDiv.innerText = "You made it to the castle with all the hearts! 💖";
-      giftBox.classList.remove('hidden');
-      canvas.style.filter = 'blur(3px)';
-    }
-  }
+function rectIntersect(r1, r2) {
+  return !(r2.x > r1.x + r1.width ||
+           r2.x + r2.width < r1.x ||
+           r2.y > r1.y + r1.height ||
+           r2.y + r2.height < r1.y);
+}
+
+function playSound() {
+  collectSound.currentTime = 0;
+  collectSound.play();
+}
+
+function showMemory(index) {
+  const mem = memories[index];
+  memoryImage.src = mem.image;
+  memoryText.textContent = mem.text;
+  memoryOverlay.style.display = 'flex';
+}
+
+function hideMemory() {
+  memoryOverlay.style.display = 'none';
 }
 
 function gameLoop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBackground();
   drawCastle();
   drawHearts();
   drawPlayer();
-  update();
+  updatePlayer();
+  checkHeartCollision();
+
   requestAnimationFrame(gameLoop);
 }
 
+// Start game
+initializeGame();
+gameLoop();
+
 document.getElementById('restartButton').addEventListener('click', () => {
   initializeGame();
-  canvas.style.filter = 'none';
   messageDiv.innerText = '';
-  giftBox.classList.add('hidden');
 });
-
-let loadedImages = 0;
-function imageLoaded() {
-  loadedImages++;
-  if (loadedImages === 3) {
-    initializeGame();
-    gameLoop();
-  }
-}
-
-bgImg.onload = imageLoaded;
-playerImg.onload = imageLoaded;
-castleImg.onload = imageLoaded;
