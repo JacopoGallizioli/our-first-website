@@ -8,9 +8,9 @@
 </head>
 <body>
   <nav>
-    <a href="../index.html">Home</a> |
-    <a href="game.html">Game</a> |
-    <a href="../jacopo/magnets.html">Magnets</a>
+    <a href="#">Home</a> |
+    <a href="#">Games</a> |
+    <a href="#">Magnets</a>
   </nav>
 
   <div id="gameContainer">
@@ -25,7 +25,6 @@
     <div id="message"></div>
   </div>
 
-  <!-- Memory popup overlay -->
   <div id="memoryOverlay">
     <div id="memoryContent">
       <button id="closeMemory" title="Close">×</button>
@@ -34,13 +33,10 @@
     </div>
   </div>
 
-  <!-- Final Reward Popup -->
-  <div id="finalReward">
-    <div id="finalRewardContent">
-      <h2>🎉 Congratulations! 🎉</h2>
-      <p>You collected all the hearts and reached the castle!</p>
-      <button id="finalRestartButton">Restart Game 🔄</button>
-    </div>
+  <!-- Gift and Restart Buttons container -->
+  <div id="giftContainer" style="display:none;">
+    <button id="openGiftBtn">Open Your Gift 🎁</button>
+    <button id="restartBtn">Restart Game 🔄</button>
   </div>
 
   <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
