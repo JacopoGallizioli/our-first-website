@@ -138,3 +138,13 @@ header {
 .image-wrapper.visible .caption {
   opacity: 1;
 }
+
+.floating-title {
+  position: sticky;
+  top: 60px;
+  background: #f4f4f4;
+  padding: 10px 0;
+  font-size: 1.5em;
+  z-index: 5;
+  border-bottom: 1px solid #ccc;
+}
