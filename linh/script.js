@@ -30,7 +30,7 @@ const closeMemoryBtn = document.getElementById('closeMemory');
 
 document.addEventListener('keydown', e => {
   if (memoryOverlay.style.display === 'flex') {
-    // Close memory popup on arrow keys
+    // If memory popup is showing, allow arrow keys to close it immediately
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       hideMemory();
     }
@@ -140,40 +140,4 @@ function update() {
       player.x < castle.x + castle.width &&
       player.y + player.height > castle.y &&
       player.y < castle.y + castle.height) {
-    document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
-    canvas.style.filter = 'blur(3px)';
-    document.getElementById('giftBox').style.display = 'block';
-  }
-}
-
-function gameLoop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBackground();
-  drawCastle();
-  drawHearts();
-  drawPlayer();
-  update();
-  requestAnimationFrame(gameLoop);
-}
-
-function openGift() {
-  alert("🎁 Here's your surprise! I love you! 💌");
-}
-
-document.getElementById('restartButton').addEventListener('click', () => {
-  initializeGame();
-});
-
-let loaded = 0;
-const totalImages = 3;
-function checkAllLoaded() {
-  loaded++;
-  if (loaded === totalImages) {
-    initializeGame();
-    gameLoop();
-  }
-}
-
-bgImg.onload = checkAllLoaded;
-playerImg.onload = checkAllLoaded;
-castleImg.onload = checkAllLoaded;
+    document.getElementById('message').innerText = 'You made it to th
