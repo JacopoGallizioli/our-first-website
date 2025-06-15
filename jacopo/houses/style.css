@@ -163,5 +163,5 @@ header {
 
 .image-wrapper.visible .house-img,
 .image-wrapper.visible .caption {
-  opacity: 1;
+  opacity: 0;
 }
