@@ -40,18 +40,6 @@ header {
   transform: translateY(0);
 }
 
-.house-img {
-  display: block;
-  width: 100%;   /* make image fill wrapper */
-  height: auto;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 8px;
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.6s;
-  display: block;
-}
-
 /* ROADMAP */
 .roadmap {
   flex: 1;
@@ -148,7 +136,7 @@ header {
 }
 
 .caption {
-  position: absolute;
+  position: relative;
   top: 8px;
   left: 8px;
   background-color: rgba(0, 0, 0, 0.5);
@@ -160,6 +148,17 @@ header {
   pointer-events: none; /* so it doesn't block image interaction */
   opacity: 0;
   transition: opacity 0.6s ease;
+}
+
+.house-img {
+  display: block;
+  width: 100%;   /* make image fill wrapper */
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.6s;
 }
 
 .image-wrapper.visible .house-img,
