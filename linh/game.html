@@ -1,54 +1,253 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Heart Collector Game</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  <div class="page-header">
-    <nav>
-      <a href="../index.html">Home</a>
-      <div class="dropdown">
-        <button class="dropdown-btn">Pages</button>
-        <div class="dropdown-content">
-          <a href="../linh/game.html">Game</a>
-          <a href="magnets.html">Magnets</a>
-          <a href="../jacopo/houses/houses.html">Houses</a>
-        </div>
-      </div>
-    </nav>
+/* Pink background for whole page */
+body {
+  background-color: #f8c1d5;
+}
 
-    <h1>🎮 Games 🎮</h1>
-    <p class="subtitle">A collection of fun games we've created and shared</p>
-  </div>
+/* Page header */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #d36ba6;
+  padding: 1em;
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
 
-  <div class="centered-description">
-    <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
-    <p>Collect every heart to unlock a special surprise!</p>
-  </div>
+.page-header h1 {
+  margin-bottom: 0.2em;
+  font-size: 2.5em;
+}
 
-  <canvas id="gameCanvas" width="800" height="450"></canvas>
+.page-header .subtitle {
+  font-size: 1.2em;
+  color: #ffe4f0;
+}
 
-  <div id="message"></div>
-  <button id="restartButton">Restart Game</button>
+/* Navigation */
+nav {
+  display: flex;
+  gap: 0.5em;
+  position: absolute;
+  left: 1em;
+  top: 1em;
+}
 
-  <div id="giftBox" class="hidden">
-    <button id="openGiftBtn">Open Gift 🎁</button>
-  </div>
+nav a,
+.dropdown-btn {
+  background-color: #e48fb8;
+  color: white;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
 
-  <div id="memoryOverlay" class="hidden">
-    <div id="memoryContent">
-      <img id="memoryImage" src="" alt="Memory Image" />
-      <p id="memoryText"></p>
-      <button id="closeMemory">Close</button>
-    </div>
-  </div>
+nav a:hover,
+.dropdown:hover .dropdown-btn {
+  background-color: #f1a6cc;
+}
 
-  <audio id="collectSound" src="collect.mp3"></audio>
+.dropdown {
+  position: relative;
+}
 
-  <script src="game.js"></script>
-</body>
-</html>
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fbd6e5;
+  min-width: 160px;
+  border-radius: 10px;
+  top: 100%;
+  left: 0;
+  box-shadow: 0 4px 8px rgba(200, 100, 150, 0.4);
+  z-index: 5;
+}
+
+.dropdown-content a {
+  padding: 10px 16px;
+  display: block;
+  text-decoration: none;
+  color: #702963;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1a6cc;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Centered description below header */
+.centered-description {
+  text-align: center;
+  margin: 1.5em 0 2em;
+  color: #702963;
+}
+
+.centered-description h1 {
+  font-size: 1.8em;
+  margin-bottom: 0.3em;
+}
+
+.centered-description p {
+  font-size: 1.2em;
+}
+
+/* Canvas */
+#gameCanvas {
+  display: block;
+  margin: 0 auto 1em;
+  background-color: transparent;
+  border: 4px solid #d36ba6;
+  border-radius: 10px;
+}
+
+/* Message */
+#message {
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #d36ba6;
+  margin-bottom: 1em;
+}
+
+/* Restart button */
+#restartButton {
+  display: block;
+  margin: 0 auto 2em;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  background-color: #d36ba6;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#restartButton:hover {
+  background-color: #f1a6cc;
+}
+
+/* Gift Box */
+#giftBox {
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+#giftBox.hidden {
+  display: none;
+}
+
+#giftBox button {
+  padding: 0.8em 1.8em;
+  font-size: 1.2em;
+  background-color: #ff66a3;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#giftBox button:hover {
+  background-color: #ff8cc7;
+}
+
+/* Memory overlay */
+#memoryOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(243, 189, 211, 0.9);
+  display: none; /* hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+#memoryOverlay.flex {
+  display: flex;
+}
+
+/* Fuji Stax Foto style memory content */
+#memoryContent {
+  background: white;
+  border-radius: 12px;
+  padding: 12px 12px 36px 12px;
+  max-width: 90vw;
+  max-height: 90vh;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  font-family: 'Courier New', Courier, monospace;
+  border: 6px solid white;
+}
+
+/* Memory image with subtle shadow and border */
+#memoryImage {
+  max-width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  margin-bottom: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Caption text styled like polaroid */
+#memoryText {
+  font-size: 1.2em;
+  color: #702963;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-top: 6px;
+  font-style: italic;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Close button at bottom center of memory */
+#closeMemory {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5em 1em;
+  font-size: 1.1em;
+  background-color: #d36ba6;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#closeMemory:hover {
+  background-color: #f1a6cc;
+}
+
+/* Heart emoji style */
+.heart-emoji {
+  font-size: 40px;
+  position: absolute;
+  pointer-events: none; /* So clicks pass through */
+  user-select: none;
+}
