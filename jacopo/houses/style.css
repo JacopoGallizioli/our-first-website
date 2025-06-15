@@ -113,3 +113,12 @@ header {
 
 .town-label.left  { transform: translate(-125%, -50%); }
 .town-label.right { transform: translate(50%, -50%);  }
+
+.images {
+  position: relative; 
+}
+
+.images img {
+  display: inline-block; 
+  position: relative;   
+  transition: transform 0.3s ease;}
