@@ -9,7 +9,7 @@
 <body>
   <nav>
     <a href="../index.html">Home</a> |
-    <a href="linh.html">Games</a> |
+    <a href="linh.html">Linh</a> |
     <a href="../jacopo/magnets.html">Magnets</a>
   </nav>
 
@@ -20,13 +20,17 @@
       <p>Collect every heart to unlock a special surprise!</p>
     </div>
 
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
-    <div id="message"></div>
+    <div id="canvasWrapper">
+      <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-    <div id="giftBox">
-      <button onclick="openGift()">Open Your Gift 🎁</button>
-      <button id="restartButton">Restart Game 🔄</button>
+      <!-- Buttons overlay -->
+      <div id="giftBox">
+        <button onclick="openGift()">Open Your Gift 🎁</button>
+        <button id="restartButton">Restart Game 🔄</button>
+      </div>
     </div>
+
+    <div id="message"></div>
   </div>
 
   <!-- Memory popup overlay -->
