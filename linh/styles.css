@@ -1,8 +1,8 @@
 body {
   font-family: sans-serif;
   margin: 0;
-  background-color: #f3faf0;
-  color: #2f4f2f;
+  background-color: #ffe6f0; /* light pink background */
+  color: #660033; /* dark pink/red text */
 }
 
 /* Header Bar */
@@ -12,11 +12,12 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  background-color: #355e35;
+  background-color: #cc3366; /* pink header */
   padding: 0.5em 1em;
   height: 4.5em;
-  color: #d0e6d0;
+  color: #ffd6e8; /* soft pink text */
   margin-bottom: 0;
+  box-shadow: 0 4px 8px rgba(204, 51, 102, 0.5);
 }
 
 .page-header h1 {
@@ -24,13 +25,13 @@ body {
   font-size: 1.5em;
   font-weight: bold;
   white-space: nowrap;
-  color: #d0e6d0;
+  color: #ffd6e8;
 }
 
 .page-header .subtitle {
   font-size: 0.9em;
   margin-top: 0.2em;
-  color: #b3d9b3;
+  color: #ffb3d1;
 }
 
 /* Navigation */
@@ -44,8 +45,8 @@ nav {
 
 nav a,
 .dropdown-btn {
-  background-color: #4a7a4a;
-  color: #e8f4e8;
+  background-color: #e673a1; /* lighter pink buttons */
+  color: #fff0f6;
   padding: 0.5em 1em;
   text-decoration: none;
   font-size: 1em;
@@ -57,7 +58,7 @@ nav a,
 
 nav a:hover,
 .dropdown:hover .dropdown-btn {
-  background-color: #5a8b5a;
+  background-color: #cc3366;
   color: white;
 }
 
@@ -73,27 +74,27 @@ nav a:hover,
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #2e4b2e;
+  background-color: #b34d7d; /* medium pink */
   min-width: 160px;
   z-index: 1;
   border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(20, 40, 20, 0.6);
+  box-shadow: 0 4px 8px rgba(179, 77, 125, 0.6);
   top: 100%;
   left: 0;
 }
 
 .dropdown-content a {
-  color: #d0e6d0;
+  color: #ffe6f0;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
   text-align: left;
-  background-color: #2e4b2e;
+  background-color: #b34d7d;
   transition: background-color 0.3s ease;
 }
 
 .dropdown-content a:hover {
-  background-color: #5a8b5a;
+  background-color: #cc3366;
   color: white;
 }
 
@@ -112,12 +113,22 @@ nav a:hover,
   margin-top: 2em;
 }
 
+/* Game container with pink border and shadow */
 #gameContainer {
   position: relative;
   display: inline-block;
-  border: 4px solid #355e35;
+  border: 4px solid #cc3366; /* pink border */
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(53, 94, 53, 0.8);
+  box-shadow: 0 0 20px rgba(204, 51, 102, 0.8);
+  background: #fff0f6; /* very pale pink background */
+  width: 600px; /* or your game width */
+  height: 400px; /* or your game height */
+  
+  /* Center content (buttons) vertically & horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Message below canvas */
@@ -125,7 +136,7 @@ nav a:hover,
   margin-top: 1em;
   font-weight: bold;
   font-size: 1.1em;
-  color: #355e35;
+  color: #cc3366;
 }
 
 /* Gift box overlay */
@@ -135,7 +146,7 @@ nav a:hover,
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(53, 94, 53, 0.85);
+  background: rgba(204, 51, 102, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,18 +167,19 @@ nav a:hover,
 }
 
 .pretty-button {
-  background-color: #4a7a4a;
-  color: #e8f4e8;
+  background-color: #e673a1;
+  color: #fff0f6;
   border: none;
   font-size: 1.1em;
   cursor: pointer;
   padding: 0.5em 2em;
   border-radius: 9999px;
   transition: background-color 0.3s ease;
+  box-shadow: 0 3px 6px rgba(230, 115, 161, 0.6);
 }
 
 .pretty-button:hover {
-  background-color: #5a8b5a;
+  background-color: #cc3366;
   color: white;
 }
 
@@ -175,7 +187,7 @@ nav a:hover,
 #memoryOverlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(20, 50, 20, 0.85);
+  background-color: rgba(204, 51, 102, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,25 +199,39 @@ nav a:hover,
 }
 
 #memoryContent {
-  background: #2e4b2e;
+  background: #b34d7d;
   border-radius: 10px;
   padding: 1em;
   max-width: 400px;
   text-align: center;
   position: relative;
+  box-shadow: 0 4px 15px rgba(179, 77, 125, 0.8);
 }
 
+/* Fuji Instax style photo frame for memory images */
 #memoryContent img {
   max-width: 100%;
-  border-radius: 8px;
-  margin-bottom: 1em;
+  border: 12px solid white;
+  border-bottom-width: 40px; /* wider bottom border like polaroid */
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  background: white;
+  transform: rotate(-1.5deg); /* slight tilt */
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  user-select: none;
 }
 
+#memoryContent img:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+/* Close button */
 #closeMemory {
   position: absolute;
   top: 5px;
   right: 5px;
-  background: #d0e6d0;
+  background: #ffd6e8;
   border: none;
   border-radius: 50%;
   font-size: 1.5em;
@@ -213,12 +239,12 @@ nav a:hover,
   cursor: pointer;
   width: 30px;
   height: 30px;
-  color: #2f4f2f;
+  color: #660033;
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
 #closeMemory:hover {
-  background-color: #a2c4a2;
+  background-color: #ffb3d1;
   color: white;
 }
