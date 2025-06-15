@@ -72,21 +72,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        } else {
-          entry.target.classList.remove("visible");
-        }
-      });
-    },
-    {
-      root: null,          // viewport
-      threshold: 0.3,      // trigger when 10% of image is visible
-    }
-  );
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        const caption = entry.target.parentElement.querySelector('.caption');
+        if (caption) caption.classList.add('visible');
+      } else {
+        entry.target.classList.remove("visible");
+        const caption = entry.target.parentElement.querySelector('.caption');
+        if (caption) caption.classList.remove('visible');
+      }
+    });
+  },
+  {
+    root: null,
+    threshold: 0.3,
+  }
+);
 
   images.forEach((img) => observer.observe(img));
 });
