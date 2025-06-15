@@ -52,10 +52,6 @@ header {
   display: block;
 }
 
-.house-img.visible {
-  opacity: 1;
-}
-
 /* ROADMAP */
 .roadmap {
   flex: 1;
@@ -166,7 +162,7 @@ header {
   transition: opacity 0.6s ease;
 }
 
+.image-wrapper.visible .house-img,
 .image-wrapper.visible .caption {
   opacity: 1;
 }
-
