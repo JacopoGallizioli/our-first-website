@@ -109,7 +109,7 @@ header {
 }
 
 .image-wrapper .caption {
-  position: relative;
+  position: absolute;
   top: 8px;
   left: 8px;
   background-color: rgba(0, 0, 0, 0.5);
