@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Heart Collector Game</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <nav>
-    <a href="../index.html">Home</a> |
-    <a href="linh.html">Games</a> |
-    <a href="../jacopo/magnets.html">Magnets</a>
-  </nav>
-
   <div id="gameContainer">
+    <nav>
+      <a href="../index.html">Home</a> |
+      <a href="linh.html">Linh</a> |
+      <a href="../jacopo/magnets.html">Magnets</a>
+    </nav>
+
+    <div class="intro">
+      <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
+      <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
+      <p>Collect every heart to unlock a special surprise!</p>
+    </div>
+
     <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-    <!-- Buttons appear overlayed and centered -->
     <div id="giftBox">
-      <button onclick="openGift()">Open Your Gift 🎁</button>
+      <button onclick="openGift()">Open Your Gift 🏱</button>
       <button id="restartButton">Restart Game 🔄</button>
     </div>
-  </div>
 
-  <!-- Memory popup overlay -->
-  <div id="memoryOverlay">
-    <div id="memoryContent">
-      <button id="closeMemory" title="Close">×</button>
-      <img id="memoryImage" src="" alt="Memory Image" />
-      <div id="memoryText"></div>
+    <div id="message"></div>
+
+    <div id="memoryOverlay">
+      <div id="memoryContent">
+        <button id="closeMemory">&times;</button>
+        <img id="memoryImage" src="" alt="Memory">
+        <div id="memoryText"></div>
+      </div>
     </div>
-  </div>
 
-  <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
+    <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
+  </div>
 
   <script src="game.js"></script>
 </body>
