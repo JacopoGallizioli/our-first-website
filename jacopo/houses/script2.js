@@ -57,3 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
     label.style.left = pinRect.left + "px";
   }
 });
+
+document.querySelectorAll('.images img').forEach((img) => {
+  const offset = Math.floor(Math.random() * 21) - 10; // random value between -10 and +10
+  img.style.transform = `translateX(${offset}px)`;
+});
