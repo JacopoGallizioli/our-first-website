@@ -41,7 +41,7 @@
   user-select: none;
 }
 
-/* Close button stays as before */
+/* Close button */
 #closeMemory {
   position: absolute;
   top: 8px;
