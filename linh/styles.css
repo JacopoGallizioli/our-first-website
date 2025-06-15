@@ -1,23 +1,12 @@
-html, body {
+body {
   margin: 0;
-  padding: 0;
-  background-color: #ffc0cb; /* Pink background */
-  font-family: 'Comic Sans MS', cursive;
-  color: #333;
-  height: 100%;
+  background-color: pink;
+  font-family: Arial, sans-serif;
   overflow: hidden;
-}
-
-nav {
-  text-align: center;
-  margin-top: 10px;
-}
-
-nav a {
-  color: #ff3399;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 #gameWrapper {
@@ -25,63 +14,63 @@ nav a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  padding: 20px;
 }
 
 .intro {
-  text-align: center;
-  margin: 10px;
+  margin-bottom: 20px;
 }
 
 #gameContainer {
   position: relative;
-  width: 800px;
-  height: 500px;
 }
 
-canvas {
-  display: block;
-  width: 800px;
-  height: 500px;
-  border: 5px solid #ff99cc;
-  border-radius: 20px;
-  background-color: transparent;
-  z-index: 1;
+#gameCanvas {
+  border: 3px solid #ff69b4;
+  border-radius: 10px;
+  background-color: #fff0f5;
 }
 
-/* Message below canvas */
 #message {
-  text-align: center;
-  font-size: 24px;
-  color: #ff0066;
   margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #d6336c;
 }
 
-/* Overlay gift buttons */
+/* Gift box and restart buttons overlay */
 #giftBox {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
-  background: rgba(255, 255, 255, 0.9);
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 20px;
   border-radius: 15px;
-  z-index: 2;
-  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-#giftBox button {
-  background-color: #ff66a3;
-  border: none;
+.pretty-button {
   padding: 10px 20px;
-  font-size: 18px;
+  font-size: 16px;
+  background-color: #ff69b4;
   color: white;
-  border-radius: 10px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  margin: 10px;
+  transition: background-color 0.3s;
 }
 
-/* Memory Overlay Styles */
+.pretty-button:hover {
+  background-color: #e055a1;
+}
+
+/* Memory popup overlay */
 #memoryOverlay {
   display: none;
   position: fixed;
@@ -89,7 +78,7 @@ canvas {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.8);
   z-index: 9999;
   justify-content: center;
   align-items: center;
@@ -100,6 +89,7 @@ canvas {
   border-radius: 15px;
   padding: 10px 10px 25px 10px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  position: relative;
   max-width: 320px;
   display: flex;
   flex-direction: column;
