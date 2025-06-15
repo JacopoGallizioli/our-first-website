@@ -61,39 +61,32 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const wrappers = document.querySelectorAll('.caption-wrapper');
+  const wrappers = document.querySelectorAll('.image-wrapper');
 
-  // Show only the first wrapper/image initially
+  // Show only the first wrapper (with image + caption) initially
   wrappers.forEach((wrapper, i) => {
-    const img = wrapper.querySelector('img');
     if (i === 0) {
       wrapper.classList.add("visible");
-      img.classList.add("visible");
     } else {
       wrapper.classList.remove("visible");
-      img.classList.remove("visible");
     }
   });
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const wrapper = entry.target;
-        const img = wrapper.querySelector('img');
         if (entry.isIntersecting) {
-          wrapper.classList.add("visible");
-          img.classList.add("visible");
+          entry.target.classList.add("visible");
         } else {
-          wrapper.classList.remove("visible");
-          img.classList.remove("visible");
+          entry.target.classList.remove("visible");
         }
       });
     },
     {
       root: null,
-      threshold: 0.3, // adjust this value as you want for when to trigger
+      threshold: 0.3, // trigger when 30% visible
     }
   );
 
-  wrappers.forEach((wrapper) => observer.observe(wrapper));
+  wrappers.forEach(wrapper => observer.observe(wrapper));
 });
