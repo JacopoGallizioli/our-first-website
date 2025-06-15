@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       root: null,
-      threshold: 0.3, // trigger when 30% visible
+      threshold: 0.4, // trigger when 40% visible
     }
   );
 
