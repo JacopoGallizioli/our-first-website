@@ -1,166 +1,171 @@
-/* Pink background and center all content */
+/* General Styles */
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  background-color: #ffc0cb; /* Pink */
-  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background-color: #ffc0cb; /* pink background */
+  font-family: 'Comic Sans MS', cursive;
   color: #333;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-/* Center nav with some margin */
-nav {
+body > nav {
+  position: fixed;
+  top: 10px;
+  width: 100%;
   text-align: center;
-  margin: 10px 0;
-  font-weight: bold;
+  z-index: 10;
 }
 
 nav a {
-  color: #ff3399;
+  color: #ff69b4;
   text-decoration: none;
-  margin: 0 12px;
+  margin: 0 10px;
   font-weight: bold;
-  font-size: 1.1rem;
 }
 
-/* Game container center */
 #gameContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Intro text center */
-.intro {
   text-align: center;
-  margin-bottom: 15px;
-  line-height: 1.4;
+  background: transparent;
 }
 
-/* Canvas styling */
-canvas#gameCanvas {
+.intro {
+  margin-bottom: 10px;
+  color: #900c3f;
+}
+
+canvas {
   display: block;
-  border: 5px solid #ff66a3;
+  margin: 0 auto;
+  border: 5px solid #ff69b4;
   border-radius: 20px;
   background-color: transparent;
-  box-shadow: 0 0 20px #ff99cc88;
-  margin-bottom: 10px;
+  transition: filter 0.3s ease;
 }
 
-/* Message below canvas */
+/* Message */
 #message {
-  text-align: center;
-  font-size: 22px;
-  color: #a60050;
-  min-height: 30px;
+  margin-top: 15px;
+  font-size: 20px;
+  color: #d6336c;
+  font-weight: bold;
 }
 
-/* Gift box styles */
-#giftBox {
-  display: none;
-  text-align: center;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 25px 30px;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(255, 105, 180, 0.5);
-  z-index: 9999;
-}
-
-#giftBox button,
-#restartButton {
-  background-color: #ff3399;
-  border: none;
-  padding: 12px 25px;
-  font-size: 18px;
-  color: white;
-  border-radius: 15px;
-  cursor: pointer;
-  margin: 8px;
-  transition: background-color 0.3s ease;
-}
-#giftBox button:hover,
-#restartButton:hover {
-  background-color: #cc297a;
-}
-
-/* Memory Overlay */
+/* Memory Overlay Styles */
 #memoryOverlay {
-  display: none; /* Hidden initially */
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(255, 192, 203, 0.9); /* pink translucent */
-  z-index: 10000;
-
-  display: flex;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
   justify-content: center;
   align-items: center;
 }
 
-/* Fuji Polaroid style memory content */
 #memoryContent {
-  background: white;
+  background-color: white;
   border-radius: 15px;
-  padding: 10px 10px 35px 10px; /* extra bottom for text */
-  box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+  padding: 10px 10px 25px 10px; /* extra bottom padding for text */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   position: relative;
   max-width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive, sans-serif;
-  user-select: none;
 }
 
-/* Memory Image styled as Fuji instant photo */
 #memoryContent img {
   width: 300px;
   height: auto;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(255, 105, 180, 0.8);
-  margin-bottom: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* Text right below image with handwriting font */
 #memoryText {
-  font-size: 18px;
-  color: #7a4b59;
-  text-align: center;
+  margin-top: 10px;
   width: 100%;
-  white-space: normal;
-  line-height: 1.3;
+  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+  user-select: none;
 }
 
-/* Close button - circle with pink background */
+/* Close Memory Button */
 #closeMemory {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: #ff3399;
+  background: #ff6699;
   border: none;
   border-radius: 50%;
   color: white;
-  font-size: 22px;
-  width: 32px;
-  height: 32px;
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
-  font-weight: bold;
-  line-height: 28px;
-  user-select: none;
-  transition: background-color 0.3s ease;
   z-index: 10;
 }
-#closeMemory:hover {
-  background-color: #cc297a;
+
+/* Gift Box Styles (optional) */
+#giftBox {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 192, 203, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  z-index: 1000;
+}
+
+#giftBox button,
+#restartButton {
+  background-color: #ff66a3;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+/* Final Reward Popup Styles */
+#finalReward {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(255, 192, 203, 0.95); /* soft pink overlay */
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+#finalRewardContent {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.6);
+  font-family: 'Comic Sans MS', cursive;
+  color: #d6336c;
+}
+
+#finalRewardContent button {
+  margin-top: 20px;
+  background-color: #ff66a3;
+  border: none;
+  padding: 10px 25px;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
 }
