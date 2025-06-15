@@ -1,49 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Heart Collector Game</title>
-  <link rel="stylesheet" href="styles.css" />
-  <!-- Handwriting font for memory text -->
-  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Heart Collector Test</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: pink;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  #gameContainer {
+    text-align: center;
+  }
+  canvas {
+    border: 4px solid #ff3399;
+    border-radius: 15px;
+    background-color: #eee;
+    display: block;
+    margin: 0 auto 10px;
+  }
+  #message {
+    color: #a60050;
+    font-weight: bold;
+  }
+</style>
 </head>
 <body>
-  <nav>
-    <a href="../index.html">Home</a> |
-    <a href="linh.html">Linh</a> |
-    <a href="../jacopo/magnets.html">Magnets</a>
-  </nav>
+<div id="gameContainer">
+  <h1>Heart Collector Test</h1>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <div id="message"></div>
+</div>
 
-  <div id="gameContainer">
-    <div class="intro">
-      <p>૮꒰ྀི∩´ ᵕ `∩꒱ྀིა</p>
-      <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
-      <p>Collect every heart to unlock a special surprise!</p>
-    </div>
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
 
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
+  // Player setup
+  const player = { x: 50, y: 50, size: 40, speed: 5 };
+  const hearts = [
+    { x: 300, y: 200, size: 30, collected: false },
+    { x: 500, y: 100, size: 30, collected: false }
+  ];
 
-    <div id="message"></div>
-  </div>
+  const keys = {};
+  let collectedCount = 0;
 
-  <!-- Memory popup overlay -->
-  <div id="memoryOverlay">
-    <div id="memoryContent">
-      <button id="closeMemory" title="Close">×</button>
-      <img id="memoryImage" src="" alt="Memory Image" />
-      <div id="memoryText"></div>
-    </div>
-  </div>
+  document.addEventListener('keydown', e => keys[e.key] = true);
+  document.addEventListener('keyup', e => keys[e.key] = false);
 
-  <!-- Gift box -->
-  <div id="giftBox">
-    <button onclick="openGift()">Open Your Gift 🎁</button>
-    <button id="restartButton">Restart Game 🔄</button>
-  </div>
+  function drawPlayer() {
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(player.x, player.y, player.size, player.size);
+  }
 
-  <audio id="collectSound" src="ting.mp3" preload="auto"></audio>
+  function drawHearts() {
+    hearts.forEach(h => {
+      if (!h.collected) {
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(h.x, h.y);
+        ctx.arc(h.x - 10, h.y - 10, 15, 0, Math.PI * 2);
+        ctx.arc(h.x + 10, h.y - 10, 15, 0, Math.PI * 2);
+        ctx.lineTo(h.x, h.y + 20);
+        ctx.fill();
+      }
+    });
+  }
 
-  <script src="game.js"></script>
+  function update() {
+    if (keys['ArrowUp']) player.y -= player.speed;
+    if (keys['ArrowDown']) player.y += player.speed;
+    if (keys['ArrowLeft']) player.x -= player.speed;
+    if (keys['ArrowRight']) player.x += player.speed;
+
+    player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
+    player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
+
+    hearts.forEach(h => {
+      if (!h.collected &&
+          player.x < h.x + h.size &&
+          player.x + player.size > h.x &&
+          player.y < h.y + h.size &&
+          player.y + player.size > h.y) {
+        h.collected = true;
+        collectedCount++;
+        document.getElementById('message').textContent = `Hearts collected: ${collectedCount}`;
+      }
+    });
+  }
+
+  function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlayer();
+    drawHearts();
+    update();
+    requestAnimationFrame(gameLoop);
+  }
+
+  gameLoop();
+</script>
 </body>
 </html>
