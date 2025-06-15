@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       root: null,          // viewport
-      threshold: 0.1,      // trigger when 10% of image is visible
+      threshold: 0.3,      // trigger when 10% of image is visible
     }
   );
 
