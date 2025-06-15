@@ -29,17 +29,6 @@ header {
   max-width: 65%;
 }
 
-.house {
-  margin-bottom: 200px;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.6s, transform 0.6s;
-}
-.house.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* ROADMAP */
 .roadmap {
   flex: 1;
