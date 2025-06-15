@@ -1,39 +1,48 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-color: #ffc0cb; /* Pink background */
+  font-family: 'Comic Sans MS', cursive;
   height: 100%;
   overflow: hidden;
-  background-color: pink;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-nav {
-  text-align: center;
-  padding: 10px;
-  background: white;
-  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #gameContainer {
   position: relative;
-  width: 800px;
-  height: 500px;
-  margin: 0 auto;
-  border: 6px solid #ff99cc;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 0 25px rgba(255, 105, 180, 0.5);
-  background-color: #fff;
+  text-align: center;
 }
 
-#gameCanvas {
+canvas {
+  border: 5px solid #ff99cc;
+  border-radius: 20px;
+  background-color: transparent;
   display: block;
-  width: 100%;
-  height: 100%;
-  background-image: url('Forest.png');
-  background-size: cover;
-  background-position: center;
-  border-radius: 15px;
+}
+
+nav {
+  margin-bottom: 10px;
+}
+
+nav a {
+  color: #ff69b4;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.intro {
+  color: #fff;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+#message {
+  margin-top: 15px;
+  font-size: 20px;
+  color: #fff;
 }
 
 #giftBox {
@@ -43,30 +52,25 @@ nav {
   transform: translate(-50%, -50%);
   display: none;
   flex-direction: column;
-  gap: 15px;
+  align-items: center;
   background: rgba(255, 255, 255, 0.95);
-  padding: 20px;
+  padding: 20px 30px;
   border-radius: 20px;
   box-shadow: 0 0 15px rgba(255, 102, 147, 0.6);
-  z-index: 5;
+  z-index: 10;
 }
 
 #giftBox button {
-  background-color: #ff66a3;
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
   border: none;
-  padding: 12px 24px;
-  font-size: 18px;
-  color: white;
   border-radius: 10px;
+  background-color: #ff66a3;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-#giftBox button:hover {
-  background-color: #ff4d8a;
-}
-
-/* Memory overlay */
 #memoryOverlay {
   display: none;
   position: fixed;
@@ -74,52 +78,44 @@ nav {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.8);
   justify-content: center;
   align-items: center;
+  z-index: 999;
 }
 
 #memoryContent {
-  background-color: white;
-  border-radius: 15px;
-  padding: 10px 10px 25px 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  max-width: 300px;
   position: relative;
-  max-width: 320px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
 #memoryContent img {
-  width: 300px;
-  height: auto;
+  width: 100%;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 #memoryText {
+  font-family: 'Patrick Hand', cursive;
   margin-top: 10px;
-  width: 100%;
-  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive;
   font-size: 18px;
   color: #333;
-  text-align: center;
-  user-select: none;
 }
 
 #closeMemory {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 5px;
+  right: 10px;
   background: #ff6699;
-  border: none;
-  border-radius: 50%;
   color: white;
-  font-size: 18px;
+  border: none;
+  font-size: 20px;
+  border-radius: 50%;
   width: 30px;
   height: 30px;
   cursor: pointer;
-  z-index: 10;
 }
