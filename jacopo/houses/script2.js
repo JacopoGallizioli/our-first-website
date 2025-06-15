@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.querySelectorAll('.images img').forEach((img) => {
-    const offset = Math.floor(Math.random() * 101) - 50; // -10px to +10px
+    const offset = Math.floor(Math.random() * 80); // 0px to 80px
     img.style.transform = `translateX(${offset}px)`;
   });
 });
