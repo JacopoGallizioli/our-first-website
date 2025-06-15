@@ -1,133 +1,51 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  background-color: #ff99cc; /* pink background */
-  font-family: 'Comic Sans MS', cursive;
-  color: #fff;
-
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-nav {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-nav a {
-  color: #ff99cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-#gameContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 820px; /* canvas width + some padding */
-}
-
-.intro {
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 1.4;
-  max-width: 600px;
-  color: white;
-}
-
-canvas {
-  border: 5px solid #ff99cc;
-  border-radius: 20px;
-  background-color: transparent;
-  transition: filter 0.3s ease;
-  display: block;
-  margin-bottom: 20px;
-}
-
-#message {
-  text-align: center;
-  font-size: 24px;
-  color: #ffccdd;
-  margin-bottom: 20px;
-}
-
-#giftBox {
-  display: none;
-  text-align: center;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 15px;
-  z-index: 10;
-}
-
-#giftBox button,
-#restartButton {
-  background-color: #ff66a3;
-  border: none;
-  padding: 10px 20px;
-  font-size: 18px;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  margin: 5px;
-}
-
 /* Memory Overlay Styles */
 #memoryOverlay {
   display: none;
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.85);
   z-index: 9999;
-
-  display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 }
 
 #memoryContent {
-  text-align: center;
-  max-width: 320px;
-  padding: 20px 20px 40px 20px;
-  border-radius: 15px;
   background-color: white;
-  color: #333;
+  border-radius: 15px;
+  padding: 10px 10px 25px 10px; /* extra bottom padding for text */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   position: relative;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #memoryContent img {
-  width: 280px;
+  width: 300px;
   height: auto;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-  margin-bottom: 10px;
-  padding: 12px 12px 28px 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 #memoryText {
   margin-top: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #444;
+  width: 100%;
+  font-family: 'Patrick Hand', cursive, 'Comic Sans MS', cursive;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+  user-select: none;
 }
 
+/* Close button stays as before */
 #closeMemory {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8px;
+  right: 8px;
   background: #ff6699;
   border: none;
   border-radius: 50%;
@@ -136,5 +54,5 @@ canvas {
   width: 30px;
   height: 30px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  z-index: 10;
 }
