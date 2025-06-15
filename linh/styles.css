@@ -1,76 +1,41 @@
-/* Reset margins/padding and no scroll on body */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
   background-color: pink;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* Navigation styling */
 nav {
-  margin: 10px 0;
-}
-
-nav a {
-  color: #800040;
-  text-decoration: none;
-  font-weight: bold;
-  margin: 0 10px;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
-
-/* Wrapper for the whole game and intro */
-#gameWrapper {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100vw;
-  max-width: 850px;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-/* Intro text styling */
-.intro {
   text-align: center;
-  margin-bottom: 15px;
-  color: #800040;
+  padding: 10px;
+  background: white;
+  font-weight: bold;
 }
 
-.intro p {
-  margin: 5px 0;
-}
-
-/* Container for canvas and buttons - relative to position buttons absolutely */
 #gameContainer {
   position: relative;
   width: 800px;
   height: 500px;
-  border: 5px solid #ff99cc;
-  border-radius: 20px;
+  margin: 0 auto;
+  border: 6px solid #ff99cc;
+  border-radius: 15px;
   overflow: hidden;
-  background: rgba(255, 192, 203, 0.3);
-  box-shadow: 0 0 25px #ff66a3aa;
+  box-shadow: 0 0 25px rgba(255, 105, 180, 0.5);
+  background-color: #fff;
 }
 
-/* Canvas fills container */
 #gameCanvas {
   display: block;
   width: 100%;
   height: 100%;
+  background-image: url('Forest.png');
+  background-size: cover;
+  background-position: center;
   border-radius: 15px;
 }
 
-/* Gift buttons overlay */
 #giftBox {
   position: absolute;
   top: 50%;
@@ -89,7 +54,7 @@ nav a:hover {
 #giftBox button {
   background-color: #ff66a3;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 18px;
   color: white;
   border-radius: 10px;
@@ -101,16 +66,7 @@ nav a:hover {
   background-color: #ff4d8a;
 }
 
-/* Message below game */
-#message {
-  margin-top: 15px;
-  font-size: 24px;
-  color: #800040;
-  text-align: center;
-  min-height: 30px;
-}
-
-/* Memory Overlay Styles */
+/* Memory overlay */
 #memoryOverlay {
   display: none;
   position: fixed;
@@ -153,7 +109,6 @@ nav a:hover {
   user-select: none;
 }
 
-/* Close button */
 #closeMemory {
   position: absolute;
   top: 8px;
