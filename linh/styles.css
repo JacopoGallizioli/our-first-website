@@ -1,76 +1,84 @@
+/* Global Styles */
 body {
   margin: 0;
+  padding: 0;
   background-color: pink;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  overflow: hidden; /* Prevent scrolling */
+  height: 100vh;
+}
+
+nav {
+  margin: 10px;
+  font-size: 16px;
 }
 
 #gameWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: 20px;
 }
 
+/* Intro Text */
 .intro {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 #gameContainer {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #gameCanvas {
-  border: 3px solid #ff69b4;
-  border-radius: 10px;
-  background-color: #fff0f5;
+  border: 3px solid #ff66a3;
+  border-radius: 12px;
+  background-color: #fff;
 }
 
-#message {
-  margin-top: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #d6336c;
-}
-
-/* Gift box and restart buttons overlay */
+/* Gift box overlay */
 #giftBox {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
+.button-group {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Enhanced pretty button style */
 .pretty-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #ff69b4;
-  color: white;
+  background: linear-gradient(135deg, #ff66a3, #ff99bb);
   border: none;
-  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 18px;
+  color: white;
+  border-radius: 30px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .pretty-button:hover {
-  background-color: #e055a1;
+  background-color: #ff4d8a;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
-/* Memory popup overlay */
+/* Memory Overlay Styles */
 #memoryOverlay {
   display: none;
   position: fixed;
@@ -78,7 +86,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.85);
   z-index: 9999;
   justify-content: center;
   align-items: center;
@@ -126,4 +134,11 @@ body {
   height: 30px;
   cursor: pointer;
   z-index: 10;
+}
+
+#message {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #d63384;
+  font-weight: bold;
 }
