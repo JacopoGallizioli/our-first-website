@@ -168,3 +168,27 @@ nav a:hover {
   cursor: pointer;
   z-index: 10;
 }
+
+
+document.getElementById('restartButton').addEventListener('click', () => {
+  initializeGame();
+  message.innerText = '';
+  giftBox.style.display = 'none';
+});
+
+function openGift() {
+  alert("Surprise! 💝 Thank you for playing!");
+}
+
+// Prevent arrow keys from scrolling the page
+window.addEventListener("keydown", function(e) {
+  if(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+      e.preventDefault();
+  }
+}, false);
+
+// Initialize after background loads
+bgImg.onload = () => {
+  initializeGame();
+  gameLoop();
+};
