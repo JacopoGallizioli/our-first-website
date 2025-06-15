@@ -117,7 +117,16 @@ header {
 
 .images {
   display: flex;
-  flex-direction: column; /* Stack vertically */
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  flex-direction: column;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+
+.images img {
+  flex-shrink: 0;
+  margin-top: -20px; 
+}
+
+.images img:first-child {
+  margin-top: 0;
 }
