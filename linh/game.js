@@ -1,184 +1,197 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const playerSize = 64;
-const heartSize = 30;
-const castleSize = 120;
+const bgImg = new Image();
+const playerImg = new Image();
+const castleImg = new Image();
 
-let player = { x: 50, y: 200, width: playerSize, height: playerSize, speed: 4 };
-const castle = { x: canvas.width - castleSize - 30, y: canvas.height/2 - castleSize/2, width: castleSize, height: castleSize };
+bgImg.src = 'Forest.png';
+playerImg.src = 'Jacopo.png';
+castleImg.src = 'castle.png';
 
+const collectSound = document.getElementById('collectSound');
+
+let player, castle, hearts, collected, memoryIndex;
+const keys = {};
 const memories = [
   { text: "Our first year together 🌸", image: "1styear.JPG" },
   { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
-  { text: "Blackout & moved in together", image: "Saronno.JPG" },
-  { text: "Moved to Germany 📸", image: "augsburg.jpeg" },
-  { text: "Now in Munich! ✨", image: "Munich.jpeg" }
+  { text: "That time we finally had electricity in the house after a week of blackout (and also we moved in together)", image: "Saronno.JPG" },
+  { text: "We moved to Germany in 3rd year together 📸", image: "augsburg.jpeg" },
+  { text: "We are staying in Munich and who knows where we will be next year", image: "Munich.jpeg" }
 ];
 
-let hearts = [];
-let collected = 0;
-let memoryIndex = 0;
-const keys = {};
+const totalHearts = memories.length;
 
 const memoryOverlay = document.getElementById('memoryOverlay');
 const memoryImage = document.getElementById('memoryImage');
 const memoryText = document.getElementById('memoryText');
 const closeMemoryBtn = document.getElementById('closeMemory');
 
-const giftContainer = document.getElementById('giftContainer');
-const openGiftBtn = document.getElementById('openGiftBtn');
-const restartBtn = document.getElementById('restartBtn');
-
-const message = document.getElementById('message');
-
-const collectSound = document.getElementById('collectSound');
-
-// Load player and castle images
-const playerImg = new Image();
-playerImg.src = 'Jacopo.png'; // Replace with your character image filename
-
-const castleImg = new Image();
-castleImg.src = 'castle.png'; // Replace with your castle image filename
-
-document.addEventListener('keydown', (e) => {
-  if(memoryOverlay.style.display === 'flex' || giftContainer.style.display === 'flex') return;
-  keys[e.key] = true;
+document.addEventListener('keydown', e => {
+  if (memoryOverlay.style.display === 'flex') {
+    // If memory popup is showing, allow arrow keys to close it
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      hideMemory();
+    }
+  } else {
+    keys[e.key] = true;
+  }
 });
 
-document.addEventListener('keyup', (e) => {
+document.addEventListener('keyup', e => {
   keys[e.key] = false;
 });
 
-closeMemoryBtn.onclick = () => {
-  memoryOverlay.style.display = 'none';
-  canvas.style.filter = 'none';
-  message.innerText = '';
-};
-
-restartBtn.onclick = () => {
-  giftContainer.style.display = 'none';
-  initializeGame();
-  message.innerText = '';
-};
-
-openGiftBtn.onclick = () => {
-  alert('🎁 Surprise! Thank you for playing! 🎉');
-};
+closeMemoryBtn.addEventListener('click', hideMemory);
 
 function initializeGame() {
-  player.x = 50;
-  player.y = 200;
+  player = { x: 50, y: 200, width: 64, height: 64, speed: 3 };
+  castle = { x: canvas.width - 128, y: canvas.height / 2 - 64, width: 128, height: 128 };
+  hearts = [];
   collected = 0;
   memoryIndex = 0;
-  hearts = [];
 
-  for(let i = 0; i < memories.length; i++) {
+  for (let i = 0; i < totalHearts; i++) {
     hearts.push({
-      x: Math.random() * (canvas.width - heartSize - 100) + 50,
-      y: Math.random() * (canvas.height - heartSize - 50) + 50,
+      x: Math.random() * (canvas.width - 40),
+      y: Math.random() * (canvas.height - 40),
+      size: 40,
       collected: false
     });
   }
 
-  memoryOverlay.style.display = 'none';
-  giftContainer.style.display = 'none';
+  document.getElementById('message').innerText = '';
+  document.getElementById('giftBox').style.display = 'none';
+  hideMemory();
   canvas.style.filter = 'none';
-  message.innerText = '';
+}
+
+function drawBackground() {
+  ctx.fillStyle = '#228B22';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
 }
 
 function drawPlayer() {
-  if(playerImg.complete) {
-    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
-  } else {
-    // fallback rectangle if image not loaded
-    ctx.fillStyle = '#900c3f';
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-  }
+  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
 }
 
 function drawCastle() {
-  if(castleImg.complete) {
-    ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
-  } else {
-    ctx.fillStyle = '#ff69b4';
-    ctx.fillRect(castle.x, castle.y, castle.width, castle.height);
-  }
+  ctx.drawImage(castleImg, castle.x, castle.y, castle.width, castle.height);
 }
 
 function drawHearts() {
   hearts.forEach(h => {
-    if(!h.collected) {
-      ctx.fillStyle = '#ff4da6';
+    if (!h.collected) {
+      ctx.fillStyle = 'pink';
       ctx.beginPath();
-      ctx.arc(h.x + heartSize/2, h.y + heartSize/2, heartSize/2, 0, Math.PI * 2);
+      ctx.moveTo(h.x + h.size / 2, h.y + h.size / 5);
+      ctx.bezierCurveTo(h.x + h.size / 2, h.y, h.x, h.y, h.x, h.y + h.size / 3);
+      ctx.bezierCurveTo(h.x, h.y + h.size * 0.7, h.x + h.size / 2, h.y + h.size, h.x + h.size / 2, h.y + h.size);
+      ctx.bezierCurveTo(h.x + h.size / 2, h.y + h.size, h.x + h.size, h.y + h.size * 0.7, h.x + h.size, h.y + h.size / 3);
+      ctx.bezierCurveTo(h.x + h.size, h.y, h.x + h.size / 2, h.y, h.x + h.size / 2, h.y + h.size / 5);
+      ctx.closePath();
       ctx.fill();
     }
   });
 }
 
-function collision(rect1, rect2) {
-  return rect1.x < rect2.x + rect2.width &&
-         rect1.x + rect1.width > rect2.x &&
-         rect1.y < rect2.y + rect2.height &&
-         rect1.y + rect1.height > rect2.y;
+function rectsOverlap(r1, r2) {
+  return !(r2.x > r1.x + r1.width ||
+           r2.x + r2.width < r1.x ||
+           r2.y > r1.y + r1.height ||
+           r2.y + r2.height < r1.y);
 }
 
 function update() {
-  if(memoryOverlay.style.display === 'flex' || giftContainer.style.display === 'flex') return;
+  // Move player with arrow keys or WASD
+  if (keys['ArrowUp'] || keys['w']) player.y -= player.speed;
+  if (keys['ArrowDown'] || keys['s']) player.y += player.speed;
+  if (keys['ArrowLeft'] || keys['a']) player.x -= player.speed;
+  if (keys['ArrowRight'] || keys['d']) player.x += player.speed;
 
-  if(keys['ArrowUp']) player.y -= player.speed;
-  if(keys['ArrowDown']) player.y += player.speed;
-  if(keys['ArrowLeft']) player.x -= player.speed;
-  if(keys['ArrowRight']) player.x += player.speed;
-
-  // Keep player inside canvas
+  // Boundaries check
   player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
   player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
 
-  // Check collision with hearts
-  hearts.forEach((h, idx) => {
-    if(!h.collected && collision(player, {x: h.x, y: h.y, width: heartSize, height: heartSize})) {
-      h.collected = true;
-      collected++;
-      collectSound.currentTime = 0;
-      collectSound.play();
-      showMemory(memoryIndex);
-      memoryIndex++;
-      message.innerText = `Hearts collected: ${collected}/${memories.length}`;
+  // Check collisions with hearts
+  hearts.forEach((h, i) => {
+    if (!h.collected) {
+      const heartRect = { x: h.x, y: h.y, width: h.size, height: h.size };
+      const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
+
+      if (rectsOverlap(playerRect, heartRect)) {
+        h.collected = true;
+        collected++;
+        collectSound.currentTime = 0;
+        collectSound.play();
+        showMemory(memoryIndex);
+        memoryIndex++;
+      }
     }
   });
 
-  // Check if all hearts collected and player reached castle
-  if(collected === memories.length && collision(player, castle)) {
-    showGiftAndRestart();
+  // If all hearts collected and player reaches castle, show gift box
+  if (collected === totalHearts) {
+    const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
+    const castleRect = { x: castle.x, y: castle.y, width: castle.width, height: castle.height };
+
+    if (rectsOverlap(playerRect, castleRect)) {
+      document.getElementById('message').innerText = "You reached the castle! Open your gift!";
+      document.getElementById('giftBox').style.display = 'block';
+      // Stop game loop by not calling update anymore or disabling keys (optional)
+    }
   }
 }
 
-function showMemory(idx) {
-  memoryText.innerText = memories[idx].text;
-  memoryImage.src = memories[idx].image;
-  memoryOverlay.style.display = 'flex';
-  canvas.style.filter = 'blur(3px)';
-}
-
-function showGiftAndRestart() {
-  giftContainer.style.display = 'flex';
-  canvas.style.filter = 'blur(3px)';
-  message.innerText = 'You collected all hearts and reached the castle! 🎉';
-}
-
-function gameLoop() {
+function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  drawBackground();
   drawCastle();
   drawHearts();
   drawPlayer();
+}
 
+function gameLoop() {
   update();
-
+  draw();
   requestAnimationFrame(gameLoop);
 }
 
-initializeGame();
-gameLoop();
+function showMemory(index) {
+  if (index >= memories.length) return;
+  memoryImage.src = memories[index].image;
+  memoryText.innerText = memories[index].text;
+  memoryOverlay.style.display = 'flex';
+}
+
+function hideMemory() {
+  memoryOverlay.style.display = 'none';
+}
+
+function openGift() {
+  alert("🎉 Congratulations! Here's your special surprise! 🎉");
+}
+
+document.getElementById('restartButton').addEventListener('click', () => {
+  initializeGame();
+});
+
+memoryOverlay.addEventListener('click', (e) => {
+  if (e.target === memoryOverlay) hideMemory();
+});
+
+// Start the game once all images are loaded
+let imagesLoaded = 0;
+const totalImages = 3;
+
+[bgImg, playerImg, castleImg].forEach(img => {
+  img.onload = () => {
+    imagesLoaded++;
+    if (imagesLoaded === totalImages) {
+      initializeGame();
+      gameLoop();
+    }
+  };
+});
