@@ -1,105 +1,45 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  background-color: #222;
-  font-family: 'Comic Sans MS', cursive;
-  color: #fff;
-}
+/* Keep your existing base styles */
 
-nav {
-  text-align: center;
-  margin-top: 10px;
-}
-
-nav a {
-  color: #ff99cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.intro {
-  text-align: center;
-  margin-top: 10px;
-  line-height: 1.4;
-}
-
-canvas {
-  display: block;
-  margin: 20px auto;
-  border: 5px solid #ff99cc;
-  border-radius: 20px;
-  background-color: transparent;
-  transition: filter 0.3s ease;
-}
-
-#message {
-  text-align: center;
-  font-size: 24px;
-  color: #ffccdd;
-  margin-top: 20px;
-}
-
-#giftBox {
-  display: none;
-  text-align: center;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 15px;
-  z-index: 10;
-}
-
-#giftBox button,
-#restartButton {
-  background-color: #ff66a3;
-  border: none;
-  padding: 10px 20px;
-  font-size: 18px;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  margin: 5px;
-}
-
-/* Memory Overlay Styles */
 #memoryOverlay {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.85);
   z-index: 9999;
   justify-content: center;
   align-items: center;
+  display: flex; /* add flex to center content */
+  flex-direction: column;
 }
 
 #memoryContent {
   text-align: center;
-  max-width: 80%;
-  max-height: 90%;
-  padding: 20px;
-  border-radius: 20px;
-  background-color: #fff;
+  max-width: 320px;       /* narrower for Fuji style */
+  padding: 20px 20px 40px 20px; /* extra bottom padding like Fuji */
+  border-radius: 15px;
+  background-color: white; /* Fuji photo is white border */
   color: #333;
   position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
 #memoryContent img {
-  max-width: 100%;
-  max-height: 300px;
-  border-radius: 15px;
+  width: 280px;  /* fixed width for Fuji look */
+  height: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  margin-bottom: 10px;
+  padding: 12px 12px 28px 12px; /* white frame + bottom padding */
 }
 
 #memoryText {
-  margin-top: 15px;
-  font-size: 18px;
-  font-weight: bold;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #444;
 }
 
 #closeMemory {
@@ -114,5 +54,5 @@ canvas {
   width: 30px;
   height: 30px;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
-
