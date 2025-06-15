@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Games</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
-
   <div class="page-header">
     <nav>
       <a href="../index.html">Home</a>
       <div class="dropdown">
         <button class="dropdown-btn">Pages</button>
         <div class="dropdown-content">
-          <a href="../linh/linh.html">Games</a>
+          <a href="../linh/linh.html">Linh</a>
           <a href="../jacopo/magnets.html">Magnets</a>
           <a href="../jacopo/houses/houses.html">Houses</a>
         </div>
@@ -24,25 +24,25 @@
     <div class="subtitle">A collection of fun games we've created and shared</div>
   </div>
 
-  <main class="main-content">
-    <h2>Let's grab all the hearts and come to the castle 💖🏰</h2>
+  <div class="centered-description">
+    <h1>Let's grab all the hearts and come to the castle 💖🏰</h1>
     <p>Collect every heart to unlock a special surprise!</p>
+  </div>
 
-    <div id="gameWrapper">
-      <div id="gameContainer">
-        <canvas id="gameCanvas" width="800" height="500"></canvas>
-        <div id="message"></div>
+  <div id="gameWrapper">
+    <div id="gameContainer">
+      <canvas id="gameCanvas" width="800" height="500"></canvas>
+      <div id="message"></div>
 
-        <!-- Gift box overlay -->
-        <div id="giftBox" class="hidden">
-          <div class="centered-buttons">
-            <button class="pretty-button" onclick="openGift()">🎁 Open Your Gift</button>
-            <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
-          </div>
+      <!-- Gift box overlay -->
+      <div id="giftBox" class="hidden">
+        <div class="centered-buttons">
+          <button class="pretty-button" onclick="openGift()">🎁 Open Your Gift</button>
+          <button id="restartButton" class="pretty-button">🔄 Restart Game</button>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 
   <!-- Memory popup overlay -->
   <div id="memoryOverlay" class="hidden">
