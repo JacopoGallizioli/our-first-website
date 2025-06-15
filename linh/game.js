@@ -5,9 +5,9 @@ const bgImg = new Image();
 const playerImg = new Image();
 const castleImg = new Image();
 
-bgImg.src = 'Forest.png';
-playerImg.src = 'Jacopo.png';
-castleImg.src = 'castle.png';
+bgImg.src = 'Forest.png'; // Your forest background
+playerImg.src = 'Jacopo.png'; // Your character
+castleImg.src = 'castle.png'; // Your castle
 
 const collectSound = document.getElementById('collectSound');
 
@@ -17,8 +17,8 @@ const memories = [
   { text: "Our first year together 🌸", image: "1styear.JPG" },
   { text: "When I made you a surprise", image: "Vietnam1st.JPG" },
   { text: "That time we finally had electricity in the house after a week of blackout", image: "Saronno.JPG" },
-  { text: "We moved to Germany in 3rd year together 📸", image: "augsburg.jpeg" },
-  { text: "We are staying in Munich 💕", image: "Munich.jpeg" }
+  { text: "We moved to Germany 📸", image: "augsburg.jpeg" },
+  { text: "We're in Munich now ❤️", image: "Munich.jpeg" }
 ];
 
 const totalHearts = memories.length;
@@ -27,8 +27,6 @@ const memoryOverlay = document.getElementById('memoryOverlay');
 const memoryImage = document.getElementById('memoryImage');
 const memoryText = document.getElementById('memoryText');
 const closeMemoryBtn = document.getElementById('closeMemory');
-const giftBox = document.getElementById('giftBox');
-const message = document.getElementById('message');
 
 document.addEventListener('keydown', e => {
   if (memoryOverlay.style.display === 'flex') {
@@ -46,10 +44,6 @@ document.addEventListener('keyup', e => {
 
 closeMemoryBtn.addEventListener('click', hideMemory);
 
-document.getElementById('restartButton').addEventListener('click', () => {
-  initializeGame();
-});
-
 function initializeGame() {
   player = { x: 50, y: 200, width: 64, height: 64, speed: 3 };
   castle = { x: canvas.width - 128, y: canvas.height / 2 - 64, width: 128, height: 128 };
@@ -66,8 +60,8 @@ function initializeGame() {
     });
   }
 
-  message.innerText = '';
-  giftBox.style.display = 'none';
+  document.getElementById('message').innerText = '';
+  document.getElementById('giftBox').style.display = 'none';
   hideMemory();
   canvas.style.filter = 'none';
 }
@@ -140,9 +134,9 @@ function update() {
       player.x < castle.x + castle.width &&
       player.y + player.height > castle.y &&
       player.y < castle.y + castle.height) {
-    message.innerText = 'You made it to the castle with all the hearts! 💖';
+    document.getElementById('message').innerText = 'You made it to the castle with all the hearts! 💖';
     canvas.style.filter = 'blur(3px)';
-    giftBox.style.display = 'block';
+    document.getElementById('giftBox').style.display = 'block';
   }
 }
 
@@ -157,10 +151,13 @@ function gameLoop() {
 }
 
 function openGift() {
-  alert("🎁 Here's your surprise! I love you! 💌");
+  alert("🎁 Here's your surprise! I love you so much! 💌");
 }
 
-// Wait until all assets are loaded
+document.getElementById('restartButton').addEventListener('click', () => {
+  initializeGame();
+});
+
 let loaded = 0;
 const totalImages = 3;
 function checkAllLoaded() {
